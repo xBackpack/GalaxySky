@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky
+package me.xbackpack.galaxysky.util
 
 import net.kyori.adventure.text.Component
 import org.bukkit.Material

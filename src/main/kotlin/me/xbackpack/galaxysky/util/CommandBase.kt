@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky
+package me.xbackpack.galaxysky.util
 
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
@@ -7,7 +7,6 @@ import org.bukkit.entity.Player
 
 interface CommandBase : BasicCommand {
     val requiresPlayer: Boolean
-        get() = false
 
     fun command(
         sender: CommandSender,

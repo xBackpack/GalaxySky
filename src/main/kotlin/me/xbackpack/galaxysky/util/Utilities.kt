@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky
+package me.xbackpack.galaxysky.util
 
 import java.time.Instant
 import java.time.LocalDateTime
