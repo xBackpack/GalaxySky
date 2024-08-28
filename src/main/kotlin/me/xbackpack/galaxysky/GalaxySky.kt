@@ -34,7 +34,7 @@ class GalaxySky : JavaPlugin() {
         vararg commands: CommandBase,
     ) {
         for (command in commands) {
-            registrar.register(command.label, command.description, command.aliases, command)
+            registrar.register(command.commandName, command.description, command.aliases, command)
         }
     }
 }

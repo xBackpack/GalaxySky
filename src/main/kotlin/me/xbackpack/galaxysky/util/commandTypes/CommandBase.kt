@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 interface CommandBase : BasicCommand {
     val requiresPlayer: Boolean
 
-    val label: String
+    val commandName: String
     val description: String
     val aliases: List<String>
         get() = emptyList()
@@ -18,15 +18,10 @@ interface CommandBase : BasicCommand {
         args: Array<String>,
     )
 
-    fun tabComplete(
-        sender: CommandSender,
-        args: Array<String>,
-    ): List<String> = emptyList()
-
     override fun suggest(
         cmd: CommandSourceStack,
         args: Array<String>,
-    ): List<String> = tabComplete(cmd.sender, args)
+    ): List<String> = emptyList()
 
     override fun execute(
         cmd: CommandSourceStack,

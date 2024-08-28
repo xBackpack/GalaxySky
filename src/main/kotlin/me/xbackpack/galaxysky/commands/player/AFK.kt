@@ -5,12 +5,7 @@ import me.xbackpack.galaxysky.util.commandTypes.TeleportCommand
 import org.bukkit.Location
 
 class AFK : TeleportCommand {
-    companion object {
-        private val loc = Location(Worlds.world, -28.5, 102.0, 10.5, 90f, 0f)
-    }
-
-    override val label = "afk"
+    override val commandName = "afk"
     override val description = "Teleports you to the AFK area!"
-
-    override fun getLocation() = loc
+    override val location = Location(Worlds.world, -28.5, 102.0, 10.5, 90f, 0f)
 }

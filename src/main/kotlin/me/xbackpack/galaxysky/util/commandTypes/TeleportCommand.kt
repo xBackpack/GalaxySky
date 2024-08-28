@@ -8,14 +8,14 @@ interface TeleportCommand : CommandBase {
     override val requiresPlayer: Boolean
         get() = true
 
+    val location: Location
+
     override fun command(
         sender: CommandSender,
         args: Array<String>,
     ) {
         val player = sender as Player
 
-        player.teleport(getLocation())
+        player.teleport(location)
     }
-
-    fun getLocation(): Location
 }

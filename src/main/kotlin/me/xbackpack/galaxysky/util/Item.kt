@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.inventory.meta.SkullMeta
 
-open class Item(
+sealed class Item(
     private val item: ItemStack,
 ) {
     class SkullItem(
