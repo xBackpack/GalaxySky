@@ -12,7 +12,7 @@ interface TeleportCommand : CommandBase {
 
     override fun command(
         sender: CommandSender,
-        args: Array<String>,
+        args: List<String>,
     ) {
         val player = sender as Player
 
