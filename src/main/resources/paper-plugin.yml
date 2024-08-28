@@ -1,0 +1,10 @@
+name: GalaxySky
+version: 0.0.1
+main: me.xbackpack.galaxysky.GalaxySky
+api-version: '1.21'
+prefix: GalaxySky
+authors:
+  - xBackpack
+load: POSTWORLD
+description: The official plugin for the GalaxySky minecraft server!
+website: https://galaxysky.tebex.io
