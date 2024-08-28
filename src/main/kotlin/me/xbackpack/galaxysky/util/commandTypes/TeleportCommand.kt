@@ -1,6 +1,5 @@
 package me.xbackpack.galaxysky.util.commandTypes
 
-import me.xbackpack.galaxysky.util.CommandBase
 import org.bukkit.Location
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player

@@ -9,5 +9,8 @@ class AFK : TeleportCommand {
         private val loc = Location(Worlds.world, -28.5, 102.0, 10.5, 90f, 0f)
     }
 
+    override val label = "afk"
+    override val description = "Teleports you to the AFK area!"
+
     override fun getLocation() = loc
 }
