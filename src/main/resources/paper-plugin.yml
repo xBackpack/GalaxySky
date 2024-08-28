@@ -8,3 +8,8 @@ authors:
 load: POSTWORLD
 description: The official plugin for the GalaxySky minecraft server!
 website: https://galaxysky.tebex.io
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: true
