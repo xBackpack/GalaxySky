@@ -1,3 +1,25 @@
 package me.xbackpack.galaxysky
 
-class Placeholders
+import me.clip.placeholderapi.expansion.PlaceholderExpansion
+import org.bukkit.OfflinePlayer
+
+class Placeholders : PlaceholderExpansion() {
+    override fun getAuthor() = "xBackpack"
+
+    override fun getIdentifier() = "galaxysky"
+
+    override fun getVersion() = "0.0.1"
+
+    override fun persist() = true
+
+    override fun onRequest(
+        player: OfflinePlayer?,
+        placeholder: String,
+    ) = when (placeholder) {
+        "ip" -> "galaxysky.minehut.gg"
+        "shop" -> "galaxysky.tebex.io"
+        "shop_link" -> "https://galaxysky.tebex.io"
+        "discord" -> "https://discord.gg/GNJKTfZGrR"
+        else -> null
+    }
+}
