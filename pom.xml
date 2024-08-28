@@ -19,7 +19,6 @@
 
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
-        <outputDirectory>C:\Users\james\AppData\Roaming\.feather\player-server\servers\781385de-72be-4f8c-9a64-2e58de109e3e\plugins</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -49,6 +48,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                             <artifactSet>
                                 <includes>
                                     <include>org.jetbrains.kotlin:kotlin-stdlib-jdk8</include>
