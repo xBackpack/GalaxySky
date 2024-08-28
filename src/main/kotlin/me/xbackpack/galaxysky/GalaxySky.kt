@@ -3,6 +3,7 @@ package me.xbackpack.galaxysky
 import io.papermc.paper.command.brigadier.Commands
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import me.xbackpack.galaxysky.commands.player.AFK
+import me.xbackpack.galaxysky.commands.player.Apply
 import me.xbackpack.galaxysky.util.commandTypes.CommandBase
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -23,6 +24,7 @@ class GalaxySky : JavaPlugin() {
             registerCommands(
                 commands,
                 AFK(),
+                Apply(),
             )
         }
 

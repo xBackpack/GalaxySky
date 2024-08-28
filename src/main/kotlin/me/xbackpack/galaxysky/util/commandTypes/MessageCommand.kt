@@ -8,7 +8,7 @@ interface MessageCommand : CommandBase {
 
     override fun command(
         sender: CommandSender,
-        args: Array<String>,
+        args: List<String>,
     ) {
         sender.sendMessage(message)
     }

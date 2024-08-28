@@ -15,7 +15,7 @@ interface CommandBase : BasicCommand {
 
     fun command(
         sender: CommandSender,
-        args: Array<String>,
+        args: List<String>,
     )
 
     override fun suggest(
@@ -34,6 +34,6 @@ interface CommandBase : BasicCommand {
             return
         }
 
-        command(sender, args)
+        command(sender, args.toList())
     }
 }
