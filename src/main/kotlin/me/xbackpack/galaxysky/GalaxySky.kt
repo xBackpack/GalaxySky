@@ -5,6 +5,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import me.xbackpack.galaxysky.commands.player.AFK
 import me.xbackpack.galaxysky.commands.player.Apply
 import me.xbackpack.galaxysky.commands.player.Colours
+import me.xbackpack.galaxysky.commands.player.Drops
 import me.xbackpack.galaxysky.util.commandTypes.CommandBase
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -19,9 +20,9 @@ class GalaxySky : JavaPlugin() {
         instance = this
         version = pluginMeta.version
 
-        val manager = lifecycleManager
+        Placeholders().register()
 
-        manager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
+        lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
             val commands = event.registrar()
 
             registerCommands(
@@ -29,6 +30,7 @@ class GalaxySky : JavaPlugin() {
                 AFK(),
                 Apply(),
                 Colours(),
+                Drops(),
             )
         }
 
