@@ -6,6 +6,6 @@ import org.bukkit.Location
 
 class AFK : TeleportCommand {
     override val commandName = "afk"
-    override val description = "Teleports you to the AFK area!"
+    override val description = "Teleports the player to the AFK area"
     override val location = Location(Worlds.world, -28.5, 102.0, 10.5, 90f, 0f)
 }

@@ -9,7 +9,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 
 class IP : MessageCommand {
     override val commandName = "ip"
-    override val description = "Returns the IP of the server!"
+    override val description = "Returns the IP of the server"
     override val requiresPlayer = true
 
     private val ip = PlaceholderAPI.setPlaceholders(null, "%galaxysky_ip%")

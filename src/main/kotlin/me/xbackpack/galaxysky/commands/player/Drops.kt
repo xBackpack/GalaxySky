@@ -13,7 +13,7 @@ class Drops :
     CooldownCommand,
     ListenerCommand {
     override val commandName = "drops"
-    override val description = "Toggles the ability to drop items"
+    override val description = "Toggles the player's ability to drop items"
     override val requiresPlayer = true
     override val activePlayers = hashSetOf<UUID>()
     override val cooldownDuration = 200L
