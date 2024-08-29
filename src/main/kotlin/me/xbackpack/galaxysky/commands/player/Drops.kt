@@ -4,6 +4,7 @@ import me.xbackpack.galaxysky.util.commandTypes.CooldownCommand
 import me.xbackpack.galaxysky.util.commandTypes.ListenerCommand
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerDropItemEvent
 import java.util.UUID
@@ -26,6 +27,8 @@ class Drops :
 
     @EventHandler
     fun onDrop(event: PlayerDropItemEvent) {
+        if (event.player.gameMode != GameMode.SURVIVAL) return
+
         if (!isOnCooldown(event.player)) {
             event.isCancelled = true
             event.player.sendMessage(Component.text("Use /drops to drop items!", NamedTextColor.RED))
