@@ -7,13 +7,20 @@ import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class Playtime : PlayerMessageCommand {
+class PlaytimeCmd : PlayerMessageCommand {
     override val commandName = "playtime"
     override val description = "Returns the player's playtime"
 
-    override fun message(sender: CommandSender): Component =
+    override fun message(player: Player): Component =
         Component.text(
-            PlaceholderAPI.setPlaceholders(sender as Player, "%galaxysky_playtime%"),
+            PlaceholderAPI.setPlaceholders(player, "You have %galaxysky_playtime% of playtime!"),
             NamedTextColor.GREEN,
         )
+
+    override fun executeCommand(
+        sender: CommandSender,
+        args: List<String>,
+    ) {
+        sendMessage(sender as Player)
+    }
 }

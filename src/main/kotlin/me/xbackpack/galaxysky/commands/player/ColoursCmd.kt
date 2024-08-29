@@ -4,8 +4,9 @@ import me.xbackpack.galaxysky.util.commandTypes.MessageCommand
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
+import org.bukkit.command.CommandSender
 
-class Colours : MessageCommand {
+class ColoursCmd : MessageCommand {
     override val commandName = "colours"
     override val description = "Returns a list of all of the colour codes"
     override val aliases = arrayListOf("colors")
@@ -36,4 +37,11 @@ class Colours : MessageCommand {
             .append(Component.text("o", NamedTextColor.WHITE, TextDecoration.ITALIC))
             .append(Component.text("r", NamedTextColor.WHITE))
             .build()
+
+    override fun executeCommand(
+        sender: CommandSender,
+        args: List<String>,
+    ) {
+        sendMessage(sender)
+    }
 }
