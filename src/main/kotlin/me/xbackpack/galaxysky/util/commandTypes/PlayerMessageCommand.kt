@@ -1,18 +1,15 @@
 package me.xbackpack.galaxysky.util.commandTypes
 
 import net.kyori.adventure.text.Component
-import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 
 interface PlayerMessageCommand : CommandBase {
-    fun message(sender: CommandSender): Component
+    fun message(player: Player): Component
 
     override val requiresPlayer
         get() = true
 
-    override fun command(
-        sender: CommandSender,
-        args: List<String>,
-    ) {
-        sender.sendMessage(message(sender))
+    fun sendMessage(player: Player) {
+        player.sendMessage(message(player))
     }
 }

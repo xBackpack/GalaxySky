@@ -13,7 +13,7 @@ interface CommandBase : BasicCommand {
     val aliases: List<String>
         get() = emptyList()
 
-    fun command(
+    fun executeCommand(
         sender: CommandSender,
         args: List<String>,
     )
@@ -34,6 +34,6 @@ interface CommandBase : BasicCommand {
             return
         }
 
-        command(sender, args.toList())
+        executeCommand(sender, args.toList())
     }
 }

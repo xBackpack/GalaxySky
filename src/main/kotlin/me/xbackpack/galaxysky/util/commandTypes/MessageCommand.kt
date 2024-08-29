@@ -6,10 +6,7 @@ import org.bukkit.command.CommandSender
 interface MessageCommand : CommandBase {
     val message: Component
 
-    override fun command(
-        sender: CommandSender,
-        args: List<String>,
-    ) {
+    fun sendMessage(sender: CommandSender) {
         sender.sendMessage(message)
     }
 }
