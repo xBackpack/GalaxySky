@@ -14,10 +14,7 @@ class Apply : MessageCommand {
     private val link = PlaceholderAPI.setPlaceholders(null, "%galaxysky_discord%")
     override val message =
         Component
-            .text()
-            .append(Component.text("Apply on our discord!\nLink: "))
-            .append(Component.text(link))
+            .text("Apply on our discord!\nLink: ")
+            .append(Component.text(link).clickEvent(ClickEvent.openUrl(link)))
             .color(NamedTextColor.LIGHT_PURPLE)
-            .clickEvent(ClickEvent.openUrl(link))
-            .build()
 }
