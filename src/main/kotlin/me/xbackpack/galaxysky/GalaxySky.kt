@@ -7,6 +7,7 @@ import me.xbackpack.galaxysky.commands.player.Apply
 import me.xbackpack.galaxysky.commands.player.Colours
 import me.xbackpack.galaxysky.commands.player.Drops
 import me.xbackpack.galaxysky.commands.player.IP
+import me.xbackpack.galaxysky.commands.player.Playtime
 import me.xbackpack.galaxysky.util.commandTypes.CommandBase
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -33,6 +34,7 @@ class GalaxySky : JavaPlugin() {
                 Colours(),
                 Drops(),
                 IP(),
+                Playtime(),
             )
         }
 
