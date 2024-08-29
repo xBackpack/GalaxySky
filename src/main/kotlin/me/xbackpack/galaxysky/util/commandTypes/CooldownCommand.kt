@@ -6,13 +6,12 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
 
 interface CooldownCommand : CommandBase {
     override val requiresPlayer
         get() = true
-    val activePlayers: MutableSet<UUID>
-        get() = ConcurrentHashMap.newKeySet()
+    private val activePlayers: HashSet<UUID>
+        get() = hashSetOf()
     val cooldownDuration: Long
     val cooldownStartMessage: Component
     val cooldownMessage: Component
@@ -40,7 +39,7 @@ interface CooldownCommand : CommandBase {
         )
     }
 
-    fun isCooldown(player: Player) = activePlayers.contains(player.uniqueId)
+    fun isOnCooldown(player: Player) = activePlayers.contains(player.uniqueId)
 
     override fun command(
         sender: CommandSender,

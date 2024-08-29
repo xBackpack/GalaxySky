@@ -24,7 +24,7 @@ class Drops :
 
     @EventHandler
     fun onDrop(event: PlayerDropItemEvent) {
-        if (!isCooldown(event.player)) {
+        if (!isOnCooldown(event.player)) {
             event.isCancelled = true
             event.player.sendMessage(Component.text("Use /drops to drop items!", NamedTextColor.RED))
         }
