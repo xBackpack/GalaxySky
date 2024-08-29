@@ -10,8 +10,7 @@ import java.util.UUID
 interface CooldownCommand : CommandBase {
     override val requiresPlayer
         get() = true
-    private val activePlayers: HashSet<UUID>
-        get() = hashSetOf()
+    val activePlayers: HashSet<UUID>
     val cooldownDuration: Long
     val cooldownStartMessage: Component
     val cooldownMessage: Component

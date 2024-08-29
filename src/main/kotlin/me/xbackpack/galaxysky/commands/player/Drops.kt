@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerDropItemEvent
+import java.util.UUID
 
 class Drops :
     CooldownCommand,
@@ -13,6 +14,7 @@ class Drops :
     override val commandName = "drops"
     override val description = "Toggles the ability to drop items"
     override val requiresPlayer = true
+    override val activePlayers = hashSetOf<UUID>()
     override val cooldownDuration = 200L
     override val cooldownStartMessage = Component.text("You can now drop items!", NamedTextColor.GREEN)
     override val cooldownMessage = Component.text("You can already drop items!", NamedTextColor.RED)

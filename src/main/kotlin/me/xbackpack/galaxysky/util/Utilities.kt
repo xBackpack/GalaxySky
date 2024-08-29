@@ -57,6 +57,7 @@ fun Int.formatTime(): String {
     }.trim()
 }
 
+/** Does the same as [formatTime] but only returns the more important numbers */
 fun Int.formatTimeSimple(): String {
     val secondsInMinute = 60
     val secondsInHour = 3600 // secondsInMinute * 60
