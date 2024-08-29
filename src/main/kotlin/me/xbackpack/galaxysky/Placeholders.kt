@@ -8,7 +8,7 @@ class Placeholders : PlaceholderExpansion() {
 
     override fun getIdentifier() = "galaxysky"
 
-    override fun getVersion() = "0.0.1"
+    override fun getVersion() = GalaxySky.version
 
     override fun persist() = true
 

@@ -12,10 +12,12 @@ class GalaxySky : JavaPlugin() {
     companion object {
         lateinit var instance: GalaxySky
             private set
+        lateinit var version: String
     }
 
     override fun onEnable() {
         instance = this
+        version = pluginMeta.version
 
         val manager = lifecycleManager
 
