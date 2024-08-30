@@ -4,12 +4,8 @@ import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 
 interface PlayerMessageCommand : CommandBase {
-    fun message(player: Player): Component
-
-    override val requiresPlayer
+    override val requiresPlayer: Boolean
         get() = true
 
-    fun sendMessage(player: Player) {
-        player.sendMessage(message(player))
-    }
+    fun message(player: Player): Component
 }

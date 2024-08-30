@@ -7,8 +7,9 @@ import org.bukkit.entity.Player
 import java.util.UUID
 
 interface CooldownCommand : CommandBase {
-    override val requiresPlayer
+    override val requiresPlayer: Boolean
         get() = true
+
     val playersWithCooldown: HashSet<UUID>
     val cooldownDuration: Long
     val cooldownStartMessage: Component
@@ -16,8 +17,6 @@ interface CooldownCommand : CommandBase {
     val cooldownEndMessage: Component
 
     fun startCooldown(player: Player) {
-        if (player.isOp) return
-
         val uuid = player.uniqueId
 
         val result = playersWithCooldown.add(uuid)
@@ -39,12 +38,5 @@ interface CooldownCommand : CommandBase {
         )
     }
 
-    fun checkCooldown(player: Player): Boolean {
-        if (playersWithCooldown.contains(player.uniqueId)) {
-            player.sendMessage(cooldownMessage)
-            return true
-        }
-
-        return false
-    }
+    fun checkCooldown(player: Player): Boolean = playersWithCooldown.contains(player.uniqueId)
 }

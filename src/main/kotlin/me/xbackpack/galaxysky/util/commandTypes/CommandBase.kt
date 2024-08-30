@@ -7,16 +7,47 @@ import org.bukkit.entity.Player
 
 interface CommandBase : BasicCommand {
     val requiresPlayer: Boolean
+        get() = false
 
     val commandName: String
     val description: String
     val aliases: List<String>
         get() = emptyList()
 
-    fun executeCommand(
+    fun command(
         sender: CommandSender,
         args: List<String>,
-    )
+    ) {
+        val interfaces = this::class.java.interfaces
+
+        if (requiresPlayer) {
+            val player = sender as Player
+
+            if (interfaces.contains(TeleportCommand::class.java)) {
+                player.teleport((this as TeleportCommand).location(player))
+            }
+
+            if (interfaces.contains(CooldownCommand::class.java)) {
+                (this as CooldownCommand).startCooldown(player)
+            }
+
+            if (interfaces.contains(PlayerMessageCommand::class.java)) {
+                player.sendMessage((this as PlayerMessageCommand).message(player))
+            }
+
+            if (interfaces.contains(ToggleableCommand::class.java)) {
+                (this as ToggleableCommand).toggleFeature(player)
+            }
+        }
+
+        if (interfaces.contains(ListenerCommand::class.java)) {
+            (this as ListenerCommand).registerListener()
+        }
+
+        if (interfaces.contains(MessageCommand::class.java)) {
+            sender.sendMessage((this as MessageCommand).message)
+        }
+    }
 
     override fun suggest(
         cmd: CommandSourceStack,
@@ -34,6 +65,6 @@ interface CommandBase : BasicCommand {
             return
         }
 
-        executeCommand(sender, args.toList())
+        command(sender, args.toList())
     }
 }

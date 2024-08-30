@@ -4,12 +4,8 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 
 interface TeleportCommand : CommandBase {
-    fun location(player: Player): Location
-
-    override val requiresPlayer: Boolean
+    override val requiresPlayer
         get() = true
 
-    fun teleport(player: Player) {
-        player.teleport(location(player))
-    }
+    fun location(player: Player): Location
 }
