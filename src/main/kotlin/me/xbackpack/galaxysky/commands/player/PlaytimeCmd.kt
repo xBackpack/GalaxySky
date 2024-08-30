@@ -4,7 +4,6 @@ import me.clip.placeholderapi.PlaceholderAPI
 import me.xbackpack.galaxysky.util.commandTypes.PlayerMessageCommand
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 class PlaytimeCmd : PlayerMessageCommand {
@@ -16,11 +15,4 @@ class PlaytimeCmd : PlayerMessageCommand {
             PlaceholderAPI.setPlaceholders(player, "You have %galaxysky_playtime% of playtime!"),
             NamedTextColor.GREEN,
         )
-
-    override fun executeCommand(
-        sender: CommandSender,
-        args: List<String>,
-    ) {
-        sendMessage(sender as Player)
-    }
 }
