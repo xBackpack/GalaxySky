@@ -7,5 +7,9 @@ interface TeleportCommand : CommandBase {
     override val requiresPlayer
         get() = true
 
-    fun location(player: Player): Location
+    val location: Location
+
+    fun teleport(player: Player) {
+        player.teleport(location)
+    }
 }

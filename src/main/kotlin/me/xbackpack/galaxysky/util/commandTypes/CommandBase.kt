@@ -18,34 +18,20 @@ interface CommandBase : BasicCommand {
         sender: CommandSender,
         args: List<String>,
     ) {
-        val interfaces = this::class.java.interfaces
-
         if (requiresPlayer) {
             val player = sender as Player
 
-            if (interfaces.contains(TeleportCommand::class.java)) {
-                player.teleport((this as TeleportCommand).location(player))
-            }
-
-            if (interfaces.contains(CooldownCommand::class.java)) {
-                (this as CooldownCommand).startCooldown(player)
-            }
-
-            if (interfaces.contains(PlayerMessageCommand::class.java)) {
-                player.sendMessage((this as PlayerMessageCommand).message(player))
-            }
-
-            if (interfaces.contains(ToggleableCommand::class.java)) {
-                (this as ToggleableCommand).toggleFeature(player)
+            when (this) {
+                is TeleportCommand -> teleport(player)
+                is CooldownCommand -> startCooldown(player)
+                is PlayerMessageCommand -> sendMessage(player)
+                is ToggleableCommand -> toggleFeature(player)
             }
         }
 
-        if (interfaces.contains(ListenerCommand::class.java)) {
-            (this as ListenerCommand).registerListener()
-        }
-
-        if (interfaces.contains(MessageCommand::class.java)) {
-            sender.sendMessage((this as MessageCommand).message)
+        when (this) {
+            is ListenerCommand -> registerListener()
+            is MessageCommand -> sendMessage(sender)
         }
     }
 

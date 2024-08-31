@@ -8,4 +8,8 @@ interface PlayerMessageCommand : CommandBase {
         get() = true
 
     fun message(player: Player): Component
+
+    fun sendMessage(player: Player) {
+        player.sendMessage(message(player))
+    }
 }
