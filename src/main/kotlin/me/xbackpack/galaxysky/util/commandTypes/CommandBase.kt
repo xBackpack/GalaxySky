@@ -30,7 +30,6 @@ interface CommandBase : BasicCommand {
         }
 
         when (this) {
-            is ListenerCommand -> registerListener()
             is MessageCommand -> sendMessage(sender)
         }
     }

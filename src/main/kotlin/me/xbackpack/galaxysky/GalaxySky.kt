@@ -10,6 +10,7 @@ import me.xbackpack.galaxysky.commands.player.IPCmd
 import me.xbackpack.galaxysky.commands.player.PVPCmd
 import me.xbackpack.galaxysky.commands.player.PlaytimeCmd
 import me.xbackpack.galaxysky.util.commandTypes.CommandBase
+import me.xbackpack.galaxysky.util.commandTypes.ListenerCommand
 import org.bukkit.plugin.java.JavaPlugin
 
 class GalaxySky : JavaPlugin() {
@@ -47,8 +48,9 @@ class GalaxySky : JavaPlugin() {
         registrar: Commands,
         vararg commands: CommandBase,
     ) {
-        for (command in commands) {
-            registrar.register(command.commandName, command.description, command.aliases, command)
+        commands.forEach {
+            registrar.register(it.commandName, it.description, it.aliases, it)
+            (it as? ListenerCommand)?.registerListener()
         }
     }
 }
