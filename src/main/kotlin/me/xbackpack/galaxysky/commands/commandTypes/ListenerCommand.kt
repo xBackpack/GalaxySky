@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.util.commandTypes
+package me.xbackpack.galaxysky.commands.commandTypes
 
 import me.xbackpack.galaxysky.GalaxySky
 import org.bukkit.event.Listener

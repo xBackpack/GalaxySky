@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.util.commandTypes
+package me.xbackpack.galaxysky.commands.commandTypes
 
 import net.kyori.adventure.text.Component
 import org.bukkit.command.CommandSender

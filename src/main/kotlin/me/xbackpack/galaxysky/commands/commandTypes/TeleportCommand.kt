@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.util.commandTypes
+package me.xbackpack.galaxysky.commands.commandTypes
 
 import org.bukkit.Location
 import org.bukkit.entity.Player

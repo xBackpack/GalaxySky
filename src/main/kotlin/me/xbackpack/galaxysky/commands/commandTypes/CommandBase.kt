@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.util.commandTypes
+package me.xbackpack.galaxysky.commands.commandTypes
 
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
@@ -26,6 +26,7 @@ interface CommandBase : BasicCommand {
                 is CooldownCommand -> startCooldown(player)
                 is PlayerMessageCommand -> sendMessage(player)
                 is ToggleableCommand -> toggleFeature(player)
+                is InventoryCheckCommand -> checkItems(player)
             }
         }
 
