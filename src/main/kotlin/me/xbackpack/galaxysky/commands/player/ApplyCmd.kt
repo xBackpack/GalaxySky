@@ -7,10 +7,12 @@ import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 
 class ApplyCmd : MessageCommand {
+    companion object {
+        private val link = PlaceholderAPI.setPlaceholders(null, "%galaxysky_discord%")
+    }
+
     override val commandName = "apply"
     override val description = "Links to the staff application"
-
-    private val link = PlaceholderAPI.setPlaceholders(null, "%galaxysky_discord%")
 
     override val message =
         Component

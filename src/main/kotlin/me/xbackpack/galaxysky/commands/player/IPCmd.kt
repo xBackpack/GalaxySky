@@ -8,19 +8,22 @@ import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
 
 class IPCmd : MessageCommand {
+    companion object {
+        private val ip = PlaceholderAPI.setPlaceholders(null, "%galaxysky_ip%")
+        private val msg =
+            Component
+                .text("The GalaxySky IP is: ")
+                .append(
+                    Component
+                        .text(
+                            ip,
+                        ).clickEvent(ClickEvent.copyToClipboard(ip))
+                        .hoverEvent(HoverEvent.showText(Component.text("Click to copy to clipboard!"))),
+                ).color(NamedTextColor.LIGHT_PURPLE)
+    }
+
     override val commandName = "ip"
     override val description = "Returns the IP of the server"
 
-    private val ip = PlaceholderAPI.setPlaceholders(null, "%galaxysky_ip%")
-
-    override val message =
-        Component
-            .text("The GalaxySky IP is: ")
-            .append(
-                Component
-                    .text(
-                        ip,
-                    ).clickEvent(ClickEvent.copyToClipboard(ip))
-                    .hoverEvent(HoverEvent.showText(Component.text("Click to copy to clipboard!"))),
-            ).color(NamedTextColor.LIGHT_PURPLE)
+    override val message = msg
 }
