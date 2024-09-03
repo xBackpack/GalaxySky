@@ -2,9 +2,9 @@ package me.xbackpack.galaxysky.commands.player
 
 import me.clip.placeholderapi.PlaceholderAPI
 import me.xbackpack.galaxysky.commands.commandTypes.MessageCommand
+import me.xbackpack.galaxysky.util.PluginUtilities
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
-import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
 
 class IPCmd : MessageCommand {
@@ -22,7 +22,7 @@ class IPCmd : MessageCommand {
                 Component
                     .text(
                         ip,
-                    ).clickEvent(ClickEvent.copyToClipboard(ip))
-                    .hoverEvent(HoverEvent.showText(Component.text("Click to copy to clipboard!"))),
+                    ).clickEvent(ClickEvent.openUrl(ip))
+                    .hoverEvent(PluginUtilities.openLink),
             ).color(NamedTextColor.LIGHT_PURPLE)
 }

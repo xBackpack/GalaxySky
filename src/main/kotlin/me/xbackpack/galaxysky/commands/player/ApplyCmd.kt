@@ -2,9 +2,9 @@ package me.xbackpack.galaxysky.commands.player
 
 import me.clip.placeholderapi.PlaceholderAPI
 import me.xbackpack.galaxysky.commands.commandTypes.MessageCommand
+import me.xbackpack.galaxysky.util.PluginUtilities
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
-import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
 
 class ApplyCmd : MessageCommand {
@@ -22,6 +22,6 @@ class ApplyCmd : MessageCommand {
                 Component
                     .text(link)
                     .clickEvent(ClickEvent.openUrl(link))
-                    .hoverEvent(HoverEvent.showText(Component.text("Click to open link!"))),
+                    .hoverEvent(PluginUtilities.openLink),
             ).color(NamedTextColor.LIGHT_PURPLE)
 }

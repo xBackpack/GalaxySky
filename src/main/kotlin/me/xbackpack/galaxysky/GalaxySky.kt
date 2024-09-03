@@ -12,6 +12,7 @@ import me.xbackpack.galaxysky.commands.player.IPCmd
 import me.xbackpack.galaxysky.commands.player.PVPCmd
 import me.xbackpack.galaxysky.commands.player.PlaytimeCmd
 import me.xbackpack.galaxysky.commands.player.RedeemCmd
+import me.xbackpack.galaxysky.commands.player.ShopCmd
 import org.bukkit.plugin.java.JavaPlugin
 
 class GalaxySky : JavaPlugin() {
@@ -40,6 +41,7 @@ class GalaxySky : JavaPlugin() {
                 PlaytimeCmd(),
                 PVPCmd(),
                 RedeemCmd(),
+                ShopCmd(),
             )
         }
 
