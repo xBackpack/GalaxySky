@@ -1,8 +1,8 @@
 package me.xbackpack.galaxysky.commands.player
 
-import me.xbackpack.galaxysky.util.commandTypes.CooldownCommand
-import me.xbackpack.galaxysky.util.commandTypes.ListenerCommand
-import me.xbackpack.galaxysky.util.commandTypes.ToggleableCommand
+import me.xbackpack.galaxysky.commands.commandTypes.CooldownCommand
+import me.xbackpack.galaxysky.commands.commandTypes.ListenerCommand
+import me.xbackpack.galaxysky.commands.commandTypes.ToggleableCommand
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.Player

@@ -1,7 +1,7 @@
 package me.xbackpack.galaxysky.commands.player
 
+import me.xbackpack.galaxysky.commands.commandTypes.TeleportCommand
 import me.xbackpack.galaxysky.util.Worlds
-import me.xbackpack.galaxysky.util.commandTypes.TeleportCommand
 import org.bukkit.Location
 
 class AFKCmd : TeleportCommand {

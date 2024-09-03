@@ -1,6 +1,6 @@
 package me.xbackpack.galaxysky.commands.player
 
-import me.xbackpack.galaxysky.util.commandTypes.MessageCommand
+import me.xbackpack.galaxysky.commands.commandTypes.MessageCommand
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent

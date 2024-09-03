@@ -1,7 +1,7 @@
 package me.xbackpack.galaxysky.commands.player
 
 import me.clip.placeholderapi.PlaceholderAPI
-import me.xbackpack.galaxysky.util.commandTypes.PlayerMessageCommand
+import me.xbackpack.galaxysky.commands.commandTypes.PlayerMessageCommand
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.Player
