@@ -1,7 +1,9 @@
 package me.xbackpack.galaxysky.util
 
+import me.xbackpack.galaxysky.GalaxySky
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.OfflinePlayer
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -10,8 +12,9 @@ import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.inventory.meta.SkullMeta
+import org.bukkit.persistence.PersistentDataType
 
-sealed class Item(
+open class Item(
     private val item: ItemStack,
 ) {
     class SkullItem(
@@ -44,7 +47,7 @@ sealed class Item(
             item.amount = new
         }
 
-    var unbreakable: Boolean
+    var isUnbreakable: Boolean
         get() = item.itemMeta.isUnbreakable
         set(new) {
             item.itemMeta =
@@ -54,18 +57,28 @@ sealed class Item(
             setFlags(ItemFlag.HIDE_UNBREAKABLE to new)
         }
 
-    var glowing: Boolean
+    var isGlowing: Boolean
         get() = item.itemMeta.hasEnchant(Enchantment.MENDING)
         set(new) {
             item.itemMeta.addEnchant(Enchantment.MENDING, if (new) 1 else 0, true)
         }
 
-    val tool: Boolean
+    val isTool: Boolean
         get() = item.itemMeta is Damageable
 
     var lore: MutableList<Component>
         get() = item.lore() ?: mutableListOf()
         set(new) = item.lore(new)
+
+    var id: String?
+        get() = item.itemMeta.persistentDataContainer.get(key, PersistentDataType.STRING)
+        set(newId) {
+            val meta = item.itemMeta
+
+            meta.persistentDataContainer.set(key, PersistentDataType.STRING, newId!!)
+
+            item.setItemMeta(meta)
+        }
 
     fun addLore(line: Component) {
         lore.add(line)
@@ -118,4 +131,8 @@ sealed class Item(
     fun asSkull(): SkullItem = this as SkullItem
 
     fun export(): ItemStack = item
+
+    companion object {
+        private val key = NamespacedKey(GalaxySky.instance, "galaxysky_id")
+    }
 }

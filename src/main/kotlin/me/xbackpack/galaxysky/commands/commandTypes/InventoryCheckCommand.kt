@@ -10,7 +10,7 @@ interface InventoryCheckCommand : CommandBase {
 
     fun getItems(player: Player): Array<ItemStack>
 
-    fun getIds(): Array<String>
+    fun getIds(): Set<String>
 
     fun funToRun(player: Player)
 
