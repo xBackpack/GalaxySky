@@ -1,9 +1,9 @@
 package me.xbackpack.galaxysky.commands.player
 
-import me.xbackpack.galaxysky.commands.commandTypes.InventoryCommand
+import me.xbackpack.galaxysky.commands.commandTypes.PlayerInventoryCommand
 import org.bukkit.entity.Player
 
-class RedeemCmd : InventoryCommand.CheckHand {
+class RedeemCmd : PlayerInventoryCommand.CheckHand {
     override val commandName = "redeem"
     override val description = "Redeems your held compressor"
 

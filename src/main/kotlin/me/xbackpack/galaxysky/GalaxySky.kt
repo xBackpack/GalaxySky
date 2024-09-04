@@ -15,6 +15,7 @@ import me.xbackpack.galaxysky.commands.player.RedeemCmd
 import me.xbackpack.galaxysky.commands.player.ShopCmd
 import me.xbackpack.galaxysky.commands.player.SitCmd
 import me.xbackpack.galaxysky.commands.player.StartCmd
+import me.xbackpack.galaxysky.commands.player.TrashCmd
 import org.bukkit.plugin.java.JavaPlugin
 
 class GalaxySky : JavaPlugin() {
@@ -46,6 +47,7 @@ class GalaxySky : JavaPlugin() {
                 ShopCmd(),
                 SitCmd(),
                 StartCmd(),
+                TrashCmd(),
             )
         }
 

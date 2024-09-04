@@ -29,8 +29,9 @@ interface CommandBase : BasicCommand {
                 is TeleportCommand -> teleport(player)
                 is PlayerMessageCommand -> sendMessage(player)
                 is ToggleableCommand -> toggleFeature(player)
-                is InventoryCommand.CheckHand -> checkItems(player)
-                is InventoryCommand.AddItem -> addItem(player)
+                is InventoryCommand.Create -> openInventory(player)
+                is PlayerInventoryCommand.CheckHand -> checkItems(player)
+                is PlayerInventoryCommand.AddItem -> addItem(player)
                 is EntityMountCommand -> mount(player)
             }
         }
