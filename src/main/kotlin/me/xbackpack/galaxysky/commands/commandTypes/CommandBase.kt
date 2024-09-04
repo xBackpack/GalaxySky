@@ -26,7 +26,7 @@ interface CommandBase : BasicCommand {
                 is CooldownCommand -> startCooldown(player)
                 is PlayerMessageCommand -> sendMessage(player)
                 is ToggleableCommand -> toggleFeature(player)
-                is InventoryCheckCommand -> checkItems(player)
+                is InventoryCommand.CheckHand -> checkItems(player)
             }
         }
 
