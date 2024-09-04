@@ -7,8 +7,19 @@ object InventoryCommand {
     // CheckInventory
     // CheckArmour TODO(will be parameterized with an enum class called ArmourType) <T : ArmorType>
 
+    interface AddItem : CommandBase {
+        override val requiresPlayer
+            get() = true
+
+        fun getItem(): Item
+
+        fun addItem(player: Player) {
+            player.inventory.addItem(getItem().export())
+        }
+    }
+
     interface CheckHand : CommandBase {
-        override val requiresPlayer: Boolean
+        override val requiresPlayer
             get() = true
 
         fun getIds(): Set<String>

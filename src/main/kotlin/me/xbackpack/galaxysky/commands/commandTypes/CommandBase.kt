@@ -22,11 +22,15 @@ interface CommandBase : BasicCommand {
             val player = sender as Player
 
             when (this) {
+                is CooldownCommand -> {
+                    if (checkCooldown(player)) return
+                    startCooldown(player)
+                }
                 is TeleportCommand -> teleport(player)
-                is CooldownCommand -> startCooldown(player)
                 is PlayerMessageCommand -> sendMessage(player)
                 is ToggleableCommand -> toggleFeature(player)
                 is InventoryCommand.CheckHand -> checkItems(player)
+                is InventoryCommand.AddItem -> addItem(player)
                 is EntityMountCommand -> mount(player)
             }
         }
