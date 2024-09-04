@@ -1,6 +1,8 @@
 package me.xbackpack.galaxysky.util
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextComponent
+import net.kyori.adventure.text.TranslatableComponent
 import net.kyori.adventure.text.event.HoverEvent
 import java.time.Instant
 import java.time.LocalDateTime
@@ -108,6 +110,13 @@ object PluginUtilities {
                 Instant.ofEpochMilli(this),
                 ZoneId.systemDefault(),
             ).format(DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' HH:mm:ss"))
+
+    fun Component.content(): String =
+        when (this) {
+            is TranslatableComponent -> this.key()
+            is TextComponent -> this.content()
+            else -> ""
+        }
 
     val openLink = HoverEvent.showText(Component.text("Click to open link!"))
     val copyClipboard = HoverEvent.showText(Component.text("Click to copy to clipboard!"))

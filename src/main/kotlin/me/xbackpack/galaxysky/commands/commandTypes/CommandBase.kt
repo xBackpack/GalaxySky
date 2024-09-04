@@ -27,6 +27,7 @@ interface CommandBase : BasicCommand {
                 is PlayerMessageCommand -> sendMessage(player)
                 is ToggleableCommand -> toggleFeature(player)
                 is InventoryCommand.CheckHand -> checkItems(player)
+                is EntityMountCommand -> mount(player)
             }
         }
 
