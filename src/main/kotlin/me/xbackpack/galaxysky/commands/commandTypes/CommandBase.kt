@@ -2,6 +2,7 @@ package me.xbackpack.galaxysky.commands.commandTypes
 
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
+import me.xbackpack.galaxysky.util.PluginPermission
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -13,11 +14,20 @@ interface CommandBase : BasicCommand {
     val description: String
     val aliases: List<String>
         get() = emptyList()
+    val permission: PluginPermission?
+        get() = null
 
     fun command(
         sender: CommandSender,
         args: List<String>,
     ) {
+        permission?.let {
+            if (!(sender.hasPermission(it.permission) || sender.isOp)) {
+                sender.sendMessage(it.message)
+                return
+            }
+        }
+
         if (requiresPlayer) {
             val player = sender as Player
 
@@ -30,14 +40,15 @@ interface CommandBase : BasicCommand {
                 is PlayerMessageCommand -> sendMessage(player)
                 is ToggleableCommand -> toggleFeature(player)
                 is InventoryCommand.Create -> openInventory(player)
-                is PlayerInventoryCommand.CheckHand -> checkItems(player)
-                is PlayerInventoryCommand.AddItem -> addItem(player)
+                is InventoryCommand.Player.AddItem -> addItem(player)
+                is InventoryCommand.Player.CheckHand -> checkItems(player)
                 is EntityMountCommand -> mount(player)
             }
         }
 
         when (this) {
             is MessageCommand -> sendMessage(sender)
+            is StaffCommand -> handle(sender, args)
         }
     }
 

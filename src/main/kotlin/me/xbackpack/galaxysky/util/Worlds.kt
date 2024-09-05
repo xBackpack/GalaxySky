@@ -7,11 +7,11 @@ import org.bukkit.WorldCreator
 import org.bukkit.WorldType
 
 object Worlds {
-    var world: World = Bukkit.getWorld("world")!!
-    var nether: World = Bukkit.getWorld("world_nether")!!
-    var end: World = Bukkit.getWorld("world_the_end")!!
-    var aether: World = Bukkit.createWorld(WorldCreator("world_aether"))!!
-    var staff: World = Bukkit.createWorld(WorldCreator("world_staff").type(WorldType.FLAT).generateStructures(false))!!
+    val world: World = Bukkit.getWorld("world")!!
+    private val nether: World = Bukkit.getWorld("world_nether")!!
+    private val end: World = Bukkit.getWorld("world_the_end")!!
+    private val aether: World = Bukkit.createWorld(WorldCreator("world_aether"))!!
+    private val staff: World = Bukkit.createWorld(WorldCreator("world_staff").type(WorldType.FLAT).generateStructures(false))!!
 
     val spawnLocation: Location
         get() = Location(world, 0.5, 102.0, 0.5, 0f, 0f)
