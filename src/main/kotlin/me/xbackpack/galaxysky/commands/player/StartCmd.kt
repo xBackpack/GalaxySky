@@ -1,7 +1,7 @@
 package me.xbackpack.galaxysky.commands.player
 
 import me.xbackpack.galaxysky.commands.commandTypes.CooldownCommand
-import me.xbackpack.galaxysky.commands.commandTypes.PlayerInventoryCommand
+import me.xbackpack.galaxysky.commands.commandTypes.InventoryCommand
 import me.xbackpack.galaxysky.util.Item
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -9,7 +9,7 @@ import org.bukkit.Material
 import java.util.UUID
 
 class StartCmd :
-    PlayerInventoryCommand.AddItem,
+    InventoryCommand.Player.AddItem,
     CooldownCommand {
     override val requiresPlayer = true
 
