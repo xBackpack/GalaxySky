@@ -21,6 +21,7 @@ import me.xbackpack.galaxysky.commands.player.SpawnCmd
 import me.xbackpack.galaxysky.commands.player.StartCmd
 import me.xbackpack.galaxysky.commands.player.TrashCmd
 import me.xbackpack.galaxysky.commands.rank.CompressCmd
+import me.xbackpack.galaxysky.commands.rank.EnderChestCmd
 import org.bukkit.plugin.java.JavaPlugin
 
 class GalaxySky : JavaPlugin() {
@@ -60,6 +61,7 @@ class GalaxySky : JavaPlugin() {
                 TrashCmd(),
                 // Rank Commands
                 CompressCmd(),
+                EnderChestCmd(),
             )
         }
 
