@@ -32,12 +32,9 @@ interface CommandBase : BasicCommand {
             val player = sender as Player
 
             when (this) {
-                is CooldownCommand -> {
-                    if (checkCooldown(player)) return
-                    startCooldown(player)
-                }
+                is CooldownCommand -> startCooldown(player)
                 is TeleportCommand -> teleport(player)
-                is PlayerMessageCommand -> sendMessage(player)
+                is MessageCommand.Player -> sendMessage(player)
                 is ToggleableCommand -> toggleFeature(player)
                 is InventoryCommand.Create -> openInventory(player)
                 is InventoryCommand.Player.AddItem -> addItem(player)
@@ -52,10 +49,15 @@ interface CommandBase : BasicCommand {
         }
     }
 
+    fun tabComplete(
+        sender: CommandSender,
+        args: Array<String>,
+    ) = emptyList<String>()
+
     override fun suggest(
         cmd: CommandSourceStack,
         args: Array<String>,
-    ): List<String> = emptyList()
+    ) = tabComplete(cmd.sender, args)
 
     override fun execute(
         cmd: CommandSourceStack,

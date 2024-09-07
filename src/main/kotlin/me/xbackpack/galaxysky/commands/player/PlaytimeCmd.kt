@@ -1,12 +1,12 @@
 package me.xbackpack.galaxysky.commands.player
 
 import me.clip.placeholderapi.PlaceholderAPI
-import me.xbackpack.galaxysky.commands.commandTypes.PlayerMessageCommand
+import me.xbackpack.galaxysky.commands.commandTypes.MessageCommand
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.Player
 
-class PlaytimeCmd : PlayerMessageCommand {
+class PlaytimeCmd : MessageCommand.Player {
     companion object {
         private fun getPlaytime(player: Player): String = PlaceholderAPI.setPlaceholders(player, "%galaxysky_playtime%")
     }

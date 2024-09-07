@@ -18,39 +18,45 @@ interface StaffCommand : CommandBase {
         sender: CommandSender,
         args: List<String>,
     ) {
-        when (sender) {
-            is Player -> handlePlayer(sender, args)
-            else -> handleNonPlayer(sender, args)
+        val targetPlayer = if (args.isNotEmpty()) Bukkit.getPlayer(args[0]) else null
+
+        if (sender is Player) {
+            handlePlayer(sender, targetPlayer, args)
+        } else {
+            handleNonPlayer(sender, targetPlayer, args)
         }
     }
 
-    private fun handlePlayer(
+    fun handlePlayer(
         player: Player,
+        targetPlayer: Player?,
         args: List<String>,
     ) {
-        val isStaff = PlaceholderAPI.setPlaceholders(player, "%luckperms_has_groups_on_track_staff%") == "yes" || player.isOp
-
-        if (isStaff && args.isNotEmpty()) {
-            Bukkit.getPlayer(args[0])?.let {
-                if (player != it) player.sendMessage(getMessage(it))
-                func(it, args)
-            } ?: player.sendMessage("§cPlayer not found")
+        if (isStaff(player)) {
+            if (targetPlayer != null && player != targetPlayer) {
+                player.sendMessage(getMessage(targetPlayer))
+                func(targetPlayer, args)
+            } else {
+                func(player, args)
+            }
         } else {
-            func(player, args)
+            player.sendMessage("§cYou don't have permission to use this command")
         }
     }
 
-    private fun handleNonPlayer(
+    fun handleNonPlayer(
         sender: CommandSender,
+        targetPlayer: Player?,
         args: List<String>,
     ) {
-        if (args.isNotEmpty()) {
-            Bukkit.getPlayer(args[0])?.let {
-                sender.sendMessage(getMessage(it))
-                func(it, args)
-            } ?: sender.sendMessage("Player not found")
+        if (targetPlayer != null) {
+            sender.sendMessage(getMessage(targetPlayer))
+            func(targetPlayer, args)
         } else {
-            sender.sendMessage("You need to specify a player")
+            sender.sendMessage("Player not found or not specified")
         }
     }
+
+    fun isStaff(player: Player): Boolean =
+        player.isOp || PlaceholderAPI.setPlaceholders(player, "%luckperms_has_groups_on_track_staff%") == "yes"
 }
