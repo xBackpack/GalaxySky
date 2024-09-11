@@ -19,9 +19,6 @@ class PVPCmd :
     override val enabledMessage = Component.text("PVP is now enabled!", NamedTextColor.GREEN)
     override val disabledMessage = Component.text("PVP is now disabled!", NamedTextColor.RED)
     override val cooldownDuration = 1200L
-    override val cooldownStartMessage = Component.empty()
-    override val cooldownEndMessage = Component.empty()
-    override val cooldownMessage = Component.text("This command has a 1 minute cooldown! Just a few more seconds ...", NamedTextColor.RED)
     override val toggledPlayers = hashSetOf<UUID>()
     override val playersWithCooldown = hashSetOf<UUID>()
     override val requiresPlayer = true

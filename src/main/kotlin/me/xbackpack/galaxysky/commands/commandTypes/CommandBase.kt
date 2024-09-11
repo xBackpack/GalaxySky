@@ -28,24 +28,20 @@ interface CommandBase : BasicCommand {
             }
         }
 
+        if (this is MessageCommand) sendMessage(sender)
+        if (this is StaffCommand) handle(sender, args)
+
         if (requiresPlayer) {
             val player = sender as Player
 
-            when (this) {
-                is CooldownCommand -> startCooldown(player)
-                is TeleportCommand -> teleport(player)
-                is MessageCommand.Player -> sendMessage(player)
-                is ToggleableCommand -> toggleFeature(player)
-                is InventoryCommand.Create -> openInventory(player)
-                is InventoryCommand.Player.AddItem -> addItem(player)
-                is InventoryCommand.Player.CheckHand -> checkItems(player)
-                is EntityMountCommand -> mount(player)
-            }
-        }
-
-        when (this) {
-            is MessageCommand -> sendMessage(sender)
-            is StaffCommand -> handle(sender, args)
+            if (this is TeleportCommand) teleport(player)
+            if (this is MessageCommand.Player) sendMessage(player)
+            if (this is ToggleableCommand) toggleFeature(player)
+            if (this is InventoryCommand.Create) openInventory(player)
+            if (this is InventoryCommand.Player.AddItem) addItem(player)
+            if (this is InventoryCommand.Player.CheckHand) checkItems(player)
+            if (this is EntityMountCommand) mount(player)
+            if (this is CooldownCommand) startCooldown(player)
         }
     }
 

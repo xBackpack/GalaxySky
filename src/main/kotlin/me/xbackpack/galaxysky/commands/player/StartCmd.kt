@@ -24,6 +24,7 @@ class StartCmd :
                 Component
                     .text()
                     .append(Component.text("Wooden Pickaxe").color(NamedTextColor.DARK_GRAY))
+                    .appendSpace()
                     .append(Component.text("1").color(NamedTextColor.AQUA))
                     .build()
             isUnbreakable = true

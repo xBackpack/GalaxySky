@@ -17,7 +17,7 @@ class SitCmd :
     override val description = "Makes the player sit at their location"
 
     override fun createEntity(player: Player): LivingEntity {
-        val armourStand = player.world.spawn(player.location.add(0.0, 1.0, 0.0), ArmorStand::class.java)
+        val armourStand = player.world.spawn(player.location, ArmorStand::class.java)
 
         armourStand.isMarker = true
         armourStand.isInvisible = true

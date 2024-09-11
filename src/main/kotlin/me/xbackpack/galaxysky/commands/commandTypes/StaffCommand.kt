@@ -21,6 +21,10 @@ interface StaffCommand : CommandBase {
         val targetPlayer = if (args.isNotEmpty()) Bukkit.getPlayer(args[0]) else null
 
         if (sender is Player) {
+            if (this is CooldownCommand) {
+                if (checkCooldown(sender)) return
+            }
+
             handlePlayer(sender, targetPlayer, args)
         } else {
             handleNonPlayer(sender, targetPlayer, args)

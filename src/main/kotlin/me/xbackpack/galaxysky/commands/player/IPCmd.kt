@@ -20,9 +20,8 @@ class IPCmd : MessageCommand {
             .text("The GalaxySky IP is: ")
             .append(
                 Component
-                    .text(
-                        ip,
-                    ).clickEvent(ClickEvent.openUrl(ip))
+                    .text(ip)
+                    .clickEvent(ClickEvent.openUrl(ip))
                     .hoverEvent(PluginUtilities.openLink),
             ).color(NamedTextColor.LIGHT_PURPLE)
 }

@@ -19,7 +19,10 @@ class ShopCmd : MessageCommand {
     override val message =
         Component
             .text("The GalaxySky webstore is: ", NamedTextColor.LIGHT_PURPLE)
-            .clickEvent(
-                ClickEvent.openUrl(link),
-            ).hoverEvent(PluginUtilities.openLink)
+            .append(
+                Component
+                    .text(link)
+                    .clickEvent(ClickEvent.openUrl(link))
+                    .hoverEvent(PluginUtilities.openLink),
+            )
 }

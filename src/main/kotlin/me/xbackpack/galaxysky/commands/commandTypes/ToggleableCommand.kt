@@ -15,6 +15,10 @@ interface ToggleableCommand : CommandBase {
     fun toggleFeature(player: Player) {
         val uuid = player.uniqueId
 
+        if (this is CooldownCommand) {
+            if (checkCooldown(player)) return
+        }
+
         if (toggledPlayers.add(uuid)) {
             player.sendMessage(enabledMessage)
         } else {

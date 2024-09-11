@@ -13,15 +13,15 @@ interface CooldownCommand : CommandBase {
 
     val playersWithCooldown: HashSet<UUID>
     val cooldownDuration: Long
-    val cooldownStartMessage: Component
-        get() = Component.empty()
+    val cooldownStartMessage: Component?
+        get() = null
     val cooldownMessage: Component
         get() =
             Component
                 .text("This command has a ${cooldownDuration / 20} second cooldown. Just a few more seconds...")
                 .color(NamedTextColor.RED)
-    val cooldownEndMessage: Component
-        get() = Component.empty()
+    val cooldownEndMessage: Component?
+        get() = null
 
     fun startCooldown(player: Player) {
         val uuid = player.uniqueId
@@ -33,13 +33,13 @@ interface CooldownCommand : CommandBase {
             return
         }
 
-        player.sendMessage(cooldownStartMessage)
+        cooldownStartMessage?.let { player.sendMessage(it) }
 
         Bukkit.getScheduler().runTaskLater(
             GalaxySky.instance,
             Runnable {
                 playersWithCooldown.remove(uuid)
-                player.sendMessage(cooldownEndMessage)
+                cooldownEndMessage?.let { player.sendMessage(it) }
             },
             cooldownDuration,
         )
