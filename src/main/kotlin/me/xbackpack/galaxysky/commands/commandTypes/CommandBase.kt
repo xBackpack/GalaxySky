@@ -34,9 +34,9 @@ interface CommandBase : BasicCommand {
         if (requiresPlayer) {
             val player = sender as Player
 
+            if (this is ToggleableCommand) toggleFeature(player)
             if (this is TeleportCommand) teleport(player)
             if (this is MessageCommand.Player) sendMessage(player)
-            if (this is ToggleableCommand) toggleFeature(player)
             if (this is InventoryCommand.Create) openInventory(player)
             if (this is InventoryCommand.Player.AddItem) addItem(player)
             if (this is InventoryCommand.Player.CheckHand) checkItems(player)

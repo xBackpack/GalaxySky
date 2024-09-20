@@ -7,7 +7,9 @@ authors:
   - xBackpack
 load: POSTWORLD
 description: The official plugin for the GalaxySky minecraft server!
+loader: me.xbackpack.galaxysky.GalaxySkyLoader
 website: https://galaxysky.tebex.io
+bootstrapper: me.xbackpack.galaxysky.GalaxySkyBootstrap
 dependencies:
   server:
     PlaceholderAPI:
