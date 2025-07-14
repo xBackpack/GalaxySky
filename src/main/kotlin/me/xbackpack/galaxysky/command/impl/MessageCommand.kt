@@ -1,0 +1,30 @@
+package me.xbackpack.galaxysky.command.impl
+
+import me.xbackpack.galaxysky.command.api.CommandDSL
+import me.xbackpack.galaxysky.command.api.util.UserCooldown
+import me.xbackpack.galaxysky.message.Message
+import me.xbackpack.galaxysky.util.buildCommand
+import org.bukkit.entity.Player
+
+@CommandDSL
+class MessageCommand : BaseCommand {
+    override lateinit var name: String
+    override lateinit var description: String
+    override var aliases: List<String> = emptyList()
+    override var permission: String? = null
+    override var cooldown: UserCooldown? = null
+    lateinit var message: Message
+
+    override fun create() =
+        buildCommand(name, description, aliases, cooldown) { sender, _ ->
+            val player = sender as Player
+
+            player.sendMessage(message.component)
+        }.configure {
+            permission(this@MessageCommand.permission)
+        }
+
+    companion object {
+        fun create(builder: MessageCommand.() -> Unit) = MessageCommand().apply(builder).create()
+    }
+}

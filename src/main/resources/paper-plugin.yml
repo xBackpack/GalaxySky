@@ -1,0 +1,54 @@
+name: GalaxySky
+version: ${version}
+main: me.xbackpack.galaxysky.GalaxySky
+api-version: '1.21'
+load: POSTWORLD
+prefix: GalaxySky
+authors: [ xBackpack ]
+description: The official plugin for the GalaxySky minecraft server
+website: https://galaxysky.tebex.io
+provides:
+  - Kotlin
+
+permissions:
+  galaxysky.world:
+    default: false
+    children:
+      galaxysky.world.nether:
+        default: false
+      galaxysky.world.end:
+        default: false
+      galaxysky.world.aether:
+        default: false
+      galaxysky.world.staff:
+        default: false
+  galaxysky.area:
+    default: false
+    children:
+      galaxysky.area.staff:
+        default: false
+      galaxysky.area.builder:
+        default: false
+  galaxysky.staff:
+    default: false
+    children:
+      galaxysky.staff.others:
+        default: false
+
+dependencies:
+  server:
+    LuckPerms:
+      load: BEFORE
+      required: true
+
+    ProtocolLib:
+      load: BEFORE
+      required: true
+
+    PlaceholderAPI:
+      load: BEFORE
+      required: true
+
+    WorldGuard:
+      load: BEFORE
+      required: false
