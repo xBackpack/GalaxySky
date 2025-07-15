@@ -41,7 +41,7 @@ data class UserCooldown(
                 colour(NamedTextColor.RED)
             }
 
-        val sound = Sound.sound(Key.key("entity.enderman.teleport"), Sound.Source.MASTER, 1f, 1f)
+        val sound = Sound.sound(Key.key("entity.enderman.teleport"), Sound.Source.MASTER, 0.5f, 0.5f)
 
         player.sendMessage(msg.component)
         player.playSound(sound)

@@ -4,8 +4,9 @@ import me.xbackpack.galaxysky.command.api.Command
 import me.xbackpack.galaxysky.command.registry.player.PlayerMessageCommandRegistry
 import me.xbackpack.galaxysky.command.registry.player.PlayerMiscCommandRegistry
 import me.xbackpack.galaxysky.command.registry.player.PlayerTeleportCommandRegistry
+import me.xbackpack.galaxysky.util.Registry
 
-object PlayerCommandRegistry : CommandRegistry {
+object PlayerCommandRegistry : Registry<Command> {
     override fun init(): List<Command> {
         val cmds = mutableListOf<Command>()
 

@@ -1,12 +1,17 @@
 package me.xbackpack.galaxysky.listener
 
-import me.xbackpack.galaxysky.util.hookEvent
+import me.xbackpack.galaxysky.util.Registry
+import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 
-class PlayerListenerRegistry : ListenerRegistry {
-    fun init() {
-        hookEvent<PlayerJoinEvent> { event ->
-            val player = event.player
+object PlayerListenerRegistry : Registry<Listener> {
+    override fun init(): List<Listener> {
+        Registry.hookEvent<PlayerJoinEvent> { event ->
+            val plr = event.player
+
+            if (plr.isGlowing) return@hookEvent
         }
+
+        return emptyList()
     }
 }

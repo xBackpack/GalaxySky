@@ -2,12 +2,12 @@ package me.xbackpack.galaxysky.command.registry.player
 
 import me.xbackpack.galaxysky.command.api.Command
 import me.xbackpack.galaxysky.command.impl.MessageCommand
-import me.xbackpack.galaxysky.command.registry.CommandRegistry
 import me.xbackpack.galaxysky.hook.PlaceholderHook
+import me.xbackpack.galaxysky.util.Registry
 import me.xbackpack.galaxysky.util.buildMessage
 import net.kyori.adventure.text.format.NamedTextColor
 
-object PlayerMessageCommandRegistry : CommandRegistry {
+object PlayerMessageCommandRegistry : Registry<Command> {
     private const val DISCORD_LINK = PlaceholderHook.DISCORD
     private const val SERVER_IP = PlaceholderHook.SERVER_IP
     private const val SHOP_LINK = PlaceholderHook.SHOP_LINK

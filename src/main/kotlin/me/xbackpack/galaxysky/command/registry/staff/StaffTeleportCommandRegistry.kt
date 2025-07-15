@@ -2,10 +2,10 @@ package me.xbackpack.galaxysky.command.registry.staff
 
 import me.xbackpack.galaxysky.command.api.Command
 import me.xbackpack.galaxysky.command.impl.TeleportCommand
-import me.xbackpack.galaxysky.command.registry.CommandRegistry
 import me.xbackpack.galaxysky.service.LocationService
+import me.xbackpack.galaxysky.util.Registry
 
-object StaffTeleportCommandRegistry : CommandRegistry {
+object StaffTeleportCommandRegistry : Registry<Command> {
     override fun init(): List<Command> {
         val staffWorld =
             TeleportCommand.create {
