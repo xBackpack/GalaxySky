@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.util
+package me.xbackpack.galaxysky.common
 
 import me.xbackpack.galaxysky.GalaxySky
 import org.bukkit.event.Event

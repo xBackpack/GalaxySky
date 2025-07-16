@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.util
+package me.xbackpack.galaxysky.common
 
 interface Builder<T> {
     fun build(): T
