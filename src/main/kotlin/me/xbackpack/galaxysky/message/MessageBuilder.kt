@@ -1,7 +1,6 @@
 package me.xbackpack.galaxysky.message
 
-import me.xbackpack.galaxysky.util.Builder
-import me.xbackpack.galaxysky.util.applyStyle
+import me.xbackpack.galaxysky.common.Builder
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent

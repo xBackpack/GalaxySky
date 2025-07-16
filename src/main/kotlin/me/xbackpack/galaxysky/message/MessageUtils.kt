@@ -1,7 +1,5 @@
-package me.xbackpack.galaxysky.util
+package me.xbackpack.galaxysky.message
 
-import me.xbackpack.galaxysky.message.Message
-import me.xbackpack.galaxysky.message.Stylable
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.TextComponent
