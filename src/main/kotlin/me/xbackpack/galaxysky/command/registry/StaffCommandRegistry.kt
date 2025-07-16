@@ -2,7 +2,7 @@ package me.xbackpack.galaxysky.command.registry
 
 import me.xbackpack.galaxysky.command.api.Command
 import me.xbackpack.galaxysky.command.registry.staff.StaffTeleportCommandRegistry
-import me.xbackpack.galaxysky.util.Registry
+import me.xbackpack.galaxysky.common.Registry
 
 object StaffCommandRegistry : Registry<Command> {
     override fun init(): List<Command> {

@@ -1,7 +1,7 @@
 package me.xbackpack.galaxysky.command.registry
 
 import me.xbackpack.galaxysky.command.api.Command
-import me.xbackpack.galaxysky.util.Registry
+import me.xbackpack.galaxysky.common.Registry
 
 object SuperCommandRegistry : Registry<Command> {
     override fun init(): List<Command> {

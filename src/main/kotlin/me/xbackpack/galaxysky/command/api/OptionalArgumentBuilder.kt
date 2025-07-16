@@ -6,7 +6,7 @@ import com.mojang.brigadier.tree.ArgumentCommandNode
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.Commands
 import me.xbackpack.galaxysky.command.api.util.UserCooldown
-import me.xbackpack.galaxysky.util.Builder
+import me.xbackpack.galaxysky.common.Builder
 
 @CommandDsl
 class OptionalArgumentBuilder<T : Any>(

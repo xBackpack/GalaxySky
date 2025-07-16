@@ -4,7 +4,7 @@ import me.xbackpack.galaxysky.command.api.Command
 import me.xbackpack.galaxysky.command.api.util.UserCooldown
 import me.xbackpack.galaxysky.command.impl.MiscPlayerCommand
 import me.xbackpack.galaxysky.command.impl.util.PlayerCommandFunction
-import me.xbackpack.galaxysky.util.Registry
+import me.xbackpack.galaxysky.common.Registry
 import kotlin.time.Duration.Companion.seconds
 
 object PlayerMiscCommandRegistry : Registry<Command> {

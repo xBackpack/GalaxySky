@@ -2,9 +2,9 @@ package me.xbackpack.galaxysky.command.registry.player
 
 import me.xbackpack.galaxysky.command.api.Command
 import me.xbackpack.galaxysky.command.impl.MessageCommand
+import me.xbackpack.galaxysky.common.Registry
 import me.xbackpack.galaxysky.hook.PlaceholderHook
-import me.xbackpack.galaxysky.util.Registry
-import me.xbackpack.galaxysky.util.buildMessage
+import me.xbackpack.galaxysky.message.Message
 import net.kyori.adventure.text.format.NamedTextColor
 
 object PlayerMessageCommandRegistry : Registry<Command> {
@@ -19,7 +19,7 @@ object PlayerMessageCommandRegistry : Registry<Command> {
                 description = "Provides a link to the staff application"
 
                 message =
-                    buildMessage {
+                    Message.create {
                         text("Apply on our discord!")
 
                         newline()
@@ -41,7 +41,7 @@ object PlayerMessageCommandRegistry : Registry<Command> {
                 aliases = listOf("serverip")
 
                 message =
-                    buildMessage {
+                    Message.create {
                         text("The GalaxySky IP is:")
 
                         space()
@@ -59,7 +59,7 @@ object PlayerMessageCommandRegistry : Registry<Command> {
                 aliases = listOf("store", "webstore")
 
                 message =
-                    buildMessage {
+                    Message.create {
                         text("The GalaxySky shop link is:")
 
                         space()
