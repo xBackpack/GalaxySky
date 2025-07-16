@@ -1,6 +1,6 @@
 package me.xbackpack.galaxysky.command.api
 
-@CommandDSL
+@CommandDsl
 data class CommandArgument(
     val value: Any,
 )

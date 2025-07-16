@@ -11,7 +11,7 @@ import io.papermc.paper.command.brigadier.argument.resolvers.selector.SelectorAr
 import me.xbackpack.galaxysky.command.api.util.UserCooldown
 import org.bukkit.entity.Player
 
-@CommandDSL
+@CommandDsl
 abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
     final override var root: T,
     override val block: CommandFunction,
@@ -76,6 +76,8 @@ abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
     }
 
     override fun staffOnly() {
+        playerOnly()
+
         root =
             root.requires {
                 it.sender.isOp ||
@@ -88,20 +90,16 @@ abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
     }
 
     override fun staffCanUseOnOthers() {
-        optional("player", ArgumentTypes.player(), PlayerSelectorArgumentResolver::class.java, { _, args ->
+        optional("player", ArgumentTypes.player(), PlayerSelectorArgumentResolver::class.java) { _, args ->
             @Suppress("UNCHECKED_CAST")
             block.perform((args[0].value as List<Player>).first(), args.drop(0))
-        }) { staffOnly() }
+        }.configure { staffOnly() }.attach()
     }
 
     override fun subcommand(
         name: String,
         function: CommandFunction,
-        builder: CommandBuilder.() -> Unit,
-    ) {
-        val sub = CommandBuilder(name, function, cooldown).apply(builder).build()
-        root = root.then(sub)
-    }
+    ) = CommandBuilder(name, function, cooldown)
 
     override fun <U : Any> argument(
         name: String,
@@ -117,14 +115,5 @@ abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
         type: ArgumentType<U>,
         clazz: Class<U>,
         function: CommandFunction,
-        builder: OptionalArgumentBuilder<U>.() -> Unit,
-    ) {
-        val child =
-            OptionalArgumentBuilder(name, type, function, cooldown).apply {
-                args.add(name to clazz)
-
-                builder()
-            }
-        root = root.then(child.build())
-    }
+    ) = OptionalArgumentBuilder(name, type, function, cooldown).apply { args.add(name to clazz) }
 }

@@ -1,9 +1,8 @@
 package me.xbackpack.galaxysky.command.api.util
 
+import me.xbackpack.galaxysky.message.Message
 import me.xbackpack.galaxysky.service.PermissionService
-import me.xbackpack.galaxysky.util.buildMessage
-import net.kyori.adventure.key.Key
-import net.kyori.adventure.sound.Sound
+import me.xbackpack.galaxysky.util.sendMessage
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.Player
 import java.util.UUID
@@ -35,15 +34,12 @@ data class UserCooldown(
         val timeRemaining = (cooldownDuration - elapsedNow).inWholeSeconds
 
         val msg =
-            buildMessage {
+            Message.create {
                 text("You can use this command again in $timeRemaining seconds.")
 
                 colour(NamedTextColor.RED)
             }
 
-        val sound = Sound.sound(Key.key("entity.enderman.teleport"), Sound.Source.MASTER, 0.5f, 0.5f)
-
-        player.sendMessage(msg.component)
-        player.playSound(sound)
+        player.sendMessage(msg, true)
     }
 }

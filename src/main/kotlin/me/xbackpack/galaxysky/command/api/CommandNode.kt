@@ -5,7 +5,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import me.xbackpack.galaxysky.command.api.util.UserCooldown
 
-@CommandDSL
+@CommandDsl
 interface CommandNode<T : ArgumentBuilder<CommandSourceStack, T>> {
     var root: T
     val block: CommandFunction
@@ -27,8 +27,7 @@ interface CommandNode<T : ArgumentBuilder<CommandSourceStack, T>> {
     fun subcommand(
         name: String,
         function: CommandFunction,
-        builder: CommandBuilder.() -> Unit,
-    )
+    ): CommandBuilder
 
     fun <U : Any> argument(
         name: String,
@@ -41,6 +40,5 @@ interface CommandNode<T : ArgumentBuilder<CommandSourceStack, T>> {
         type: ArgumentType<U>,
         clazz: Class<U>,
         function: CommandFunction,
-        builder: OptionalArgumentBuilder<U>.() -> Unit,
-    )
+    ): OptionalArgumentBuilder<U>
 }

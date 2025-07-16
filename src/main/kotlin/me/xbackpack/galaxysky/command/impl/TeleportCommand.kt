@@ -1,12 +1,12 @@
 package me.xbackpack.galaxysky.command.impl
 
-import me.xbackpack.galaxysky.command.api.CommandDSL
+import me.xbackpack.galaxysky.command.api.Command
+import me.xbackpack.galaxysky.command.api.CommandDsl
 import me.xbackpack.galaxysky.command.api.util.UserCooldown
-import me.xbackpack.galaxysky.util.Registry.Companion.buildCommand
 import org.bukkit.Location
 import org.bukkit.entity.Player
 
-@CommandDSL
+@CommandDsl
 class TeleportCommand : BaseCommand {
     override lateinit var name: String
     override lateinit var description: String
@@ -16,17 +16,18 @@ class TeleportCommand : BaseCommand {
     lateinit var location: Location
 
     override fun create() =
-        buildCommand(name, description, aliases, cooldown) { sender, _ ->
-            val player = sender as Player
+        Command
+            .create(name, description, aliases, cooldown) { sender, _ ->
+                val player = sender as Player
 
-            player.teleport(location)
-        }.configure {
-            playerOnly()
+                player.teleport(location)
+            }.configure {
+                playerOnly()
 
-            permission(this@TeleportCommand.permission)
+                permission(this@TeleportCommand.permission)
 
-            staffCanUseOnOthers()
-        }
+                staffCanUseOnOthers()
+            }
 
     companion object {
         fun create(builder: TeleportCommand.() -> Unit) = TeleportCommand().apply(builder).create()

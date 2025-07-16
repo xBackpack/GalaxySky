@@ -7,7 +7,7 @@ import io.papermc.paper.command.brigadier.Commands
 import me.xbackpack.galaxysky.command.api.util.UserCooldown
 import me.xbackpack.galaxysky.util.Builder
 
-@CommandDSL
+@CommandDsl
 class CommandBuilder(
     name: String,
     block: CommandFunction,
@@ -15,4 +15,10 @@ class CommandBuilder(
 ) : AbstractCommandNode<LiteralArgumentBuilder<CommandSourceStack>>(Commands.literal(name), block, cooldown),
     Builder<LiteralCommandNode<CommandSourceStack>> {
     override fun build(): LiteralCommandNode<CommandSourceStack> = root.build()
+
+    fun configure(block: CommandBuilder.() -> Unit) = this.apply(block)
+
+    fun attach() {
+        root.then(this.build())
+    }
 }
