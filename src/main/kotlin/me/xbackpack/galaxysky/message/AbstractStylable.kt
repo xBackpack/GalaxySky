@@ -4,7 +4,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 
-@MessageDSL
+@MessageDsl
 abstract class AbstractStylable : Stylable {
     override fun colour(newColour: NamedTextColor) {
         colour = newColour

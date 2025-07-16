@@ -9,7 +9,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 
-@MessageDSL
+@MessageDsl
 class MessageBuilder :
     AbstractStylable(),
     Builder<Message> {

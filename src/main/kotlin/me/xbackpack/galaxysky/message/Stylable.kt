@@ -4,7 +4,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 
-@MessageDSL
+@MessageDsl
 interface Stylable {
     var colour: TextColor?
     val decorations: MutableMap<TextDecoration, Boolean>
