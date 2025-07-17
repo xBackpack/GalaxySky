@@ -1,5 +1,7 @@
 package me.xbackpack.galaxysky.service
 
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
@@ -35,4 +37,13 @@ object LocationService {
     val afkLocation = Location(world, -28.5, 102.0, 10.5, 90f, 0f)
 
     fun init() {}
+
+    enum class Region(
+        val regionName: String,
+        val colour: TextColor,
+    ) {
+        BAYSIDE_BEACH("Bayside Beach", NamedTextColor.YELLOW),
+        CRIMSON_COVE("Crimson Cove", NamedTextColor.RED),
+        VERDANT_VOID("Verdant Void", NamedTextColor.LIGHT_PURPLE),
+    }
 }

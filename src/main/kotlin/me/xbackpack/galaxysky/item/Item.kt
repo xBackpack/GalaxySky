@@ -1,8 +1,21 @@
 package me.xbackpack.galaxysky.item
 
-import org.bukkit.inventory.ItemStack
+import me.xbackpack.galaxysky.message.Message
+import me.xbackpack.galaxysky.service.LocationService
+import org.bukkit.Material
 
-@ItemDSL
+@ItemDsl
 data class Item(
-    val item: ItemStack,
-)
+    val root: ItemBuilder,
+) {
+    fun configure(builder: ItemBuilder.() -> Unit) = this.also { root.apply(builder) }
+
+    companion object {
+        fun create(
+            name: Message,
+            type: Material,
+            region: LocationService.Region,
+            builder: ItemBuilder.() -> Unit,
+        ) = ItemBuilder(name, type, region).apply(builder)
+    }
+}
