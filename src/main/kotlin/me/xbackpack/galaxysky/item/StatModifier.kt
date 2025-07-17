@@ -2,6 +2,7 @@ package me.xbackpack.galaxysky.item
 
 import org.bukkit.NamespacedKey
 
+@ItemDsl
 data class StatModifier(
     val type: StatType,
     val modifierKey: NamespacedKey,

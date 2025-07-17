@@ -6,7 +6,9 @@ import io.papermc.paper.datacomponent.item.ItemLore
 import io.papermc.paper.datacomponent.item.TooltipDisplay
 import me.xbackpack.galaxysky.common.Builder
 import me.xbackpack.galaxysky.message.Message
+import me.xbackpack.galaxysky.message.addEmptyLine
 import me.xbackpack.galaxysky.message.addMessage
+import me.xbackpack.galaxysky.message.addMessages
 import me.xbackpack.galaxysky.service.ItemIdService
 import me.xbackpack.galaxysky.service.LocationService
 import net.kyori.adventure.text.format.NamedTextColor
@@ -60,19 +62,26 @@ class ItemBuilder(
         item.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, modifiers)
 
         // Setting up the lore
-        val lore =
-            ItemLore.lore().addMessage {
-                if (defaultStats.isNotEmpty()) {
+        var lore = ItemLore.lore()
+
+        if (defaultStats.isNotEmpty()) {
+            lore =
+                lore.addMessage {
                     text("Stats:") {
                         colour(NamedTextColor.GREEN)
                     }
+                }
 
-                    newline()
+            defaultStats.forEach { stat, amount ->
+                lore =
+                    lore.addMessage {
+                        space()
 
-                    defaultStats.forEach { stat, amount ->
-                        text(" ${stat.statName}: ") {
+                        text("${stat.statName}:") {
                             colour(NamedTextColor.DARK_GRAY)
                         }
+
+                        space()
 
                         section {
                             when (stat.operation) {
@@ -86,16 +95,19 @@ class ItemBuilder(
                             colour(stat.purpose.colour)
                         }
                     }
-                }
+            }
 
-                if (itemDescription.isNotEmpty()) {
-                    newline()
+            lore.addEmptyLine()
+        }
 
-                    addAll(itemDescription)
-                }
+        if (itemDescription.isNotEmpty()) {
+            lore = lore.addMessages(itemDescription)
 
-                newline()
+            lore = lore.addEmptyLine()
+        }
 
+        lore =
+            lore.addMessage {
                 text(region.regionName.uppercase()) {
                     colour(region.colour)
                     bold()

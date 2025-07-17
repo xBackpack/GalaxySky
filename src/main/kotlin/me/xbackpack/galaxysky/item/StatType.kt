@@ -4,6 +4,7 @@ import me.xbackpack.galaxysky.GalaxySky
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.NamespacedKey
 
+@ItemDsl
 enum class StatType(
     val statName: String,
     val purpose: StatPurpose,
