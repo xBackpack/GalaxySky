@@ -8,7 +8,5 @@ data class Message(
 ) {
     companion object {
         fun create(builder: MessageBuilder.() -> Unit) = MessageBuilder().apply(builder).build()
-
-        fun empty() = Message(Component.empty())
     }
 }

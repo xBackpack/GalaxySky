@@ -1,5 +1,6 @@
 package me.xbackpack.galaxysky.message
 
+import io.papermc.paper.datacomponent.item.ItemLore
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.TextComponent
@@ -14,6 +15,10 @@ fun TextComponent.applyStyle(style: Stylable): TextComponent {
 
     return result
 }
+
+fun ItemLore.Builder.addMessage(builder: MessageBuilder.() -> Unit) = addLine(MessageBuilder().apply(builder).build().component)
+
+fun ItemLore.Builder.addMessages(messages: List<Message>) = addLines(messages.map(Message::component))
 
 fun CommandSender.sendMessage(
     message: Message,

@@ -1,6 +1,5 @@
 package me.xbackpack.galaxysky.message
 
-import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 
@@ -9,7 +8,7 @@ interface Stylable {
     var colour: TextColor?
     val decorations: MutableMap<TextDecoration, Boolean>
 
-    fun colour(newColour: NamedTextColor)
+    fun colour(newColour: TextColor)
 
     fun hex(hexString: String)
 
