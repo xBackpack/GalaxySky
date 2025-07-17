@@ -1,8 +1,8 @@
 package me.xbackpack.galaxysky.command.api.util
 
 import me.xbackpack.galaxysky.message.Message
+import me.xbackpack.galaxysky.message.sendMessage
 import me.xbackpack.galaxysky.service.PermissionService
-import me.xbackpack.galaxysky.util.sendMessage
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.Player
 import java.util.UUID
