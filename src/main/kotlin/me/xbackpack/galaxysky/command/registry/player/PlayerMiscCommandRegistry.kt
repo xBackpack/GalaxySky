@@ -39,8 +39,10 @@ object PlayerMiscCommandRegistry : Registry<Command> {
                                 Material.STONE_PICKAXE,
                                 LocationService.Region.BAYSIDE_BEACH,
                             ) {
+                                unbreakable = true
+
                                 stat(StatType.BREAKING_POWER, 1)
-                                stat(StatType.MINING_SPEED, 100)
+                                stat(StatType.MINING_SPEED, 3500)
                                 stat(StatType.ORE_FORTUNE, 1)
                             }
 
