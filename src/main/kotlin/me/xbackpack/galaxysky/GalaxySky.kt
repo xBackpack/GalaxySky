@@ -5,6 +5,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import me.xbackpack.galaxysky.command.registry.SuperCommandRegistry
 import me.xbackpack.galaxysky.hook.LuckPermsHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook
+import me.xbackpack.galaxysky.listener.PlayerListenerRegistry
 import me.xbackpack.galaxysky.service.LocationService
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -23,6 +24,11 @@ class GalaxySky : JavaPlugin() {
         LocationService.init()
 
         logger.info("Loaded worlds!")
+
+        // Listeners
+        PlayerListenerRegistry.init()
+
+        logger.info("Loaded listeners!")
 
         // Commands
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
