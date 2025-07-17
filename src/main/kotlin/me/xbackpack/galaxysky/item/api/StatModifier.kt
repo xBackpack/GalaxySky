@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.item
+package me.xbackpack.galaxysky.item.api
 
 import org.bukkit.NamespacedKey
 

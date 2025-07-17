@@ -5,8 +5,8 @@ import me.xbackpack.galaxysky.command.api.util.UserCooldown
 import me.xbackpack.galaxysky.command.impl.MiscPlayerCommand
 import me.xbackpack.galaxysky.command.impl.util.PlayerCommandFunction
 import me.xbackpack.galaxysky.common.Registry
-import me.xbackpack.galaxysky.item.Item
-import me.xbackpack.galaxysky.item.StatType
+import me.xbackpack.galaxysky.item.api.Item
+import me.xbackpack.galaxysky.item.api.StatType
 import me.xbackpack.galaxysky.message.Message
 import me.xbackpack.galaxysky.service.LocationService
 import net.kyori.adventure.text.format.NamedTextColor

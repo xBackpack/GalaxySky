@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.item
+package me.xbackpack.galaxysky.item.api
 
 import me.xbackpack.galaxysky.GalaxySky
 import net.kyori.adventure.text.format.NamedTextColor

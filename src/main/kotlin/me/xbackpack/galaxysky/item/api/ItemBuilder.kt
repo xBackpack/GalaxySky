@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.item
+package me.xbackpack.galaxysky.item.api
 
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers
