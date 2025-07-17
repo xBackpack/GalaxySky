@@ -32,10 +32,6 @@ class MessageBuilder :
         children += comp
     }
 
-    fun addAll(messages: List<Message>) {
-        children.addAll(messages.map(Message::component))
-    }
-
     fun link(content: String) {
         val comp =
             Component
