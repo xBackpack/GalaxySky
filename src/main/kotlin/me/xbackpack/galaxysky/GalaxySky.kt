@@ -5,20 +5,30 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import me.xbackpack.galaxysky.command.registry.SuperCommandRegistry
 import me.xbackpack.galaxysky.hook.LuckPermsHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook
+import me.xbackpack.galaxysky.item.registry.PickaxeRegistry
 import me.xbackpack.galaxysky.listener.PlayerListenerRegistry
 import me.xbackpack.galaxysky.service.LocationService
+import org.bukkit.NamespacedKey
+import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
 
 class GalaxySky : JavaPlugin() {
     override fun onEnable() {
         instance = this
         meta = pluginMeta
+        pluginManager = server.pluginManager
 
         // PlaceholderAPI Custom Placeholders
         PlaceholderHook.register()
 
         // LuckPerms
         LuckPermsHook.init()
+
+        // Item Registries
+        PickaxeRegistry.init()
+
+        logger.info("Loaded items!")
 
         // Worlds
         LocationService.init()
@@ -34,7 +44,7 @@ class GalaxySky : JavaPlugin() {
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
             val registrar = event.registrar()
 
-            SuperCommandRegistry.init().forEach { (node, description, aliases) ->
+            SuperCommandRegistry.get().forEach { (node, description, aliases) ->
                 registrar.register(node.build(), description, aliases)
             }
         }
@@ -47,5 +57,13 @@ class GalaxySky : JavaPlugin() {
     companion object {
         lateinit var instance: GalaxySky
         lateinit var meta: PluginMeta
+        lateinit var pluginManager: PluginManager
+
+        fun createKey(key: String) = NamespacedKey(instance, key)
+
+        fun getFile(
+            directory: String,
+            fileName: String,
+        ) = File("${instance.dataFolder}${File.separator}$directory", fileName)
     }
 }
