@@ -5,14 +5,15 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder
 import com.mojang.brigadier.tree.ArgumentCommandNode
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.Commands
-import me.xbackpack.galaxysky.command.api.util.UserCooldown
+import me.xbackpack.galaxysky.command.util.UserCooldown
 import me.xbackpack.galaxysky.common.Builder
+import org.bukkit.command.CommandSender
 
 @CommandDsl
 class OptionalArgumentBuilder<T : Any>(
     name: String,
     type: ArgumentType<T>,
-    block: CommandFunction,
+    block: (CommandSender, List<CommandArgument>) -> Unit,
     cooldown: UserCooldown?,
 ) : AbstractCommandNode<RequiredArgumentBuilder<CommandSourceStack, T>>(Commands.argument(name, type), block, cooldown),
     Builder<ArgumentCommandNode<CommandSourceStack, T>> {
