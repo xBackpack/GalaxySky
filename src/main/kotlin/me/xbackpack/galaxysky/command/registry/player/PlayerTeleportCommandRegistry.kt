@@ -2,11 +2,11 @@ package me.xbackpack.galaxysky.command.registry.player
 
 import me.xbackpack.galaxysky.command.api.Command
 import me.xbackpack.galaxysky.command.impl.TeleportCommand
-import me.xbackpack.galaxysky.common.Registry
+import me.xbackpack.galaxysky.common.RegistrySupplier
 import me.xbackpack.galaxysky.service.LocationService
 
-object PlayerTeleportCommandRegistry : Registry<Command> {
-    override fun init(): List<Command> {
+object PlayerTeleportCommandRegistry : RegistrySupplier<Command> {
+    override fun get(): List<Command> {
         // Worlds
         val spawnCmd =
             TeleportCommand.create {

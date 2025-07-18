@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.command.api.util
+package me.xbackpack.galaxysky.command.util
 
 import me.xbackpack.galaxysky.message.Message
 import me.xbackpack.galaxysky.message.sendMessage
@@ -15,14 +15,14 @@ data class UserCooldown(
 ) {
     private val cooldowned: MutableMap<UUID, TimeMark> = mutableMapOf()
 
-    fun startCooldown(player: Player): CommandResult {
-        if (PermissionService.isStaff(player)) return CommandResult(true)
+    fun startCooldown(player: Player): Boolean {
+        if (PermissionService.isStaff(player)) return true
 
-        if (isOnCooldown(player)) return CommandResult(false)
+        if (isOnCooldown(player)) return false
 
         cooldowned[player.uniqueId] = TimeSource.Monotonic.markNow()
 
-        return CommandResult(true)
+        return true
     }
 
     fun isOnCooldown(player: Player) = cooldowned.contains(player.uniqueId)

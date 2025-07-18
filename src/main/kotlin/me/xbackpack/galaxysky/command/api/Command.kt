@@ -1,6 +1,7 @@
 package me.xbackpack.galaxysky.command.api
 
-import me.xbackpack.galaxysky.command.api.util.UserCooldown
+import me.xbackpack.galaxysky.command.util.UserCooldown
+import org.bukkit.command.CommandSender
 
 @CommandDsl
 data class Command(
@@ -17,7 +18,7 @@ data class Command(
             description: String,
             aliases: List<String>,
             cooldown: UserCooldown?,
-            block: CommandFunction,
+            block: (CommandSender, List<CommandArgument>) -> Unit,
         ) = Command(
             CommandBuilder(name, block, cooldown),
             description,

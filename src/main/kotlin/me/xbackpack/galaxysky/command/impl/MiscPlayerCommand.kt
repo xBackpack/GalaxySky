@@ -1,8 +1,8 @@
 package me.xbackpack.galaxysky.command.impl
 
 import me.xbackpack.galaxysky.command.api.Command
-import me.xbackpack.galaxysky.command.api.util.UserCooldown
 import me.xbackpack.galaxysky.command.impl.util.PlayerCommandFunction
+import me.xbackpack.galaxysky.command.util.UserCooldown
 import org.bukkit.entity.Player
 
 class MiscPlayerCommand : BaseCommand {

@@ -8,13 +8,15 @@ import io.papermc.paper.command.brigadier.Commands
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.SelectorArgumentResolver
-import me.xbackpack.galaxysky.command.api.util.UserCooldown
+import me.xbackpack.galaxysky.command.util.UserCooldown
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import kotlin.jvm.java
 
 @CommandDsl
 abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
     final override var root: T,
-    override val block: CommandFunction,
+    override val block: (CommandSender, List<CommandArgument>) -> Unit,
     override val cooldown: UserCooldown?,
 ) : CommandNode<T> {
     override var playerOnly = false
@@ -52,7 +54,7 @@ abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
                             )
                         }
 
-                block.perform(sender, commandArgs)
+                block(sender, commandArgs)
 
                 cooldown
                     ?.takeIf { sender is Player }
@@ -90,18 +92,34 @@ abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
     }
 
     override fun staffCanUseOnOthers() {
-        optional("player", ArgumentTypes.player(), PlayerSelectorArgumentResolver::class.java) { _, args ->
+        optional<PlayerSelectorArgumentResolver>("player", ArgumentTypes.player()) { _, args ->
             @Suppress("UNCHECKED_CAST")
-            block.perform((args[0].value as List<Player>).first(), args.drop(0))
+            block((args[0].value as List<Player>).first(), args.drop(0))
         }.configure { staffOnly() }.attach()
     }
 
-    override fun subcommand(
+    fun subcommand(
         name: String,
-        function: CommandFunction,
+        function: (CommandSender, List<CommandArgument>) -> Unit,
+    ) = internalSubcommand(name, function)
+
+    inline fun <reified U : Any> argument(
+        name: String,
+        type: ArgumentType<U>,
+    ) = internalArgument(name, type, U::class.java)
+
+    inline fun <reified U : Any> optional(
+        name: String,
+        type: ArgumentType<U>,
+        noinline function: (CommandSender, List<CommandArgument>) -> Unit,
+    ) = internalOptional(name, type, U::class.java, function)
+
+    override fun internalSubcommand(
+        name: String,
+        function: (CommandSender, List<CommandArgument>) -> Unit,
     ) = CommandBuilder(name, function, cooldown)
 
-    override fun <U : Any> argument(
+    override fun <U : Any> internalArgument(
         name: String,
         type: ArgumentType<U>,
         clazz: Class<U>,
@@ -110,10 +128,10 @@ abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
         args.add(name to clazz)
     }
 
-    override fun <U : Any> optional(
+    override fun <U : Any> internalOptional(
         name: String,
         type: ArgumentType<U>,
         clazz: Class<U>,
-        function: CommandFunction,
+        function: (CommandSender, List<CommandArgument>) -> Unit,
     ) = OptionalArgumentBuilder(name, type, function, cooldown).apply { args.add(name to clazz) }
 }

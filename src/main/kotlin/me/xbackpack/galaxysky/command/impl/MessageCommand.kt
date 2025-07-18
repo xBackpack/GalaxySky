@@ -2,7 +2,7 @@ package me.xbackpack.galaxysky.command.impl
 
 import me.xbackpack.galaxysky.command.api.Command
 import me.xbackpack.galaxysky.command.api.CommandDsl
-import me.xbackpack.galaxysky.command.api.util.UserCooldown
+import me.xbackpack.galaxysky.command.util.UserCooldown
 import me.xbackpack.galaxysky.message.Message
 import org.bukkit.entity.Player
 

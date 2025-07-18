@@ -3,12 +3,13 @@ package me.xbackpack.galaxysky.command.api
 import com.mojang.brigadier.arguments.ArgumentType
 import com.mojang.brigadier.builder.ArgumentBuilder
 import io.papermc.paper.command.brigadier.CommandSourceStack
-import me.xbackpack.galaxysky.command.api.util.UserCooldown
+import me.xbackpack.galaxysky.command.util.UserCooldown
+import org.bukkit.command.CommandSender
 
 @CommandDsl
 interface CommandNode<T : ArgumentBuilder<CommandSourceStack, T>> {
     var root: T
-    val block: CommandFunction
+    val block: (CommandSender, List<CommandArgument>) -> Unit
     val cooldown: UserCooldown?
     var playerOnly: Boolean
 
@@ -24,21 +25,21 @@ interface CommandNode<T : ArgumentBuilder<CommandSourceStack, T>> {
 
     fun staffCanUseOnOthers()
 
-    fun subcommand(
+    fun internalSubcommand(
         name: String,
-        function: CommandFunction,
+        function: (CommandSender, List<CommandArgument>) -> Unit,
     ): CommandBuilder
 
-    fun <U : Any> argument(
+    fun <U : Any> internalArgument(
         name: String,
         type: ArgumentType<U>,
         clazz: Class<U>,
     )
 
-    fun <U : Any> optional(
+    fun <U : Any> internalOptional(
         name: String,
         type: ArgumentType<U>,
         clazz: Class<U>,
-        function: CommandFunction,
+        function: (CommandSender, List<CommandArgument>) -> Unit,
     ): OptionalArgumentBuilder<U>
 }
