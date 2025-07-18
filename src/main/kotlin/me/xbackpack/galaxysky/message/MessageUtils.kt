@@ -18,6 +18,14 @@ fun TextComponent.applyStyle(style: Stylable): TextComponent {
     return result
 }
 
+fun ItemLore.Builder.addLine(message: Message) =
+    addLine(
+        message.component.decorationIfAbsent(
+            TextDecoration.ITALIC,
+            TextDecoration.State.FALSE,
+        ),
+    )
+
 fun ItemLore.Builder.addMessage(builder: MessageBuilder.() -> Unit) =
     addLine(
         MessageBuilder()
@@ -25,13 +33,6 @@ fun ItemLore.Builder.addMessage(builder: MessageBuilder.() -> Unit) =
             .build()
             .component
             .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE),
-    )
-
-fun ItemLore.Builder.addMessages(messages: List<Message>) =
-    addLines(
-        messages
-            .map(Message::component)
-            .map { it.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE) },
     )
 
 fun ItemLore.Builder.addEmptyLine() = addLine(Component.empty())
