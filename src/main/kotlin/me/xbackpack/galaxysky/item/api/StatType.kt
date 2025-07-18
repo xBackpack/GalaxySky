@@ -13,21 +13,21 @@ enum class StatType(
 ) {
     BREAKING_POWER(
         "Breaking Power",
-        StatPurpose.PASSIVE,
+        StatPurpose.UTILITY,
         StatOperation.SET_VALUE,
-        NamespacedKey(GalaxySky.instance, "breaking_power"),
+        GalaxySky.createKey("breaking_power"),
     ),
     MINING_SPEED(
         "Mining Speed",
-        StatPurpose.PASSIVE,
+        StatPurpose.UTILITY,
         StatOperation.ADD_VALUE,
-        NamespacedKey(GalaxySky.instance, "mining_speed"),
+        GalaxySky.createKey("mining_speed"),
     ),
     ORE_FORTUNE(
         "Ore Fortune",
-        StatPurpose.PASSIVE,
+        StatPurpose.UTILITY,
         StatOperation.ADD_VALUE,
-        NamespacedKey(GalaxySky.instance, "ore_fortune"),
+        GalaxySky.createKey("ore_fortune"),
     ),
     ;
 
@@ -40,7 +40,17 @@ enum class StatType(
     enum class StatPurpose(
         val colour: NamedTextColor,
     ) {
-        ACTIVE(NamedTextColor.RED),
-        PASSIVE(NamedTextColor.GREEN),
+        OFFENSE(NamedTextColor.RED),
+        DEFENSE(NamedTextColor.GREEN),
+        UTILITY(NamedTextColor.AQUA),
+    }
+
+    companion object {
+        val displayOrder =
+            listOf(
+                BREAKING_POWER,
+                MINING_SPEED,
+                ORE_FORTUNE,
+            )
     }
 }

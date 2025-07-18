@@ -4,8 +4,7 @@ import org.bukkit.NamespacedKey
 
 @ItemDsl
 data class StatModifier(
-    val type: StatType,
     val modifierKey: NamespacedKey,
-    val bonus: Int,
+    val modifiedStats: MutableMap<StatType, Double>,
     val operation: StatType.StatOperation,
 )
