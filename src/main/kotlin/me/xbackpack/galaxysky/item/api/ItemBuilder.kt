@@ -6,8 +6,8 @@ import io.papermc.paper.datacomponent.item.ItemLore
 import io.papermc.paper.datacomponent.item.TooltipDisplay
 import me.xbackpack.galaxysky.common.Builder
 import me.xbackpack.galaxysky.message.Message
-import me.xbackpack.galaxysky.message.addEmptyLine
-import me.xbackpack.galaxysky.message.addLine
+import me.xbackpack.galaxysky.message.MessageBuilder
+import me.xbackpack.galaxysky.message.addLines
 import me.xbackpack.galaxysky.message.addMessage
 import me.xbackpack.galaxysky.service.LocationService
 import me.xbackpack.galaxysky.service.PDCService
@@ -29,7 +29,7 @@ class ItemBuilder(
 ) : BaseItem,
     Builder<ItemStack> {
     override var amount = 1
-    override var description: Message? = null
+    override var description: List<Message>? = null
     override var unbreakable = false
 
     override val defaultStats = mutableMapOf<StatType, Double>()
@@ -39,7 +39,7 @@ class ItemBuilder(
         val item = ItemStack(type, amount)
 
         // Assigning the name
-        item.setData(DataComponentTypes.ITEM_NAME, name.component)
+        item.setData(DataComponentTypes.ITEM_NAME, name.root)
 
         // Handling the stats
         val modifiers = ItemAttributeModifiers.itemAttributes()
@@ -57,37 +57,30 @@ class ItemBuilder(
         item.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, modifiers)
 
         // Setting up the lore
-        var lore = ItemLore.lore()
-
-        if (defaultStats.isNotEmpty()) {
-            lore =
-                lore.addMessage {
+        val lore =
+            ItemLore.lore().addMessage {
+                if (defaultStats.isNotEmpty()) {
                     text("Stats:") {
                         colour(NamedTextColor.GREEN)
                     }
+
+                    StatType.displayOrder.forEach { type ->
+                        defaultStats[type]
+                            ?.let { apply(getMessageFromStat(type, it)) }
+                    }
+
+                    newline()
                 }
 
-            StatType.displayOrder.forEach { type ->
-                defaultStats[type]
-                    ?.let { lore = lore.addLine(getMessageFromStat(type, it)) }
-            }
+                description?.map(::component)
 
-            lore.addEmptyLine()
-        }
-
-        description?.let {
-            lore = lore.addLine(it)
-
-            lore = lore.addEmptyLine()
-        }
-
-        lore =
-            lore.addMessage {
-                text(region.regionName.uppercase()) {
+                text(region.name) {
                     colour(region.colour)
                     bold()
                 }
             }
+
+        description?.let(lore::addLines)
 
         item.setData(DataComponentTypes.LORE, lore)
 
@@ -130,25 +123,26 @@ class ItemBuilder(
     private fun getMessageFromStat(
         type: StatType,
         amount: Double,
-    ) = Message.create {
-        space()
+    ): MessageBuilder.() -> Unit =
+        {
+            space()
 
-        text("${type.statName}:") {
-            colour(NamedTextColor.DARK_GRAY)
-        }
-
-        space()
-
-        section {
-            when (type.operation) {
-                StatType.StatOperation.ADD_VALUE -> text("+")
-                StatType.StatOperation.MINUS_VALUE -> text("-")
-                StatType.StatOperation.SET_VALUE -> {}
+            text("${type.statName}:") {
+                colour(NamedTextColor.DARK_GRAY)
             }
 
-            text(amount.toString())
+            space()
 
-            colour(type.purpose.colour)
+            section {
+                when (type.operation) {
+                    StatType.StatOperation.ADD_VALUE -> text("+")
+                    StatType.StatOperation.MINUS_VALUE -> text("-")
+                    StatType.StatOperation.SET_VALUE -> {}
+                }
+
+                text(amount.toString().trimEnd('0').trimEnd('.'))
+
+                colour(type.purpose.colour)
+            }
         }
-    }
 }
