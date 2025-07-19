@@ -19,7 +19,7 @@ class MessageBuilder :
 
     fun section(block: MessageBuilder.() -> Unit) {
         val subGroup = MessageBuilder().apply(block)
-        children += subGroup.build().component
+        children += subGroup.build().root
     }
 
     fun text(
@@ -56,12 +56,34 @@ class MessageBuilder :
         children += comp
     }
 
+    fun component(message: Message) {
+        children += message.root
+    }
+
     fun newline() {
         children += Component.newline()
     }
 
     fun space() {
         children += Component.space()
+    }
+
+    fun toLore(): List<Component> {
+        val lore = mutableListOf<Component>()
+
+        var currentLine = Component.empty()
+
+        children.forEach { child ->
+            currentLine =
+                if (child != Component.newline()) {
+                    currentLine.append(child)
+                } else {
+                    lore.add(currentLine)
+                    Component.empty()
+                }
+        }
+
+        return lore
     }
 
     override fun build(): Message {

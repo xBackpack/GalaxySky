@@ -5,9 +5,9 @@ import net.kyori.adventure.text.serializer.json.JSONComponentSerializer
 
 @MessageDsl
 data class Message(
-    val component: Component,
+    val root: Component,
 ) {
-    fun toJson() = JSONComponentSerializer.json().serialize(component)
+    fun toJson() = JSONComponentSerializer.json().serialize(root)
 
     companion object {
         fun create(builder: MessageBuilder.() -> Unit) = MessageBuilder().apply(builder).build()

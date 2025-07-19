@@ -20,7 +20,7 @@ class MessageCommand : BaseCommand {
             .create(name, description, aliases, cooldown) { sender, _ ->
                 val player = sender as Player
 
-                player.sendMessage(message.component)
+                player.sendMessage(message.root)
             }.configure {
                 permission(this@MessageCommand.permission)
             }

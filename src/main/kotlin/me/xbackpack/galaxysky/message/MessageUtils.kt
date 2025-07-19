@@ -3,7 +3,6 @@ package me.xbackpack.galaxysky.message
 import io.papermc.paper.datacomponent.item.ItemLore
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
-import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.command.CommandSender
@@ -18,30 +17,21 @@ fun TextComponent.applyStyle(style: Stylable): TextComponent {
     return result
 }
 
-fun ItemLore.Builder.addLine(message: Message) =
-    addLine(
-        message.component.decorationIfAbsent(
-            TextDecoration.ITALIC,
-            TextDecoration.State.FALSE,
-        ),
-    )
+fun ItemLore.Builder.addLines(messages: List<Message>) = addLines(messages.map { it.root })
 
 fun ItemLore.Builder.addMessage(builder: MessageBuilder.() -> Unit) =
-    addLine(
+    addLines(
         MessageBuilder()
             .apply(builder)
-            .build()
-            .component
-            .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE),
+            .toLore()
+            .map { it.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE) },
     )
-
-fun ItemLore.Builder.addEmptyLine() = addLine(Component.empty())
 
 fun CommandSender.sendMessage(
     message: Message,
     playDenialSound: Boolean = false,
 ) {
-    sendMessage(message.component)
+    sendMessage(message.root)
 
     if (playDenialSound) playSound(denialSound)
 }
@@ -50,7 +40,7 @@ fun CommandSender.sendMessageAndSound(
     message: Message,
     sound: Sound,
 ) {
-    sendMessage(message.component)
+    sendMessage(message.root)
     playSound(sound)
 }
 
