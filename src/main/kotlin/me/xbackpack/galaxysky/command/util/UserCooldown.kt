@@ -54,6 +54,6 @@ data class UserCooldown(
                 }
             }
 
-        player.sendMessage(msg, true)
+        player.sendMessage(msg)
     }
 }

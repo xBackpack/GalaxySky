@@ -12,7 +12,7 @@ object PlayerTeleportCommandRegistry : RegistrySupplier<Command> {
             TeleportCommand.create {
                 name = "spawn"
                 description = "Teleports you to the server spawn"
-                aliases = listOf("world", "stuck")
+                aliases = listOf("beach", "world", "stuck")
                 location = LocationService.spawnLocation
             }
 
@@ -20,6 +20,7 @@ object PlayerTeleportCommandRegistry : RegistrySupplier<Command> {
             TeleportCommand.create {
                 name = "nether"
                 description = "Teleports you to the nether spawn"
+                aliases = listOf("cove")
                 location = LocationService.netherSpawnLocation
                 permission = "galaxysky.world.nether"
             }
@@ -28,6 +29,7 @@ object PlayerTeleportCommandRegistry : RegistrySupplier<Command> {
             TeleportCommand.create {
                 name = "end"
                 description = "Teleports you to the end spawn"
+                aliases = listOf("void")
                 location = LocationService.endSpawnLocation
                 permission = "galaxysky.world.end"
             }
@@ -36,6 +38,7 @@ object PlayerTeleportCommandRegistry : RegistrySupplier<Command> {
             TeleportCommand.create {
                 name = "aether"
                 description = "Teleports you to the aether spawn"
+                aliases = listOf("sanctuary")
                 location = LocationService.aetherSpawnLocation
                 permission = "galaxysky.world.aether"
             }
