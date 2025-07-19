@@ -10,7 +10,7 @@ interface BaseItem {
     var type: Material
     var region: LocationService.Region
     var amount: Int
-    var description: List<Message>?
+    var description: MutableList<Message>
     var id: String
     var unbreakable: Boolean
     val defaultStats: MutableMap<StatType, Double>

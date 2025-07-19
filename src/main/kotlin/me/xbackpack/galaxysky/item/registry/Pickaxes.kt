@@ -9,17 +9,15 @@ import me.xbackpack.galaxysky.message.Message
 import me.xbackpack.galaxysky.service.LocationService
 import org.bukkit.Material
 import org.bukkit.configuration.file.YamlConfiguration
-import java.io.File
 
-object PickaxeRegistry : Registry {
-    lateinit var stonePickaxe1: Item
+object Pickaxes : Registry {
+    private val file = GalaxySky.getFile("Items", "pickaxes.yml")
 
-    private lateinit var file: File
+    val STONE_PICKAXE_1 = getPickaxe("stone_pickaxe_1")
 
-    override fun init() {
-        file = GalaxySky.getFile("Items", "pickaxes.yml")
-        stonePickaxe1 = getPickaxe("stone_pickaxe_1")
-    }
+    val ADMIN_PICKAXE = getPickaxe("admin_pickaxe")
+
+    override fun init() {}
 
     private fun getPickaxe(idLower: String): Item {
         val config = YamlConfiguration.loadConfiguration(file)
@@ -30,7 +28,7 @@ object PickaxeRegistry : Registry {
         val typeString = pickaxeConfig.getString("type") ?: error("Pickaxe $idLower has no type")
         val regionString = pickaxeConfig.getString("region") ?: error("Pickaxe $idLower has no region")
         val amountInt = pickaxeConfig.getInt("amount")
-        val descriptionJsonNullable = pickaxeConfig.getString("description")
+        val descriptionListJson = pickaxeConfig.getStringList("description")
         val unbreakableBool = pickaxeConfig.getBoolean("unbreakable")
 
         val statsNullable = pickaxeConfig.getConfigurationSection("stats")
@@ -44,8 +42,8 @@ object PickaxeRegistry : Registry {
             Item.create(name, type, region, idLower) {
                 amount = amountInt
 
-                descriptionJsonNullable?.let { descriptionJson ->
-                    description = Message.fromJson(descriptionJson)
+                descriptionListJson.forEach {
+                    description.add(Message.fromJson(it))
                 }
 
                 unbreakable = unbreakableBool
@@ -63,10 +61,6 @@ object PickaxeRegistry : Registry {
                     modifiers.getKeys(false).forEach { key ->
                         val modifier = modifiers.getConfigurationSection(key) ?: error("Modifier $key is not a config section")
 
-                        val operationString = modifier.getString("operation") ?: error("Modifier $key has no operation")
-
-                        val operation = StatType.StatOperation.valueOf(operationString)
-
                         val modifierStats = mutableMapOf<StatType, Double>()
 
                         StatType.entries.forEach { stat ->
@@ -77,7 +71,7 @@ object PickaxeRegistry : Registry {
                             }
                         }
 
-                        statModifiers.add(StatModifier(GalaxySky.createKey(key), modifierStats, operation))
+                        statModifiers.add(StatModifier(GalaxySky.createKey(key), modifierStats))
                     }
                 }
             }

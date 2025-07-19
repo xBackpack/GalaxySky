@@ -43,8 +43,6 @@ object PDCService {
         object Modifiers {
             val modifiersKey = GalaxySky.createKey("modifiers")
 
-            val modifierOperationKey = GalaxySky.createKey("modifier_operation")
-
             operator fun get(item: ItemStack): Set<StatModifier>? {
                 val modifiers = mutableSetOf<StatModifier>()
 
@@ -57,11 +55,6 @@ object PDCService {
                             val modifierContainer =
                                 modifiersContainer[modifierKey, PersistentDataType.TAG_CONTAINER] ?: error("Cannot happen")
 
-                            // Get the name of the operation that the modifier does
-                            val operationName =
-                                modifierContainer[modifierOperationKey, PersistentDataType.STRING]
-                                    ?: error("Modifier does not have operation")
-
                             // Find the stats stored in the modifier container
                             val modifiedStats = mutableMapOf<StatType, Double>()
 
@@ -73,10 +66,7 @@ object PDCService {
                             }
 
                             // Create the modifier and add it to the list of modifiers
-
-                            val operation = StatType.StatOperation.valueOf(operationName)
-
-                            val modifier = StatModifier(modifierKey, modifiedStats, operation)
+                            val modifier = StatModifier(modifierKey, modifiedStats)
 
                             modifiers.add(modifier)
                         }
@@ -93,14 +83,12 @@ object PDCService {
                 val modifiersContainer = pdc.adapterContext.newPersistentDataContainer()
 
                 // Loop through each modifier
-                modifiers.forEach { (key, modifiedStats, operation) ->
+                modifiers.forEach { (key, modifiedStats) ->
 
                     // Create a container for this specific modifier
                     val modifierContainer = modifiersContainer.adapterContext.newPersistentDataContainer()
 
-                    // Configure this specific modifier to have an operation and the modified stat
-                    modifierContainer[modifierOperationKey, PersistentDataType.STRING] = operation.name
-
+                    // Setup stats
                     modifiedStats.forEach { type, value ->
                         modifierContainer[type.key, PersistentDataType.DOUBLE] = value
                     }

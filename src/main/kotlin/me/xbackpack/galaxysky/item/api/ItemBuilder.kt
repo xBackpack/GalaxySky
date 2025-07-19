@@ -1,24 +1,17 @@
 package me.xbackpack.galaxysky.item.api
 
 import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.datacomponent.item.ItemAttributeModifiers
 import io.papermc.paper.datacomponent.item.ItemLore
 import io.papermc.paper.datacomponent.item.TooltipDisplay
 import me.xbackpack.galaxysky.common.Builder
 import me.xbackpack.galaxysky.message.Message
 import me.xbackpack.galaxysky.message.MessageBuilder
-import me.xbackpack.galaxysky.message.addLines
 import me.xbackpack.galaxysky.message.addMessage
 import me.xbackpack.galaxysky.service.LocationService
 import me.xbackpack.galaxysky.service.PDCService
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
-import org.bukkit.NamespacedKey
-import org.bukkit.attribute.Attribute
-import org.bukkit.attribute.AttributeModifier
-import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
-import kotlin.math.round
 
 @ItemDsl
 class ItemBuilder(
@@ -29,7 +22,7 @@ class ItemBuilder(
 ) : BaseItem,
     Builder<ItemStack> {
     override var amount = 1
-    override var description: List<Message>? = null
+    override var description = mutableListOf<Message>()
     override var unbreakable = false
 
     override val defaultStats = mutableMapOf<StatType, Double>()
@@ -41,21 +34,6 @@ class ItemBuilder(
         // Assigning the name
         item.setData(DataComponentTypes.ITEM_NAME, name.root)
 
-        // Handling the stats
-        val modifiers = ItemAttributeModifiers.itemAttributes()
-
-        defaultStats.forEach { type, value ->
-            getModifierFromStat(type, value)?.let { modifiers.addModifier(it.first, it.second) }
-        }
-
-        statModifiers.forEach { (key, statBonuses) ->
-            statBonuses.forEach { (type, value) ->
-                getModifierFromStat(type, value, key)?.let { modifiers.addModifier(it.first, it.second) }
-            }
-        }
-
-        item.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, modifiers)
-
         // Setting up the lore
         val lore =
             ItemLore.lore().addMessage {
@@ -64,23 +42,45 @@ class ItemBuilder(
                         colour(NamedTextColor.GREEN)
                     }
 
+                    newline()
+
                     StatType.displayOrder.forEach { type ->
                         defaultStats[type]
                             ?.let { apply(getMessageFromStat(type, it)) }
+                            ?.also { newline() }
                     }
 
                     newline()
                 }
 
-                description?.map(::component)
+                if (statModifiers.isNotEmpty()) {
+                    text("Modifiers:") {
+                        colour(NamedTextColor.GREEN)
+                    }
 
-                text(region.name) {
+                    newline()
+
+                    StatType.displayOrder.forEach { type ->
+                        getStatMessageFromModifiers(type)
+                            ?.let(::apply)
+                            ?.also { newline() }
+                    }
+
+                    newline()
+                }
+
+                description.forEach {
+                    component(it)
+                    newline()
+                }
+
+                if (description.isNotEmpty()) newline()
+
+                text(region.displayName.uppercase()) {
                     colour(region.colour)
                     bold()
                 }
             }
-
-        description?.let(lore::addLines)
 
         item.setData(DataComponentTypes.LORE, lore)
 
@@ -104,22 +104,6 @@ class ItemBuilder(
         return item
     }
 
-    private fun getModifierFromStat(
-        type: StatType,
-        amount: Double,
-        key: NamespacedKey? = null,
-    ) = when (type) {
-        StatType.MINING_SPEED ->
-            Attribute.BLOCK_BREAK_SPEED to
-                AttributeModifier(
-                    key ?: type.key,
-                    round(amount / 100),
-                    AttributeModifier.Operation.ADD_NUMBER,
-                    EquipmentSlotGroup.MAINHAND,
-                )
-        else -> null
-    }
-
     private fun getMessageFromStat(
         type: StatType,
         amount: Double,
@@ -134,10 +118,8 @@ class ItemBuilder(
             space()
 
             section {
-                when (type.operation) {
-                    StatType.StatOperation.ADD_VALUE -> text("+")
-                    StatType.StatOperation.MINUS_VALUE -> text("-")
-                    StatType.StatOperation.SET_VALUE -> {}
+                if (amount > 0) {
+                    text("+")
                 }
 
                 text(amount.toString().trimEnd('0').trimEnd('.'))
@@ -145,4 +127,18 @@ class ItemBuilder(
                 colour(type.purpose.colour)
             }
         }
+
+    private fun getStatMessageFromModifiers(type: StatType): (MessageBuilder.() -> Unit)? {
+        var finalAmount = 0.0
+
+        statModifiers.forEach { (_, stats) ->
+            stats[type]?.let { value ->
+                finalAmount += value
+            }
+        }
+
+        if (finalAmount == 0.0) return null
+
+        return getMessageFromStat(type, finalAmount)
+    }
 }

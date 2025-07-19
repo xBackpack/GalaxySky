@@ -6,5 +6,4 @@ import org.bukkit.NamespacedKey
 data class StatModifier(
     val modifierKey: NamespacedKey,
     val modifiedStats: MutableMap<StatType, Double>,
-    val operation: StatType.StatOperation,
 )

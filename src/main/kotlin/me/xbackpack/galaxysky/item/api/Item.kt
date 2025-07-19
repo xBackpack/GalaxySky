@@ -10,7 +10,9 @@ import org.bukkit.inventory.ItemStack
 data class Item(
     val root: ItemBuilder,
 ) : Builder<ItemStack> {
-    fun configure(builder: ItemBuilder.() -> Unit) = this.also { root.apply(builder) }
+    fun configure(builder: ItemBuilder.() -> Unit) {
+        root.apply(builder)
+    }
 
     override fun build() = root.build()
 
