@@ -20,17 +20,19 @@ object PlayerMessageCommandRegistry : RegistrySupplier<Command> {
 
                 message =
                     Message.create {
-                        text("Apply on our discord!")
+                        section {
+                            text("Apply on our discord!")
 
-                        newline()
+                            newline()
 
-                        text("Link:")
+                            text("Link:")
 
-                        space()
+                            space()
 
-                        link(DISCORD_LINK)
+                            link(DISCORD_LINK)
 
-                        colour(NamedTextColor.LIGHT_PURPLE)
+                            colour(NamedTextColor.LIGHT_PURPLE)
+                        }
                     }
             }
 
@@ -42,13 +44,15 @@ object PlayerMessageCommandRegistry : RegistrySupplier<Command> {
 
                 message =
                     Message.create {
-                        text("The GalaxySky IP is:")
+                        section {
+                            text("The GalaxySky IP is:")
 
-                        space()
+                            space()
 
-                        snippet(SERVER_IP)
+                            snippet(SERVER_IP)
 
-                        colour(NamedTextColor.LIGHT_PURPLE)
+                            colour(NamedTextColor.LIGHT_PURPLE)
+                        }
                     }
             }
 
@@ -60,13 +64,14 @@ object PlayerMessageCommandRegistry : RegistrySupplier<Command> {
 
                 message =
                     Message.create {
-                        text("The GalaxySky shop link is:")
+                        section {
+                            text("The GalaxySky shop link is:")
+                            space()
 
-                        space()
+                            link(SHOP_LINK)
 
-                        link(SHOP_LINK)
-
-                        colour(NamedTextColor.LIGHT_PURPLE)
+                            colour(NamedTextColor.LIGHT_PURPLE)
+                        }
                     }
             }
 

@@ -49,9 +49,9 @@ data class UserCooldown(
 
         val msg =
             Message.create {
-                text("You can use this command again in ${timeRemaining.toString().trimEnd('0').trimEnd('.')} seconds.")
-
-                colour(NamedTextColor.RED)
+                text("You can use this command again in ${timeRemaining.toString().trimEnd('0').trimEnd('.')} seconds.") {
+                    colour(NamedTextColor.RED)
+                }
             }
 
         player.sendMessage(msg, true)

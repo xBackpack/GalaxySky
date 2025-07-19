@@ -15,7 +15,7 @@ import kotlin.jvm.java
 
 @CommandDsl
 abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
-    final override var root: T,
+    override var root: T,
     override val block: (CommandSender, List<CommandArgument>) -> Unit,
     override val cooldown: UserCooldown?,
 ) : CommandNode<T> {
