@@ -39,7 +39,7 @@ object LocationService {
     fun init() {}
 
     enum class Region(
-        val regionName: String,
+        val displayName: String,
         val colour: TextColor,
     ) {
         BAYSIDE_BEACH("Bayside Beach", NamedTextColor.YELLOW),
