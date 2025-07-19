@@ -38,8 +38,6 @@ object PermissionService {
 
     fun isStaff(player: OfflinePlayer) = PlaceholderAPI.setPlaceholders(player, "%luckperms_has_groups_on_track_staff%") == "yes"
 
-    fun isBuilder(player: OfflinePlayer) = PlaceholderAPI.setPlaceholders(player, "%luckperms_has_groups_on_track_builder%") == "yes"
-
     fun isInGroup(
         player: Player,
         groupName: String,
