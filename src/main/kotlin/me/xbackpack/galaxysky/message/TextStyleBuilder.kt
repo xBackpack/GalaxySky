@@ -4,7 +4,7 @@ import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 
 @MessageDsl
-class TextStyleBuilder : AbstractStylable() {
-    override var colour: TextColor? = null
-    override val decorations = mutableMapOf<TextDecoration, Boolean>()
+class TextStyleBuilder : Stylable {
+    override var internalColour: TextColor? = null
+    override val internalDecorations = mutableSetOf<TextDecoration>()
 }

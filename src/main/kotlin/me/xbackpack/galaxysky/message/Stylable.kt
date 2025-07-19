@@ -5,20 +5,37 @@ import net.kyori.adventure.text.format.TextDecoration
 
 @MessageDsl
 interface Stylable {
-    var colour: TextColor?
-    val decorations: MutableMap<TextDecoration, Boolean>
+    var internalColour: TextColor?
+    val internalDecorations: MutableSet<TextDecoration>
 
-    fun colour(newColour: TextColor)
+    fun colour(newColour: TextColor) {
+        internalColour = newColour
+    }
 
-    fun hex(hexString: String)
+    fun hex(hexString: String) {
+        TextColor
+            .fromHexString(hexString)
+            ?.let { internalColour = it }
+            ?: error("Cannot get hex code from '$hexString'")
+    }
 
-    fun bold(value: Boolean = true)
+    fun bold() {
+        internalDecorations.add(TextDecoration.BOLD)
+    }
 
-    fun italic(value: Boolean = true)
+    fun italic() {
+        internalDecorations.add(TextDecoration.ITALIC)
+    }
 
-    fun underlined(value: Boolean = true)
+    fun underlined() {
+        internalDecorations.add(TextDecoration.UNDERLINED)
+    }
 
-    fun strikethrough(value: Boolean = true)
+    fun strikethrough() {
+        internalDecorations.add(TextDecoration.STRIKETHROUGH)
+    }
 
-    fun obfuscated(value: Boolean = true)
+    fun obfuscated() {
+        internalDecorations.add(TextDecoration.OBFUSCATED)
+    }
 }

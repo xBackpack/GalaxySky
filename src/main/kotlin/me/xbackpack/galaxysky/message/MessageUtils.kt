@@ -8,16 +8,14 @@ import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.command.CommandSender
 
 fun TextComponent.applyStyle(style: Stylable): TextComponent {
-    var result = this.color(style.colour)
+    var result = this.color(style.internalColour)
 
-    style.decorations.forEach { (dec, enabled) ->
-        result = result.decoration(dec, enabled)
+    style.internalDecorations.forEach { decoration ->
+        result = result.decoration(decoration, TextDecoration.State.TRUE)
     }
 
     return result
 }
-
-fun ItemLore.Builder.addLines(messages: List<Message>) = addLines(messages.map { it.root })
 
 fun ItemLore.Builder.addMessage(builder: MessageBuilder.() -> Unit) =
     addLines(
