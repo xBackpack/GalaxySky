@@ -34,6 +34,11 @@ permissions:
     children:
       galaxysky.staff.others:
         default: false
+  galaxysky.command:
+    default: false
+    children:
+      galaxysky.command.adminpickaxe:
+        default: false
 
 dependencies:
   server:
