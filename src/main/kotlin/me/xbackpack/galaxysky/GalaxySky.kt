@@ -5,19 +5,21 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import me.xbackpack.galaxysky.command.registry.SuperCommandRegistry
 import me.xbackpack.galaxysky.hook.LuckPermsHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook
-import me.xbackpack.galaxysky.item.registry.PickaxeRegistry
+import me.xbackpack.galaxysky.item.registry.Pickaxes
 import me.xbackpack.galaxysky.listener.PlayerListenerRegistry
 import me.xbackpack.galaxysky.service.LocationService
 import org.bukkit.NamespacedKey
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
+import java.util.logging.Logger
 
 class GalaxySky : JavaPlugin() {
     override fun onEnable() {
         instance = this
         meta = pluginMeta
         pluginManager = server.pluginManager
+        log = logger
 
         // PlaceholderAPI Custom Placeholders
         PlaceholderHook.register()
@@ -26,7 +28,7 @@ class GalaxySky : JavaPlugin() {
         LuckPermsHook.init()
 
         // Item Registries
-        PickaxeRegistry.init()
+        Pickaxes.init()
 
         logger.info("Loaded items!")
 
@@ -58,6 +60,7 @@ class GalaxySky : JavaPlugin() {
         lateinit var instance: GalaxySky
         lateinit var meta: PluginMeta
         lateinit var pluginManager: PluginManager
+        lateinit var log: Logger
 
         fun createKey(key: String) = NamespacedKey(instance, key)
 
