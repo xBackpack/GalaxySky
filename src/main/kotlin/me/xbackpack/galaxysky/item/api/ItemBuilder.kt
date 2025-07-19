@@ -16,7 +16,8 @@ import org.bukkit.inventory.ItemStack
 @ItemDsl
 class ItemBuilder(
     override var name: Message,
-    override var type: Material,
+    override var material: Material,
+    override var type: ItemType,
     override var region: LocationService.Region,
     override var id: String,
 ) : BaseItem,
@@ -29,7 +30,7 @@ class ItemBuilder(
     override val statModifiers = mutableSetOf<StatModifier>()
 
     override fun build(): ItemStack {
-        val item = ItemStack(type, amount)
+        val item = ItemStack(material, amount)
 
         // Assigning the name
         item.setData(DataComponentTypes.ITEM_NAME, name.root)
@@ -76,7 +77,17 @@ class ItemBuilder(
 
                 if (description.isNotEmpty()) newline()
 
-                text(region.displayName.uppercase()) {
+                section {
+                    text(type.name)
+
+                    space()
+
+                    text("|")
+
+                    space()
+
+                    text(region.displayName.uppercase())
+
                     colour(region.colour)
                     bold()
                 }

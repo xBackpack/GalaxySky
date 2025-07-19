@@ -19,10 +19,11 @@ data class Item(
     companion object {
         fun create(
             name: Message,
-            type: Material,
+            material: Material,
+            type: ItemType,
             region: LocationService.Region,
             id: String,
             builder: ItemBuilder.() -> Unit,
-        ) = Item(ItemBuilder(name, type, region, id).apply(builder))
+        ) = Item(ItemBuilder(name, material, type, region, id).apply(builder))
     }
 }

@@ -7,7 +7,8 @@ import org.bukkit.Material
 @ItemDsl
 interface BaseItem {
     var name: Message
-    var type: Material
+    var material: Material
+    var type: ItemType
     var region: LocationService.Region
     var amount: Int
     var description: MutableList<Message>

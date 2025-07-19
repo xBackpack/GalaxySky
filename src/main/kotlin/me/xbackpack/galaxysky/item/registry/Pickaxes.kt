@@ -3,6 +3,7 @@ package me.xbackpack.galaxysky.item.registry
 import me.xbackpack.galaxysky.GalaxySky
 import me.xbackpack.galaxysky.common.Registry
 import me.xbackpack.galaxysky.item.api.Item
+import me.xbackpack.galaxysky.item.api.ItemType
 import me.xbackpack.galaxysky.item.api.StatModifier
 import me.xbackpack.galaxysky.item.api.StatType
 import me.xbackpack.galaxysky.message.Message
@@ -25,6 +26,7 @@ object Pickaxes : Registry {
         val pickaxeConfig = config.getConfigurationSection(idLower) ?: error("Couldn't find pickaxe $idLower in the item registry.")
 
         val nameJson = pickaxeConfig.getString("name") ?: error("Pickaxe $idLower has no name")
+        val materialString = pickaxeConfig.getString("material") ?: error("Pickaxe $idLower has no material")
         val typeString = pickaxeConfig.getString("type") ?: error("Pickaxe $idLower has no type")
         val regionString = pickaxeConfig.getString("region") ?: error("Pickaxe $idLower has no region")
         val amountInt = pickaxeConfig.getInt("amount")
@@ -35,11 +37,12 @@ object Pickaxes : Registry {
         val modifiersNullable = pickaxeConfig.getConfigurationSection("modifiers")
 
         val name = Message.fromJson(nameJson)
-        val type = Material.valueOf(typeString)
+        val material = Material.valueOf(materialString)
+        val type = ItemType.valueOf(typeString)
         val region = LocationService.Region.valueOf(regionString)
 
         val item =
-            Item.create(name, type, region, idLower) {
+            Item.create(name, material, type, region, idLower) {
                 amount = amountInt
 
                 descriptionListJson.forEach {
