@@ -18,7 +18,7 @@ object PlayerMiscCommandRegistry : RegistrySupplier<Command> {
                 cooldown = UserCooldown(60.seconds)
                 function =
                     PlayerCommandFunction { player, _ ->
-                        val item = PickaxeRegistry.stonePickaxe1
+                        val item = PickaxeRegistry.getPickaxe("stone_pickaxe_1")
 
                         player.inventory.addItem(item.build())
                     }
