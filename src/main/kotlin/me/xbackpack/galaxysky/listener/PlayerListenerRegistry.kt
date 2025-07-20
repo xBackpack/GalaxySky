@@ -1,5 +1,6 @@
 package me.xbackpack.galaxysky.listener
 
+import me.xbackpack.galaxysky.item.api.giveItem
 import me.xbackpack.galaxysky.item.registry.Pickaxes
 import me.xbackpack.galaxysky.message.Message
 import me.xbackpack.galaxysky.service.LocationService
@@ -68,7 +69,7 @@ object PlayerListenerRegistry : ListenerRegistry {
 
                 val item = Pickaxes.STONE_PICKAXE_1
 
-                player.inventory.addItem(item.build())
+                player.giveItem(item)
             }
 
             player.teleport(LocationService.spawnLocation)
