@@ -9,11 +9,11 @@ import org.bukkit.WorldCreator
 import org.bukkit.WorldType
 
 object LocationService {
-    private val world: World = Bukkit.getWorld("world") ?: error("Cannot find world")
-    private val nether: World = Bukkit.getWorld("world_nether") ?: error("Cannot find world_nether")
-    private val end: World = Bukkit.getWorld("world_the_end") ?: error("Cannot find world_the_end")
-    private val aether: World = Bukkit.createWorld(WorldCreator("world_aether")) ?: error("Cannot find world_aether")
-    private val staff: World =
+    val world: World = Bukkit.getWorld("world") ?: error("Cannot find world")
+    val nether: World = Bukkit.getWorld("world_nether") ?: error("Cannot find world_nether")
+    val end: World = Bukkit.getWorld("world_the_end") ?: error("Cannot find world_the_end")
+    val aether: World = Bukkit.createWorld(WorldCreator("world_aether")) ?: error("Cannot find world_aether")
+    val staff: World =
         Bukkit.createWorld(
             WorldCreator("world_staff")
                 .type(WorldType.FLAT)

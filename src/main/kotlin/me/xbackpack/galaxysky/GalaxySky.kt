@@ -7,7 +7,9 @@ import me.xbackpack.galaxysky.hook.LuckPermsHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.item.registry.Pickaxes
 import me.xbackpack.galaxysky.listener.PlayerListenerRegistry
+import me.xbackpack.galaxysky.service.AFKService
 import me.xbackpack.galaxysky.service.LocationService
+import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
@@ -20,6 +22,15 @@ class GalaxySky : JavaPlugin() {
         meta = pluginMeta
         pluginManager = server.pluginManager
         log = logger
+
+        server.scheduler.runTaskTimer(
+            this,
+            Runnable {
+                Bukkit.getOnlinePlayers().forEach(AFKService::check)
+            },
+            0L,
+            20L,
+        )
 
         // PlaceholderAPI Custom Placeholders
         PlaceholderHook.register()
