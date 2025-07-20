@@ -11,9 +11,10 @@ import org.bukkit.command.CommandSender
 @CommandDsl
 class CommandBuilder(
     name: String,
-    block: (CommandSender, List<CommandArgument>) -> Unit,
+    permission: String?,
     cooldown: UserCooldown?,
-) : AbstractCommandNode<LiteralArgumentBuilder<CommandSourceStack>>(Commands.literal(name), block, cooldown),
+    block: (CommandSender, List<CommandArgument>) -> Unit,
+) : AbstractCommandNode<LiteralArgumentBuilder<CommandSourceStack>>(Commands.literal(name), permission, cooldown, block),
     Builder<LiteralCommandNode<CommandSourceStack>> {
     override fun build(): LiteralCommandNode<CommandSourceStack> = root.build()
 

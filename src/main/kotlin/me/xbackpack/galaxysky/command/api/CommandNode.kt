@@ -9,13 +9,12 @@ import org.bukkit.command.CommandSender
 @CommandDsl
 interface CommandNode<T : ArgumentBuilder<CommandSourceStack, T>> {
     var root: T
-    val block: (CommandSender, List<CommandArgument>) -> Unit
+    val permission: String?
     val cooldown: UserCooldown?
+    val block: (CommandSender, List<CommandArgument>) -> Unit
     var playerOnly: Boolean
 
     fun requires(predicate: (CommandSourceStack) -> Boolean)
-
-    fun permission(permission: String?)
 
     fun playerOnly()
 

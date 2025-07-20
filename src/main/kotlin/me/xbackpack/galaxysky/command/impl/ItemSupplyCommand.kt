@@ -3,25 +3,23 @@ package me.xbackpack.galaxysky.command.impl
 import me.xbackpack.galaxysky.command.api.CommandArgument
 import me.xbackpack.galaxysky.command.api.CommandBuilder
 import me.xbackpack.galaxysky.command.util.UserCooldown
-import org.bukkit.Location
+import me.xbackpack.galaxysky.item.api.Item
+import me.xbackpack.galaxysky.item.api.giveItem
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class TeleportCommand : BaseCommand {
+class ItemSupplyCommand : BaseCommand {
     override lateinit var name: String
     override lateinit var description: String
-    override var aliases: List<String> = emptyList()
+    override var aliases = emptyList<String>()
     override var permission: String? = null
     override var cooldown: UserCooldown? = null
-    override val builder: (CommandSender, List<CommandArgument>) -> Unit = { sender, _ ->
+    override val builder: (CommandSender, List<CommandArgument>) -> Unit = { sender, args ->
         val player = sender as Player
 
-        player.teleport(location)
+        player.giveItem(item)
     }
-    override val configuration: CommandBuilder.() -> Unit = {
-        playerOnly()
-        staffCanUseOnOthers()
-    }
+    override val configuration: CommandBuilder.() -> Unit = { playerOnly() }
 
-    lateinit var location: Location
+    lateinit var item: Item
 }

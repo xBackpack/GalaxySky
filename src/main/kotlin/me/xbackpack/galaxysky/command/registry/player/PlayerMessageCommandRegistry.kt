@@ -1,6 +1,7 @@
 package me.xbackpack.galaxysky.command.registry.player
 
 import me.xbackpack.galaxysky.command.api.Command
+import me.xbackpack.galaxysky.command.impl.BaseCommand
 import me.xbackpack.galaxysky.command.impl.MessageCommand
 import me.xbackpack.galaxysky.common.RegistrySupplier
 import me.xbackpack.galaxysky.hook.PlaceholderHook
@@ -14,7 +15,7 @@ object PlayerMessageCommandRegistry : RegistrySupplier<Command> {
 
     override fun get(): List<Command> {
         val applyCmd =
-            MessageCommand.create {
+            BaseCommand.create({ MessageCommand() }) {
                 name = "apply"
                 description = "Provides a link to the staff application"
 
@@ -37,7 +38,7 @@ object PlayerMessageCommandRegistry : RegistrySupplier<Command> {
             }
 
         val ipCmd =
-            MessageCommand.create {
+            BaseCommand.create({ MessageCommand() }) {
                 name = "ip"
                 description = "Provides the IP of the server"
                 aliases = listOf("serverip")
@@ -57,7 +58,7 @@ object PlayerMessageCommandRegistry : RegistrySupplier<Command> {
             }
 
         val shopCmd =
-            MessageCommand.create {
+            BaseCommand.create({ MessageCommand() }) {
                 name = "shop"
                 description = "Provides a link to the GalaxySky webstore"
                 aliases = listOf("store", "webstore")

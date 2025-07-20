@@ -13,9 +13,10 @@ import org.bukkit.command.CommandSender
 class OptionalArgumentBuilder<T : Any>(
     name: String,
     type: ArgumentType<T>,
-    block: (CommandSender, List<CommandArgument>) -> Unit,
+    permission: String?,
     cooldown: UserCooldown?,
-) : AbstractCommandNode<RequiredArgumentBuilder<CommandSourceStack, T>>(Commands.argument(name, type), block, cooldown),
+    block: (CommandSender, List<CommandArgument>) -> Unit,
+) : AbstractCommandNode<RequiredArgumentBuilder<CommandSourceStack, T>>(Commands.argument(name, type), permission, cooldown, block),
     Builder<ArgumentCommandNode<CommandSourceStack, T>> {
     override fun build(): ArgumentCommandNode<CommandSourceStack, T> = root.build()
 

@@ -1,6 +1,7 @@
 package me.xbackpack.galaxysky.command.registry.player
 
 import me.xbackpack.galaxysky.command.api.Command
+import me.xbackpack.galaxysky.command.impl.BaseCommand
 import me.xbackpack.galaxysky.command.impl.TeleportCommand
 import me.xbackpack.galaxysky.common.RegistrySupplier
 import me.xbackpack.galaxysky.service.LocationService
@@ -9,7 +10,7 @@ object PlayerTeleportCommandRegistry : RegistrySupplier<Command> {
     override fun get(): List<Command> {
         // Worlds
         val spawnCmd =
-            TeleportCommand.create {
+            BaseCommand.create({ TeleportCommand() }) {
                 name = "spawn"
                 description = "Teleports you to the server spawn"
                 aliases = listOf("beach", "world", "stuck")
@@ -17,7 +18,7 @@ object PlayerTeleportCommandRegistry : RegistrySupplier<Command> {
             }
 
         val netherCmd =
-            TeleportCommand.create {
+            BaseCommand.create({ TeleportCommand() }) {
                 name = "nether"
                 description = "Teleports you to the nether spawn"
                 aliases = listOf("cove")
@@ -26,7 +27,7 @@ object PlayerTeleportCommandRegistry : RegistrySupplier<Command> {
             }
 
         val endCmd =
-            TeleportCommand.create {
+            BaseCommand.create({ TeleportCommand() }) {
                 name = "end"
                 description = "Teleports you to the end spawn"
                 aliases = listOf("void")
@@ -35,7 +36,7 @@ object PlayerTeleportCommandRegistry : RegistrySupplier<Command> {
             }
 
         val aetherCmd =
-            TeleportCommand.create {
+            BaseCommand.create({ TeleportCommand() }) {
                 name = "aether"
                 description = "Teleports you to the aether spawn"
                 aliases = listOf("sanctuary")
@@ -45,7 +46,7 @@ object PlayerTeleportCommandRegistry : RegistrySupplier<Command> {
 
         // Areas
         val afkAreaCmd =
-            TeleportCommand.create {
+            BaseCommand.create({ TeleportCommand() }) {
                 name = "afk"
                 description = "Teleports you to the afk area"
                 location = LocationService.afkLocation

@@ -8,7 +8,6 @@ data class Command(
     val root: CommandBuilder,
     val description: String,
     val aliases: Collection<String> = emptyList(),
-    val cooldown: UserCooldown?,
 ) {
     fun configure(builder: CommandBuilder.() -> Unit) = this.also { root.apply(builder) }
 
@@ -17,13 +16,13 @@ data class Command(
             name: String,
             description: String,
             aliases: List<String>,
+            permission: String?,
             cooldown: UserCooldown?,
             block: (CommandSender, List<CommandArgument>) -> Unit,
         ) = Command(
-            CommandBuilder(name, block, cooldown),
+            CommandBuilder(name, permission, cooldown, block),
             description,
             aliases,
-            cooldown,
         )
     }
 }

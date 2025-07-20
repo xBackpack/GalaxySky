@@ -6,7 +6,6 @@ import com.mojang.brigadier.builder.ArgumentBuilder
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.Commands
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes
-import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.SelectorArgumentResolver
 import me.xbackpack.galaxysky.command.util.UserCooldown
 import org.bukkit.command.CommandSender
@@ -16,8 +15,9 @@ import kotlin.jvm.java
 @CommandDsl
 abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
     override var root: T,
-    override val block: (CommandSender, List<CommandArgument>) -> Unit,
+    override val permission: String?,
     override val cooldown: UserCooldown?,
+    override val block: (CommandSender, List<CommandArgument>) -> Unit,
 ) : CommandNode<T> {
     override var playerOnly = false
     protected val args = mutableListOf<Pair<String, Class<*>>>()
@@ -62,15 +62,14 @@ abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
 
                 Command.SINGLE_SUCCESS
             }
+
+        permission?.let {
+            root = root.requires { src -> src.sender.isOp || src.sender.hasPermission(it) }
+        }
     }
 
     override fun requires(predicate: (CommandSourceStack) -> Boolean) {
         root = root.requires { predicate(it) }
-    }
-
-    override fun permission(permission: String?) {
-        permission ?: return
-        root = root.requires { it.sender.isOp || it.sender.hasPermission(permission) }
     }
 
     override fun playerOnly() {
@@ -92,7 +91,7 @@ abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
     }
 
     override fun staffCanUseOnOthers() {
-        optional<PlayerSelectorArgumentResolver>("player", ArgumentTypes.player()) { _, args ->
+        optional("player", ArgumentTypes.player()) { _, args ->
             @Suppress("UNCHECKED_CAST")
             block((args[0].value as List<Player>).first(), args.drop(0))
         }.configure { staffOnly() }.attach()
@@ -117,7 +116,7 @@ abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
     override fun internalSubcommand(
         name: String,
         function: (CommandSender, List<CommandArgument>) -> Unit,
-    ) = CommandBuilder(name, function, cooldown)
+    ) = CommandBuilder(name, permission, cooldown, function)
 
     override fun <U : Any> internalArgument(
         name: String,
@@ -133,5 +132,5 @@ abstract class AbstractCommandNode<T : ArgumentBuilder<CommandSourceStack, T>>(
         type: ArgumentType<U>,
         clazz: Class<U>,
         function: (CommandSender, List<CommandArgument>) -> Unit,
-    ) = OptionalArgumentBuilder(name, type, function, cooldown).apply { args.add(name to clazz) }
+    ) = OptionalArgumentBuilder(name, type, permission, cooldown, function).apply { args.add(name to clazz) }
 }
