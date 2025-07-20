@@ -5,10 +5,12 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import me.xbackpack.galaxysky.command.registry.SuperCommandRegistry
 import me.xbackpack.galaxysky.hook.LuckPermsHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook
+import me.xbackpack.galaxysky.item.registry.Materials
 import me.xbackpack.galaxysky.item.registry.Pickaxes
 import me.xbackpack.galaxysky.listener.PlayerListenerRegistry
 import me.xbackpack.galaxysky.service.AFKService
 import me.xbackpack.galaxysky.service.LocationService
+import me.xbackpack.galaxysky.service.MineService
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.plugin.PluginManager
@@ -23,14 +25,20 @@ class GalaxySky : JavaPlugin() {
         pluginManager = server.pluginManager
         log = logger
 
+        // Every second
         server.scheduler.runTaskTimer(
             this,
             Runnable {
                 Bukkit.getOnlinePlayers().forEach(AFKService::check)
             },
-            0L,
-            20L,
+            20,
+            20,
         )
+
+        // Every 30 seconds
+        server.scheduler.runTaskTimer(this, MineService::resetMines, 0, 30 * 20)
+
+        logger.info("Set up scheduled events!")
 
         // PlaceholderAPI Custom Placeholders
         PlaceholderHook.register()
@@ -39,6 +47,7 @@ class GalaxySky : JavaPlugin() {
         LuckPermsHook.init()
 
         // Item Registries
+        Materials.init()
         Pickaxes.init()
 
         logger.info("Loaded items!")

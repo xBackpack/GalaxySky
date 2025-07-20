@@ -20,6 +20,16 @@ object LocationService {
                 .generateStructures(false),
         ) ?: error("Cannot find world_staff")
 
+    fun get(name: String) =
+        when (name) {
+            "world" -> world
+            "nether" -> nether
+            "end" -> end
+            "aether" -> aether
+            "staff" -> staff
+            else -> null
+        }
+
     val spawnLocation = Location(world, 0.5, 102.0, 0.5, 0f, 0f)
 
     val netherSpawnLocation = Location(nether, -6.5, 12.0, -0.5, 180f, 0f)
