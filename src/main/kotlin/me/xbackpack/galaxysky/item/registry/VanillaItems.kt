@@ -2,8 +2,8 @@ package me.xbackpack.galaxysky.item.registry
 
 import me.xbackpack.galaxysky.common.Registry
 
-object Materials : Registry {
+object VanillaItems : Registry {
     override fun init() {}
 
-    val AFK_TOKEN = Items.getMaterial("afk_token")
+    val ARROW = Items.getVanillaItem("arrow")
 }

@@ -7,7 +7,8 @@ import me.xbackpack.galaxysky.hook.LuckPermsHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.item.registry.Materials
 import me.xbackpack.galaxysky.item.registry.Pickaxes
-import me.xbackpack.galaxysky.listener.PlayerListenerRegistry
+import me.xbackpack.galaxysky.item.registry.VanillaItems
+import me.xbackpack.galaxysky.listener.ListenerRegistry
 import me.xbackpack.galaxysky.service.AFKService
 import me.xbackpack.galaxysky.service.LocationService
 import me.xbackpack.galaxysky.service.MineService
@@ -43,12 +44,17 @@ class GalaxySky : JavaPlugin() {
         // PlaceholderAPI Custom Placeholders
         PlaceholderHook.register()
 
+        logger.info("Hooked into PlaceholderAPI!")
+
         // LuckPerms
         LuckPermsHook.init()
 
-        // Item Registries
+        logger.info("Hooked into LuckPerms!")
+
+        // Items
         Materials.init()
         Pickaxes.init()
+        VanillaItems.init()
 
         logger.info("Loaded items!")
 
@@ -58,7 +64,7 @@ class GalaxySky : JavaPlugin() {
         logger.info("Loaded worlds!")
 
         // Listeners
-        PlayerListenerRegistry.init()
+        ListenerRegistry.init()
 
         logger.info("Loaded listeners!")
 
@@ -81,6 +87,7 @@ class GalaxySky : JavaPlugin() {
         lateinit var meta: PluginMeta
         lateinit var pluginManager: PluginManager
         lateinit var log: Logger
+        var chatMuted = false
 
         fun createKey(key: String) = NamespacedKey(instance, key)
 

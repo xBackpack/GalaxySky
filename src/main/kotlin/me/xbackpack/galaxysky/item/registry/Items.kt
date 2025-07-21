@@ -13,11 +13,13 @@ import java.io.File
 import kotlin.collections.set
 
 object Items {
-    private fun getFile(name: String) = GalaxySky.getFile("Items", name)
-
     fun getPickaxe(idLower: String) = getItem(getFile("pickaxes.yml"), idLower)
 
     fun getMaterial(idLower: String) = getItem(getFile("materials.yml"), idLower)
+
+    fun getVanillaItem(idLower: String) = getItem(getFile("vanilla.yml"), idLower)
+
+    private fun getFile(name: String) = GalaxySky.getFile("Items", name)
 
     private fun getItem(
         file: File,
