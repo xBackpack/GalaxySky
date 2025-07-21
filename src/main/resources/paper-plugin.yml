@@ -39,6 +39,11 @@ permissions:
     children:
       galaxysky.command.adminpickaxe:
         default: false
+  galaxysky.chat:
+    default: false
+    children:
+      galaxysky.chat.exempt:
+        default: false
 
 dependencies:
   server:

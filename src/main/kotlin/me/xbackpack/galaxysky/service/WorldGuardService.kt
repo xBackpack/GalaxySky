@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.hook
+package me.xbackpack.galaxysky.service
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter
 import com.sk89q.worldguard.WorldGuard
@@ -10,7 +10,7 @@ import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.entity.Player
 
-object WorldGuardHook {
+object WorldGuardService {
     private val container = WorldGuard.getInstance().platform.regionContainer
 
     fun getFlag(

@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer
 
 object PlaceholderHook : PlaceholderExpansion() {
     const val SERVER_IP = "galaxysky.minehut.gg"
-    private const val SHOP_NAME = "galaxysky.tebex.io"
+    const val SHOP_NAME = "galaxysky.tebex.io"
     const val SHOP_LINK = "https://$SHOP_NAME"
     const val DISCORD = "https://discord.gg/GNJKTfZGrR"
 
