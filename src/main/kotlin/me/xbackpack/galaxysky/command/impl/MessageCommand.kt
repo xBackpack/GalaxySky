@@ -4,6 +4,7 @@ import me.xbackpack.galaxysky.command.api.CommandArgument
 import me.xbackpack.galaxysky.command.api.CommandBuilder
 import me.xbackpack.galaxysky.command.api.UserCooldown
 import me.xbackpack.galaxysky.message.Message
+import me.xbackpack.galaxysky.message.sendMessage
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -16,7 +17,7 @@ class MessageCommand : BaseCommand {
     override val builder: (CommandSender, List<CommandArgument>) -> Unit = { sender, _ ->
         val player = sender as Player
 
-        player.sendMessage(message.root)
+        player.sendMessage(message)
     }
     override val configuration: CommandBuilder.() -> Unit = { playerOnly() }
 

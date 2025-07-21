@@ -1,7 +1,9 @@
 package me.xbackpack.galaxysky.message
 
 import io.papermc.paper.datacomponent.item.ItemLore
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
+import net.kyori.adventure.text.TranslatableComponent
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.command.CommandSender
 
@@ -14,6 +16,12 @@ fun TextComponent.applyStyle(style: Stylable): TextComponent {
 
     return result
 }
+
+fun Component.content() =
+    when (this) {
+        is TranslatableComponent -> this.key()
+        else -> (this as TextComponent).content()
+    }
 
 fun ItemLore.Builder.addMessage(builder: MessageBuilder.() -> Unit) =
     addLines(

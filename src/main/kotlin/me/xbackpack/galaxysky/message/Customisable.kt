@@ -5,6 +5,7 @@ import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 
 interface Customisable {
     val children: MutableList<Component>
@@ -50,6 +51,14 @@ interface Customisable {
 
     fun component(message: Message) {
         children += message.root
+    }
+
+    fun component(component: Component) {
+        children += component
+    }
+
+    fun componentFromLegacyColourCodes(string: String) {
+        children += LegacyComponentSerializer.legacyAmpersand().deserialize(string)
     }
 
     fun newline() {
