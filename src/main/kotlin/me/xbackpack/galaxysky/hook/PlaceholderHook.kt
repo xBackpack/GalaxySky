@@ -5,8 +5,9 @@ import me.xbackpack.galaxysky.GalaxySky
 import org.bukkit.OfflinePlayer
 
 object PlaceholderHook : PlaceholderExpansion() {
+    private const val SHOP_NAME = "galaxysky.tebex.io"
+
     const val SERVER_IP = "galaxysky.minehut.gg"
-    const val SHOP_NAME = "galaxysky.tebex.io"
     const val SHOP_LINK = "https://$SHOP_NAME"
     const val DISCORD = "https://discord.gg/GNJKTfZGrR"
 

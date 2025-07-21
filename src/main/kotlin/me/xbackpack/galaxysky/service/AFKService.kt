@@ -77,7 +77,7 @@ object AFKService {
                 player.showBossBar(bossbar)
             }
 
-        if ((seconds != 1) && (timeUntilNextPayout == 1)) {
+        if (seconds != 1 && timeUntilNextPayout == 1) {
             val item = Materials.AFK_TOKEN
 
             player.giveItem(item)

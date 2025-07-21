@@ -8,8 +8,9 @@ import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.item.registry.Materials
 import me.xbackpack.galaxysky.item.registry.Pickaxes
 import me.xbackpack.galaxysky.item.registry.VanillaItems
-import me.xbackpack.galaxysky.listener.ListenerRegistry
+import me.xbackpack.galaxysky.listener.PlayerListenerRegistry
 import me.xbackpack.galaxysky.service.AFKService
+import me.xbackpack.galaxysky.service.ChatService
 import me.xbackpack.galaxysky.service.LocationService
 import me.xbackpack.galaxysky.service.MineService
 import org.bukkit.Bukkit
@@ -18,6 +19,9 @@ import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.logging.Logger
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 class GalaxySky : JavaPlugin() {
     override fun onEnable() {
@@ -27,17 +31,13 @@ class GalaxySky : JavaPlugin() {
         log = logger
 
         // Every second
-        server.scheduler.runTaskTimer(
-            this,
-            Runnable {
-                Bukkit.getOnlinePlayers().forEach(AFKService::check)
-            },
-            20,
-            20,
-        )
+        setupTimedTask({ Bukkit.getOnlinePlayers().forEach(AFKService::check) }, 1.seconds)
 
         // Every 30 seconds
-        server.scheduler.runTaskTimer(this, MineService::resetMines, 0, 30 * 20)
+        setupTimedTask(MineService::resetMines, 30.seconds)
+
+        // Every 5 minutes
+        setupTimedTask(ChatService::sendRandomMessage, 5.minutes)
 
         logger.info("Set up scheduled events!")
 
@@ -64,7 +64,8 @@ class GalaxySky : JavaPlugin() {
         logger.info("Loaded worlds!")
 
         // Listeners
-        ListenerRegistry.init()
+        PlayerListenerRegistry.init()
+        ChatService.init()
 
         logger.info("Loaded listeners!")
 
@@ -80,6 +81,13 @@ class GalaxySky : JavaPlugin() {
         logger.info("Loaded commands!")
 
         logger.info("Enabled!")
+    }
+
+    private fun setupTimedTask(
+        block: () -> Unit,
+        delay: Duration,
+    ) {
+        server.scheduler.runTaskTimer(this, Runnable(block), delay.inWholeSeconds * 20L, delay.inWholeSeconds * 20L)
     }
 
     companion object {
