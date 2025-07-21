@@ -1,27 +1,25 @@
 package me.xbackpack.galaxysky.listener
 
-import io.papermc.paper.event.player.AsyncChatEvent
-import me.xbackpack.galaxysky.GalaxySky
+import com.sk89q.worldguard.protection.flags.Flags
 import me.xbackpack.galaxysky.common.Registry
 import me.xbackpack.galaxysky.item.api.giveItem
 import me.xbackpack.galaxysky.item.registry.Pickaxes
+import me.xbackpack.galaxysky.item.registry.VanillaItems
 import me.xbackpack.galaxysky.message.Message
-import me.xbackpack.galaxysky.message.content
-import me.xbackpack.galaxysky.message.sendMessage
+import me.xbackpack.galaxysky.service.ListenerService
 import me.xbackpack.galaxysky.service.LocationService
-import me.xbackpack.galaxysky.service.LuckPermsService
+import me.xbackpack.galaxysky.service.WorldGuardService
 import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
-import org.bukkit.event.Event
-import org.bukkit.event.EventPriority
-import org.bukkit.event.Listener
+import org.bukkit.entity.EntityType
+import org.bukkit.entity.Player
+import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
-object ListenerRegistry : Registry {
+object PlayerListenerRegistry : Registry {
     override fun init() {
-        hookEvent<PlayerJoinEvent> { event ->
+        ListenerService.hookEvent<PlayerJoinEvent> { event ->
             val player = event.player
 
             event.joinMessage(
@@ -85,7 +83,7 @@ object ListenerRegistry : Registry {
             player.teleport(LocationService.spawnLocation)
         }
 
-        hookEvent<PlayerQuitEvent> { event ->
+        ListenerService.hookEvent<PlayerQuitEvent> { event ->
             val player = event.player
 
             event.quitMessage(
@@ -112,79 +110,22 @@ object ListenerRegistry : Registry {
             )
         }
 
-        hookEvent<AsyncChatEvent> { event ->
-            val player = event.player
+        ListenerService.hookEvent<ProjectileLaunchEvent> { event ->
+            val entity = event.entity
 
-            if (GalaxySky.chatMuted && !LuckPermsService.hasPermission(player, "galaxysky.chat.exempt")) {
-                player.sendMessage(
-                    Message.create {
-                        text("You do not have permission to chat at this time") {
-                            colour(NamedTextColor.RED)
-                        }
-                    },
-                )
+            if (entity.type != EntityType.ARROW) return@hookEvent
 
-                event.isCancelled = true
+            val player = entity.shooter as? Player ?: return@hookEvent
 
-                return@hookEvent
-            }
+            val pvpEnabled = WorldGuardService.getFlag(player, player.location, Flags.PVP)
 
-            event.renderer { _, displayName, message, _ ->
-                val primaryGroupName = LuckPermsService.getPrimaryGroupName(player)
+            if (!pvpEnabled) return@hookEvent
 
-                val prefix = LuckPermsService.getPrefix(player)
-                val suffix = LuckPermsService.getSuffix(player)
+            event.isCancelled = true
 
-                var finalMessage = message
+            val item = VanillaItems.ARROW
 
-                if (LuckPermsService.isStaff(player)) {
-                    finalMessage = MiniMessage.miniMessage().deserialize(message.content())
-                }
-
-                Message
-                    .create {
-                        componentFromLegacyColourCodes(prefix)
-
-                        component(displayName.colorIfAbsent(LuckPermsService.getNameColour(primaryGroupName)))
-
-                        componentFromLegacyColourCodes(suffix)
-
-                        space()
-
-                        text("»") {
-                            colour(NamedTextColor.DARK_GRAY)
-                        }
-
-                        space()
-
-                        section {
-                            component(finalMessage)
-
-                            colour(
-                                if (primaryGroupName == "default") NamedTextColor.GRAY else NamedTextColor.WHITE,
-                            )
-                        }
-                    }.root
-            }
+            player.giveItem(item)
         }
-    }
-
-    inline fun <reified T : Event> hookEvent(
-        priority: EventPriority = EventPriority.NORMAL,
-        ignoreCancelled: Boolean = false,
-        crossinline handler: (T) -> Unit,
-    ) {
-        val listener = object : Listener {}
-
-        GalaxySky.pluginManager.registerEvent(
-            T::class.java,
-            listener,
-            priority,
-            { _, event ->
-                (event as? T)?.let { handler(it) }
-            },
-            GalaxySky.instance,
-            ignoreCancelled,
-        )
     }
 }
