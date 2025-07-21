@@ -1,6 +1,5 @@
 package me.xbackpack.galaxysky.command.api
 
-import me.xbackpack.galaxysky.command.util.UserCooldown
 import org.bukkit.command.CommandSender
 
 @CommandDsl

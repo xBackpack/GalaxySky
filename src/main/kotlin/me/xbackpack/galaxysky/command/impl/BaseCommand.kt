@@ -3,7 +3,7 @@ package me.xbackpack.galaxysky.command.impl
 import me.xbackpack.galaxysky.command.api.Command
 import me.xbackpack.galaxysky.command.api.CommandArgument
 import me.xbackpack.galaxysky.command.api.CommandBuilder
-import me.xbackpack.galaxysky.command.util.UserCooldown
+import me.xbackpack.galaxysky.command.api.UserCooldown
 import org.bukkit.command.CommandSender
 
 interface BaseCommand {

@@ -7,7 +7,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.Commands
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.SelectorArgumentResolver
-import me.xbackpack.galaxysky.command.util.UserCooldown
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import kotlin.jvm.java

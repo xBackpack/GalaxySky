@@ -1,9 +1,9 @@
 package me.xbackpack.galaxysky.command.registry.player
 
 import me.xbackpack.galaxysky.command.api.Command
+import me.xbackpack.galaxysky.command.api.UserCooldown
 import me.xbackpack.galaxysky.command.impl.BaseCommand
 import me.xbackpack.galaxysky.command.impl.ItemSupplyCommand
-import me.xbackpack.galaxysky.command.util.UserCooldown
 import me.xbackpack.galaxysky.common.RegistrySupplier
 import me.xbackpack.galaxysky.item.registry.Pickaxes
 import kotlin.time.Duration.Companion.seconds

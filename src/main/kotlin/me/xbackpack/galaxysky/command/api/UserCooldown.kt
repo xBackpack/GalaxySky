@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.command.util
+package me.xbackpack.galaxysky.command.api
 
 import me.xbackpack.galaxysky.message.Message
 import me.xbackpack.galaxysky.message.sendMessage
@@ -48,7 +48,7 @@ data class UserCooldown(
         val timeRemaining = ceil(timeRemainingDuration.inWholeMilliseconds / 1000.0)
 
         val msg =
-            Message.create {
+            Message.Companion.create {
                 text("You can use this command again in ${timeRemaining.toString().trimEnd('0').trimEnd('.')} seconds.") {
                     colour(NamedTextColor.RED)
                 }

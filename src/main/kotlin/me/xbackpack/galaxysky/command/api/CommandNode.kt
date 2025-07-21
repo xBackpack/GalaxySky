@@ -3,7 +3,6 @@ package me.xbackpack.galaxysky.command.api
 import com.mojang.brigadier.arguments.ArgumentType
 import com.mojang.brigadier.builder.ArgumentBuilder
 import io.papermc.paper.command.brigadier.CommandSourceStack
-import me.xbackpack.galaxysky.command.util.UserCooldown
 import org.bukkit.command.CommandSender
 
 @CommandDsl
