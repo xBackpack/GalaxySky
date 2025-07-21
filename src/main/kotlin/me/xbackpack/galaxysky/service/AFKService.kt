@@ -1,6 +1,5 @@
 package me.xbackpack.galaxysky.service
 
-import me.xbackpack.galaxysky.hook.WorldGuardHook
 import me.xbackpack.galaxysky.item.api.giveItem
 import me.xbackpack.galaxysky.item.registry.Materials
 import me.xbackpack.galaxysky.message.Message
@@ -8,20 +7,17 @@ import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.Player
 import java.util.UUID
-import kotlin.math.ceil
-import kotlin.time.TimeMark
-import kotlin.time.TimeSource
 
 object AFKService {
-    private val times = mutableMapOf<UUID, TimeMark>()
+    private val times = mutableMapOf<UUID, Int>()
     private val bossbars = mutableMapOf<UUID, BossBar>()
 
     fun check(player: Player): Boolean {
         val uuid = player.uniqueId
 
-        val regions = WorldGuardHook.getRegionsFromLocation(player.location)
+        val regions = WorldGuardService.getRegionsFromLocation(player.location)
 
-        val afkRegion = WorldGuardHook.getRegion(LocationService.world, "afk")
+        val afkRegion = WorldGuardService.getRegion(LocationService.world, "afk")
 
         if (!regions.contains(afkRegion)) {
             bossbars[uuid]?.let {
@@ -34,7 +30,9 @@ object AFKService {
             return false
         }
 
-        times.putIfAbsent(uuid, TimeSource.Monotonic.markNow())
+        times.putIfAbsent(uuid, 0)
+
+        times.computeIfPresent(uuid) { _, seconds -> seconds + 1 }
 
         showBossbarAndHandlePayouts(player)
 
@@ -44,13 +42,11 @@ object AFKService {
     fun showBossbarAndHandlePayouts(player: Player) {
         val uuid = player.uniqueId
 
-        val elapsed = times[uuid]?.elapsedNow() ?: error("Player $player is not in times dictionary")
+        val seconds = times[uuid] ?: error("Player $player is not in times dictionary")
 
-        val secondsPassed = ceil(elapsed.inWholeMilliseconds / 1000f) + 1
+        val timeUntilNextPayout = ((seconds - 1) % 120) + 1
 
-        val timeUntilNextPayout = ((secondsPassed - 1) % 120) + 1
-
-        val progress = timeUntilNextPayout / 120
+        val progress = timeUntilNextPayout / 120f
 
         val title =
             Message
@@ -60,7 +56,7 @@ object AFKService {
 
                         space()
 
-                        text(secondsPassed.toInt().toString()) {
+                        text(seconds.toString()) {
                             colour(NamedTextColor.GREEN)
                         }
 
@@ -81,7 +77,7 @@ object AFKService {
                 player.showBossBar(bossbar)
             }
 
-        if ((secondsPassed != 1f) && (timeUntilNextPayout == 1f)) {
+        if ((seconds != 1) && (timeUntilNextPayout == 1)) {
             val item = Materials.AFK_TOKEN
 
             player.giveItem(item)

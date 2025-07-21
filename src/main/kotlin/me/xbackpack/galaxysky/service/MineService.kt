@@ -6,7 +6,6 @@ import com.sk89q.worldedit.math.BlockVector3
 import com.sk89q.worldedit.world.block.BlockType
 import com.sk89q.worldedit.world.block.BlockTypes
 import me.xbackpack.galaxysky.GalaxySky
-import me.xbackpack.galaxysky.hook.WorldGuardHook
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.configuration.file.YamlConfiguration
@@ -73,7 +72,7 @@ object MineService {
                     val blockTypeString = mineConfig.getString("block_type") ?: error("Mine $idLower has no block type")
                     val rareBlockTypeString = mineConfig.getString("rare_block_type") ?: blockTypeString
 
-                    val region = WorldGuardHook.getRegion(world, idLower) ?: error("Mine $idLower has no WorldGuard region")
+                    val region = WorldGuardService.getRegion(world, idLower) ?: error("Mine $idLower has no WorldGuard region")
 
                     val blockType = BlockTypes.get(blockTypeString.lowercase())
                     val rareBlockType = BlockTypes.get(rareBlockTypeString.lowercase())
