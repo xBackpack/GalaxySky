@@ -13,7 +13,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
-import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.event.entity.EntityShootBowEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
@@ -110,22 +110,20 @@ object PlayerListenerRegistry : Registry {
             )
         }
 
-        ListenerService.hookEvent<ProjectileLaunchEvent> { event ->
-            val entity = event.entity
+        ListenerService.hookEvent<EntityShootBowEvent> { event ->
+            val projectile = event.projectile
 
-            if (entity.type != EntityType.ARROW) return@hookEvent
+            if (projectile.type != EntityType.ARROW) return@hookEvent
 
-            val player = entity.shooter as? Player ?: return@hookEvent
+            val player = event.entity as? Player ?: return@hookEvent
 
             val pvpEnabled = WorldGuardService.getFlag(player, player.location, Flags.PVP)
 
-            if (!pvpEnabled) return@hookEvent
+            if (pvpEnabled) return@hookEvent
 
             event.isCancelled = true
 
-            val item = VanillaItems.ARROW
-
-            player.giveItem(item)
+            player.giveItem(VanillaItems.ARROW)
         }
     }
 }

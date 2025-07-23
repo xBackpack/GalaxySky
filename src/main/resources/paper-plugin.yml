@@ -50,15 +50,12 @@ dependencies:
     LuckPerms:
       load: BEFORE
       required: true
-
     ProtocolLib:
       load: BEFORE
       required: true
-
     PlaceholderAPI:
       load: BEFORE
       required: true
-
     WorldGuard:
       load: BEFORE
       required: false

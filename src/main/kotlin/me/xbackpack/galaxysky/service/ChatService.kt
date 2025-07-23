@@ -15,25 +15,39 @@ object ChatService : Registry {
     private val chatMessages =
         setOf(
             Message.create {
+                newline()
+
                 text("You are currently playing on ") {
-                    colour(NamedTextColor.GRAY)
+                    colour(NamedTextColor.LIGHT_PURPLE)
                 }
 
                 snippet(PlaceholderHook.SERVER_IP)
+
+                newline()
             },
             Message.create {
+
+                newline()
+
                 text("Make sure to visit our webstore at ") {
-                    colour(NamedTextColor.GRAY)
+                    colour(NamedTextColor.LIGHT_PURPLE)
                 }
 
                 link(PlaceholderHook.SHOP_LINK)
+
+                newline()
             },
             Message.create {
+
+                newline()
+
                 text("Make sure to join our discord at ") {
-                    colour(NamedTextColor.GRAY)
+                    colour(NamedTextColor.LIGHT_PURPLE)
                 }
 
                 link(PlaceholderHook.DISCORD)
+
+                newline()
             },
         )
 
