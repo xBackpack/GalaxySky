@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.item.api
+package me.xbackpack.galaxysky.enum.item
 
 enum class ItemType {
     PICKAXE,

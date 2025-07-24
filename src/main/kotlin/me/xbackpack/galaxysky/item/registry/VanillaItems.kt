@@ -1,9 +1,5 @@
 package me.xbackpack.galaxysky.item.registry
 
-import me.xbackpack.galaxysky.common.Registry
-
-object VanillaItems : Registry {
-    override fun init() {}
-
+object VanillaItems {
     val ARROW = Items.getVanillaItem("arrow")
 }

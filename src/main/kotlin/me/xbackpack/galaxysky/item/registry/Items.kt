@@ -1,16 +1,15 @@
 package me.xbackpack.galaxysky.item.registry
 
 import me.xbackpack.galaxysky.GalaxySky
+import me.xbackpack.galaxysky.enum.item.ItemRegion
+import me.xbackpack.galaxysky.enum.item.ItemStatType
+import me.xbackpack.galaxysky.enum.item.ItemType
 import me.xbackpack.galaxysky.item.api.Item
-import me.xbackpack.galaxysky.item.api.ItemType
 import me.xbackpack.galaxysky.item.api.StatModifier
-import me.xbackpack.galaxysky.item.api.StatType
 import me.xbackpack.galaxysky.message.Message
-import me.xbackpack.galaxysky.service.LocationService
 import org.bukkit.Material
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
-import kotlin.collections.set
 
 object Items {
     fun getPickaxe(idLower: String) = getItem(getFile("pickaxes.yml"), idLower)
@@ -33,7 +32,7 @@ object Items {
         val materialString = itemConfig.getString("material") ?: error("Item $idLower has no material")
         val typeString = itemConfig.getString("type") ?: error("Item $idLower has no type")
         val regionString = itemConfig.getString("region") ?: error("Item $idLower has no region")
-        val descriptionListJson = itemConfig.getStringList("description")
+        val descriptionListJson = itemConfig.getStringList("description").toList()
         val unbreakableBool = itemConfig.getBoolean("unbreakable")
 
         val statsNullable = itemConfig.getConfigurationSection("stats")
@@ -42,32 +41,41 @@ object Items {
         val name = Message.fromJson(nameJson)
         val material = Material.valueOf(materialString)
         val type = ItemType.valueOf(typeString)
-        val region = LocationService.Region.valueOf(regionString)
+        val region = ItemRegion.valueOf(regionString)
 
         val item =
             Item.create(name, material, type, region, idLower) {
+                val tempDescription = mutableListOf<Message>()
                 descriptionListJson.forEach {
-                    description.add(Message.fromJson(it))
+                    tempDescription.add(Message.fromJson(it))
                 }
+
+                description = tempDescription
 
                 unbreakable = unbreakableBool
 
                 statsNullable?.let { stats ->
+                    val tempStats = mutableMapOf<ItemStatType, Double>()
+
                     stats.getKeys(false).forEach { key ->
-                        val stat = StatType.valueOf(key)
+                        val stat = ItemStatType.valueOf(key)
                         val value = stats.getDouble(key)
 
-                        defaultStats[stat] = value
+                        tempStats[stat] = value
                     }
+
+                    defaultStats = tempStats
                 }
 
                 modifiersNullable?.let { modifiers ->
+                    val tempModifiers = mutableSetOf<StatModifier>()
+
                     modifiers.getKeys(false).forEach { key ->
                         val modifier = modifiers.getConfigurationSection(key) ?: error("Modifier $key is not a config section")
 
-                        val modifierStats = mutableMapOf<StatType, Double>()
+                        val modifierStats = mutableMapOf<ItemStatType, Double>()
 
-                        StatType.entries.forEach { stat ->
+                        ItemStatType.entries.forEach { stat ->
                             val value = modifier.getDouble(stat.name, 0.0).takeIf { it != 0.0 }
 
                             value?.let {
@@ -75,8 +83,10 @@ object Items {
                             }
                         }
 
-                        statModifiers.add(StatModifier(GalaxySky.createKey(key), modifierStats))
+                        tempModifiers.add(StatModifier(GalaxySky.createKey(key), modifierStats))
                     }
+
+                    statModifiers = tempModifiers
                 }
             }
 

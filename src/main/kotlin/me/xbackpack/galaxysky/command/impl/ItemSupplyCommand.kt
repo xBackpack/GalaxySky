@@ -14,7 +14,7 @@ class ItemSupplyCommand : BaseCommand {
     override var aliases = emptyList<String>()
     override var permission: String? = null
     override var cooldown: UserCooldown? = null
-    override val builder: (CommandSender, List<CommandArgument>) -> Unit = { sender, args ->
+    override val builder: (CommandSender, List<CommandArgument>) -> Unit = { sender, _ ->
         val player = sender as Player
 
         player.giveItem(item)

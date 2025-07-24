@@ -1,39 +1,31 @@
-package me.xbackpack.galaxysky.item.api
+package me.xbackpack.galaxysky.enum.item
 
 import me.xbackpack.galaxysky.GalaxySky
-import net.kyori.adventure.text.format.NamedTextColor
+import me.xbackpack.galaxysky.item.api.ItemDsl
 import org.bukkit.NamespacedKey
 
 @ItemDsl
-enum class StatType(
+enum class ItemStatType(
     val statName: String,
-    val purpose: StatPurpose,
+    val purpose: ItemStatPurpose,
     val key: NamespacedKey,
 ) {
     BREAKING_POWER(
         "Breaking Power",
-        StatPurpose.UTILITY,
+        ItemStatPurpose.UTILITY,
         GalaxySky.createKey("breaking_power"),
     ),
     MINING_SPEED(
         "Mining Speed",
-        StatPurpose.UTILITY,
+        ItemStatPurpose.UTILITY,
         GalaxySky.createKey("mining_speed"),
     ),
     ORE_FORTUNE(
         "Ore Fortune",
-        StatPurpose.UTILITY,
+        ItemStatPurpose.UTILITY,
         GalaxySky.createKey("ore_fortune"),
     ),
     ;
-
-    enum class StatPurpose(
-        val colour: NamedTextColor,
-    ) {
-        OFFENSE(NamedTextColor.RED),
-        DEFENSE(NamedTextColor.GREEN),
-        UTILITY(NamedTextColor.AQUA),
-    }
 
     companion object {
         val displayOrder =
