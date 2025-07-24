@@ -1,5 +1,5 @@
 package me.xbackpack.galaxysky.common
 
-interface Registry {
+fun interface Registry {
     fun init()
 }

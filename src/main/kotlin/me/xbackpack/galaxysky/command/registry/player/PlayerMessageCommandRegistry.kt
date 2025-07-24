@@ -1,20 +1,18 @@
 package me.xbackpack.galaxysky.command.registry.player
 
-import me.xbackpack.galaxysky.command.api.Command
 import me.xbackpack.galaxysky.command.impl.BaseCommand
 import me.xbackpack.galaxysky.command.impl.MessageCommand
-import me.xbackpack.galaxysky.common.RegistrySupplier
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.message.Message
 import net.kyori.adventure.text.format.NamedTextColor
 
-object PlayerMessageCommandRegistry : RegistrySupplier<Command> {
+object PlayerMessageCommandRegistry {
     private const val DISCORD_LINK = PlaceholderHook.DISCORD
     private const val SERVER_IP = PlaceholderHook.SERVER_IP
     private const val SHOP_LINK = PlaceholderHook.SHOP_LINK
 
-    override fun get(): List<Command> {
-        val applyCmd =
+    val commands =
+        listOf(
             BaseCommand.create({ MessageCommand() }) {
                 name = "apply"
                 description = "Provides a link to the staff application"
@@ -35,9 +33,7 @@ object PlayerMessageCommandRegistry : RegistrySupplier<Command> {
                             colour(NamedTextColor.LIGHT_PURPLE)
                         }
                     }
-            }
-
-        val ipCmd =
+            },
             BaseCommand.create({ MessageCommand() }) {
                 name = "ip"
                 description = "Provides the IP of the server"
@@ -55,9 +51,7 @@ object PlayerMessageCommandRegistry : RegistrySupplier<Command> {
                             colour(NamedTextColor.LIGHT_PURPLE)
                         }
                     }
-            }
-
-        val shopCmd =
+            },
             BaseCommand.create({ MessageCommand() }) {
                 name = "shop"
                 description = "Provides a link to the GalaxySky webstore"
@@ -74,8 +68,6 @@ object PlayerMessageCommandRegistry : RegistrySupplier<Command> {
                             colour(NamedTextColor.LIGHT_PURPLE)
                         }
                     }
-            }
-
-        return listOf(applyCmd, ipCmd, shopCmd)
-    }
+            },
+        )
 }
