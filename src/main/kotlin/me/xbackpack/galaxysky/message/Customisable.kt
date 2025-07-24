@@ -1,10 +1,12 @@
 package me.xbackpack.galaxysky.message
 
+import me.xbackpack.galaxysky.service.FormattingService
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 
 interface Customisable {
@@ -20,7 +22,21 @@ interface Customisable {
         block: TextStyleBuilder.() -> Unit = {},
     ) {
         val style = TextStyleBuilder().apply(block)
-        val comp = Component.text(content).applyStyle(style)
+        val comp = FormattingService.applyStyle(Component.text(content), style)
+
+        children += comp
+    }
+
+    fun textGradient(
+        content: String,
+        startHex: String,
+        endHex: String,
+        block: TextStyleBuilder.() -> Unit = {},
+    ) {
+        val msg = "<gradient:$startHex:$endHex>$content</gradient>"
+        val style = TextStyleBuilder().apply(block)
+
+        val comp = FormattingService.applyStyle(MiniMessage.miniMessage().deserialize(msg), style)
 
         children += comp
     }
@@ -57,7 +73,7 @@ interface Customisable {
         children += component
     }
 
-    fun componentFromLegacyColourCodes(string: String) {
+    fun componentFromLegacyString(string: String) {
         children += LegacyComponentSerializer.legacyAmpersand().deserialize(string)
     }
 

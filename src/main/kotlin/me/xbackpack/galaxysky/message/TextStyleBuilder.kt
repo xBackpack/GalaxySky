@@ -5,6 +5,6 @@ import net.kyori.adventure.text.format.TextDecoration
 
 @MessageDsl
 class TextStyleBuilder : Stylable {
-    override var internalColour: TextColor? = null
+    override var internalColours: TextColor? = null
     override val internalDecorations = mutableSetOf<TextDecoration>()
 }

@@ -5,17 +5,17 @@ import net.kyori.adventure.text.format.TextDecoration
 
 @MessageDsl
 interface Stylable {
-    var internalColour: TextColor?
+    var internalColours: TextColor?
     val internalDecorations: MutableSet<TextDecoration>
 
     fun colour(newColour: TextColor) {
-        internalColour = newColour
+        internalColours = newColour
     }
 
     fun hex(hexString: String) {
         TextColor
             .fromHexString(hexString)
-            ?.let { internalColour = it }
+            ?.let { internalColours = it }
             ?: error("Cannot get hex code from '$hexString'")
     }
 
