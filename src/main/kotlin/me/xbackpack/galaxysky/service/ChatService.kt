@@ -2,7 +2,6 @@ package me.xbackpack.galaxysky.service
 
 import io.papermc.paper.event.player.AsyncChatEvent
 import me.xbackpack.galaxysky.GalaxySky
-import me.xbackpack.galaxysky.common.Registry
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.message.Message
 import me.xbackpack.galaxysky.message.sendMessage
@@ -10,7 +9,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 
-object ChatService : Registry {
+object ChatService {
     private val chatMessages =
         setOf(
             Message.create {
@@ -54,7 +53,7 @@ object ChatService : Registry {
         Bukkit.broadcast(chatMessages.random().root)
     }
 
-    override fun init() {
+    fun init() {
         ListenerService.hookEvent<AsyncChatEvent> { event ->
             val player = event.player
 

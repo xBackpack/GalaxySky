@@ -3,6 +3,8 @@ package me.xbackpack.galaxysky.service
 import me.xbackpack.galaxysky.enum.player.PlayerStatType
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.message.Message
+import me.xbackpack.galaxysky.service.FormattingService.shortenStat
+import me.xbackpack.galaxysky.service.FormattingService.shortenTime
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -41,10 +43,10 @@ object ScoreboardService {
     }
 
     private fun updatePlayer(player: Player) {
-        updateStat(player, 3, "Playtime", PlayerStatType.PLAYTIME)
-        updateStat(player, 4, "Blocks Mined", PlayerStatType.BLOCKS_MINED)
-        updateStat(player, 5, "Deaths", PlayerStatType.DEATHS)
-        updateStat(player, 6, "Kills", PlayerStatType.KILLS)
+        updateStat(player, 3, "Playtime", PlayerStatType.PLAYTIME, ::shortenTime)
+        updateStat(player, 4, "Blocks Mined", PlayerStatType.BLOCKS_MINED, ::shortenStat)
+        updateStat(player, 5, "Deaths", PlayerStatType.DEATHS, ::shortenStat)
+        updateStat(player, 6, "Kills", PlayerStatType.KILLS, ::shortenStat)
 
         setupScore(
             8,
@@ -70,6 +72,7 @@ object ScoreboardService {
         idx: Int,
         name: String,
         type: PlayerStatType,
+        formatter: (Int) -> String,
     ) {
         setupScore(
             idx,
@@ -85,7 +88,7 @@ object ScoreboardService {
 
                 val stat = PDCService.Player.Stats[player, type]
 
-                text(stat.toString()) {
+                text(formatter(stat)) {
                     colour(NamedTextColor.AQUA)
                 }
             },

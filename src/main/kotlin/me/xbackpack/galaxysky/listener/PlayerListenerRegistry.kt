@@ -1,7 +1,6 @@
 package me.xbackpack.galaxysky.listener
 
 import com.sk89q.worldguard.protection.flags.Flags
-import me.xbackpack.galaxysky.common.Registry
 import me.xbackpack.galaxysky.item.api.giveItem
 import me.xbackpack.galaxysky.item.registry.Pickaxes
 import me.xbackpack.galaxysky.item.registry.VanillaItems
@@ -17,8 +16,8 @@ import org.bukkit.event.entity.EntityShootBowEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
-object PlayerListenerRegistry : Registry {
-    override fun init() {
+object PlayerListenerRegistry {
+    fun init() {
         ListenerService.hookEvent<PlayerJoinEvent> { event ->
             val player = event.player
 

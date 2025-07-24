@@ -4,6 +4,7 @@ import me.xbackpack.galaxysky.GalaxySky
 import me.xbackpack.galaxysky.enum.item.ItemStatType
 import me.xbackpack.galaxysky.enum.player.PlayerStatType
 import me.xbackpack.galaxysky.item.api.StatModifier
+import org.bukkit.OfflinePlayer
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
@@ -124,9 +125,9 @@ object PDCService {
     object Player {
         object Stats {
             operator fun get(
-                player: org.bukkit.entity.Player,
+                player: OfflinePlayer?,
                 type: PlayerStatType,
-            ) = player.persistentDataContainer[type.key, PersistentDataType.INTEGER] ?: 0
+            ) = player?.persistentDataContainer[type.key, PersistentDataType.INTEGER] ?: 0
 
             fun inc(
                 player: org.bukkit.entity.Player,
