@@ -4,9 +4,5 @@ import me.xbackpack.galaxysky.command.registry.staff.StaffItemSupplyCommandRegis
 import me.xbackpack.galaxysky.command.registry.staff.StaffTeleportCommandRegistry
 
 object StaffCommandRegistry {
-    val commands =
-        listOf(
-            StaffTeleportCommandRegistry.commands,
-            StaffItemSupplyCommandRegistry.commands,
-        )
+    val commands = StaffItemSupplyCommandRegistry.commands + StaffTeleportCommandRegistry.commands
 }

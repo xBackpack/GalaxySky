@@ -5,10 +5,5 @@ import me.xbackpack.galaxysky.command.registry.player.PlayerMessageCommandRegist
 import me.xbackpack.galaxysky.command.registry.player.PlayerTeleportCommandRegistry
 
 object PlayerCommandRegistry {
-    val commands =
-        listOf(
-            PlayerItemSupplyCommandRegistry.commands,
-            PlayerMessageCommandRegistry.commands,
-            PlayerTeleportCommandRegistry.commands,
-        )
+    val commands = PlayerItemSupplyCommandRegistry.commands + PlayerMessageCommandRegistry.commands + PlayerTeleportCommandRegistry.commands
 }
