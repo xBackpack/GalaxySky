@@ -5,15 +5,11 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import me.xbackpack.galaxysky.command.registry.SuperCommandRegistry
 import me.xbackpack.galaxysky.hook.LuckPermsHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook
-import me.xbackpack.galaxysky.item.registry.Materials
-import me.xbackpack.galaxysky.item.registry.Pickaxes
-import me.xbackpack.galaxysky.item.registry.VanillaItems
 import me.xbackpack.galaxysky.listener.PlayerListenerRegistry
 import me.xbackpack.galaxysky.service.AFKService
 import me.xbackpack.galaxysky.service.ChatService
-import me.xbackpack.galaxysky.service.LocationService
 import me.xbackpack.galaxysky.service.MineService
-import org.bukkit.Bukkit
+import me.xbackpack.galaxysky.service.ScoreboardService
 import org.bukkit.NamespacedKey
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
@@ -30,17 +26,6 @@ class GalaxySky : JavaPlugin() {
         pluginManager = server.pluginManager
         log = logger
 
-        // Every second
-        setupTimedTask({ Bukkit.getOnlinePlayers().forEach(AFKService::check) }, 1.seconds)
-
-        // Every 30 seconds
-        setupTimedTask(MineService::resetMines, 30.seconds)
-
-        // Every 5 minutes
-        setupTimedTask(ChatService::sendRandomMessage, 5.minutes)
-
-        logger.info("Set up scheduled events!")
-
         // PlaceholderAPI Custom Placeholders
         PlaceholderHook.register()
 
@@ -51,17 +36,10 @@ class GalaxySky : JavaPlugin() {
 
         logger.info("Hooked into LuckPerms!")
 
-        // Items
-        Materials.init()
-        Pickaxes.init()
-        VanillaItems.init()
+        // Scoreboard
+        ScoreboardService.setupScoreboard()
 
-        logger.info("Loaded items!")
-
-        // Worlds
-        LocationService.init()
-
-        logger.info("Loaded worlds!")
+        logger.info("Setup Scoreboard!")
 
         // Listeners
         PlayerListenerRegistry.init()
@@ -73,21 +51,39 @@ class GalaxySky : JavaPlugin() {
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
             val registrar = event.registrar()
 
-            SuperCommandRegistry.get().forEach { (node, description, aliases) ->
+            SuperCommandRegistry.commands.forEach { (node, description, aliases) ->
                 registrar.register(node.build(), description, aliases)
             }
         }
 
         logger.info("Loaded commands!")
 
+        // Every second
+        setupTimedTask(1.seconds, AFKService::update, ScoreboardService::update)
+
+        // Every 30 seconds
+        setupTimedTask(30.seconds, MineService::resetMines)
+
+        // Every 5 minutes
+        setupTimedTask(5.minutes, ChatService::sendRandomMessage)
+
+        logger.info("Set up scheduled events!")
+
         logger.info("Enabled!")
     }
 
     private fun setupTimedTask(
-        block: () -> Unit,
         delay: Duration,
+        vararg blocks: () -> Unit,
     ) {
-        server.scheduler.runTaskTimer(this, Runnable(block), delay.inWholeSeconds * 20L, delay.inWholeSeconds * 20L)
+        server.scheduler.runTaskTimer(
+            this,
+            Runnable {
+                blocks.forEach { it() }
+            },
+            delay.inWholeSeconds * 20L,
+            delay.inWholeSeconds * 20L,
+        )
     }
 
     companion object {

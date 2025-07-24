@@ -36,7 +36,7 @@ object WorldGuardService {
         return regionContainer.getRegion(id)
     }
 
-    fun getRegionsFromLocation(bukkitLocation: Location): ApplicableRegionSet {
+    fun getOccupiedRegions(bukkitLocation: Location): ApplicableRegionSet {
         val location = BukkitAdapter.adapt(bukkitLocation)
 
         return container.createQuery().getApplicableRegions(location)

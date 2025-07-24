@@ -5,66 +5,62 @@ import me.xbackpack.galaxysky.item.registry.Materials
 import me.xbackpack.galaxysky.message.Message
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.UUID
 
 object AFKService {
     private val times = mutableMapOf<UUID, Int>()
     private val bossbars = mutableMapOf<UUID, BossBar>()
+    private val afkRegion = WorldGuardService.getRegion(LocationService.world, "afk")
 
-    fun check(player: Player): Boolean {
-        val uuid = player.uniqueId
+    private fun getTitle(seconds: Int) =
+        Message
+            .create {
+                section {
+                    text("AFK Time:")
 
-        val regions = WorldGuardService.getRegionsFromLocation(player.location)
+                    space()
 
-        val afkRegion = WorldGuardService.getRegion(LocationService.world, "afk")
+                    text(seconds.toString()) {
+                        colour(NamedTextColor.GREEN)
+                    }
 
-        if (!regions.contains(afkRegion)) {
+                    text("s")
+
+                    colour(NamedTextColor.LIGHT_PURPLE)
+                }
+            }.root
+
+    fun update() {
+        Bukkit.getOnlinePlayers().forEach { player ->
+            val uuid = player.uniqueId
+
+            val occupiedRegions = WorldGuardService.getOccupiedRegions(player.location)
+
+            if (occupiedRegions.contains(afkRegion)) {
+                updatePlayer(player)
+
+                return
+            }
+
             bossbars[uuid]?.let {
                 player.hideBossBar(it)
                 bossbars.remove(uuid)
             }
-
-            times.remove(uuid)
-
-            return false
         }
-
-        times.putIfAbsent(uuid, 0)
-
-        times.computeIfPresent(uuid) { _, seconds -> seconds + 1 }
-
-        showBossbarAndHandlePayouts(player)
-
-        return true
     }
 
-    fun showBossbarAndHandlePayouts(player: Player) {
+    fun updatePlayer(player: Player) {
         val uuid = player.uniqueId
 
-        val seconds = times[uuid] ?: error("Player $player is not in times dictionary")
+        val seconds = times.compute(uuid) { _, seconds -> (seconds ?: 0) + 1 } ?: 0
 
-        val timeUntilNextPayout = ((seconds - 1) % 120) + 1
+        val timeUntilNextPayout = (seconds - 1) % 120 + 1
 
         val progress = timeUntilNextPayout / 120f
 
-        val title =
-            Message
-                .create {
-                    section {
-                        text("AFK Time:")
-
-                        space()
-
-                        text(seconds.toString()) {
-                            colour(NamedTextColor.GREEN)
-                        }
-
-                        text("s")
-
-                        colour(NamedTextColor.LIGHT_PURPLE)
-                    }
-                }.root
+        val title = getTitle(seconds)
 
         bossbars[uuid]
             ?.name(title)

@@ -5,7 +5,6 @@ import me.xbackpack.galaxysky.GalaxySky
 import me.xbackpack.galaxysky.common.Registry
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.message.Message
-import me.xbackpack.galaxysky.message.content
 import me.xbackpack.galaxysky.message.sendMessage
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -82,16 +81,16 @@ object ChatService : Registry {
                 var finalMessage = message
 
                 if (LuckPermsService.isStaff(player)) {
-                    finalMessage = MiniMessage.miniMessage().deserialize(message.content())
+                    finalMessage = MiniMessage.miniMessage().deserialize(FormattingService.legacyFormat(message))
                 }
 
                 Message
                     .create {
-                        componentFromLegacyColourCodes(prefix)
+                        componentFromLegacyString(prefix)
 
                         component(displayName.colorIfAbsent(LuckPermsService.getNameColour(primaryGroupName)))
 
-                        componentFromLegacyColourCodes(suffix)
+                        componentFromLegacyString(suffix)
 
                         space()
 

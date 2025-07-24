@@ -57,7 +57,7 @@ object LuckPermsService {
 
     fun isStaff(player: OfflinePlayer) = getTrack("staff").containsGroup(getPrimaryGroupName(player))
 
-    fun getNameColour(groupName: String) =
+    fun getNameColour(groupName: String): NamedTextColor =
         when (groupName) {
             "owner" -> NamedTextColor.DARK_RED
             "dev" -> NamedTextColor.GOLD

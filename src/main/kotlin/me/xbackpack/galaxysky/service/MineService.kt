@@ -11,7 +11,6 @@ import org.bukkit.World
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import kotlin.random.Random
-import kotlin.use
 
 object MineService {
     private val mineFile = GalaxySky.getFile("", "mines.yml")
@@ -47,14 +46,6 @@ object MineService {
             getMine("opal1"),
             getMine("opal2"),
         )
-
-//    fun resetMine(id: String) =
-//        try {
-//            mines.first { it.id == id }.fill()
-//            true
-//        } catch (_: NoSuchElementException) {
-//            false
-//        }
 
     fun resetMines() = mines.forEach(Mine::fill)
 

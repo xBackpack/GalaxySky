@@ -1,8 +1,9 @@
 package me.xbackpack.galaxysky.service
 
 import me.xbackpack.galaxysky.GalaxySky
+import me.xbackpack.galaxysky.enum.item.ItemStatType
+import me.xbackpack.galaxysky.enum.player.PlayerStatType
 import me.xbackpack.galaxysky.item.api.StatModifier
-import me.xbackpack.galaxysky.item.api.StatType
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
@@ -11,12 +12,12 @@ object PDCService {
         object Stats {
             val statsKey = GalaxySky.createKey("stats")
 
-            operator fun get(item: ItemStack): Map<StatType, Double>? {
-                val map = mutableMapOf<StatType, Double>()
+            operator fun get(item: ItemStack): Map<ItemStatType, Double>? {
+                val map = mutableMapOf<ItemStatType, Double>()
 
                 item.persistentDataContainer[statsKey, PersistentDataType.TAG_CONTAINER]
                     ?.let { statContainer ->
-                        StatType.entries.forEach { type ->
+                        ItemStatType.entries.forEach { type ->
                             statContainer[type.key, PersistentDataType.DOUBLE]
                                 ?.let { map.put(type, it) }
                         }
@@ -28,7 +29,7 @@ object PDCService {
 
             operator fun set(
                 item: ItemStack,
-                stats: Map<StatType, Double>,
+                stats: Map<ItemStatType, Double>,
             ) = item.editPersistentDataContainer { pdc ->
                 val statsContainer = pdc.adapterContext.newPersistentDataContainer()
 
@@ -56,9 +57,9 @@ object PDCService {
                                 modifiersContainer[modifierKey, PersistentDataType.TAG_CONTAINER] ?: error("Cannot happen")
 
                             // Find the stats stored in the modifier container
-                            val modifiedStats = mutableMapOf<StatType, Double>()
+                            val modifiedStats = mutableMapOf<ItemStatType, Double>()
 
-                            StatType.entries.forEach { type ->
+                            ItemStatType.entries.forEach { type ->
                                 modifierContainer[type.key, PersistentDataType.DOUBLE]
                                     ?.let {
                                         modifiedStats[type] = it
@@ -98,7 +99,7 @@ object PDCService {
                 }
 
                 // Add the container of modifiers to the item's persistent data container
-                pdc.set(modifiersKey, PersistentDataType.TAG_CONTAINER, modifiersContainer)
+                pdc[modifiersKey, PersistentDataType.TAG_CONTAINER] = modifiersContainer
             }
         }
 
@@ -116,6 +117,31 @@ object PDCService {
                         pdc[key, PersistentDataType.STRING] = it
                     } ?: pdc.remove(key)
                 }
+            }
+        }
+    }
+
+    object Player {
+        object Stats {
+            operator fun get(
+                player: org.bukkit.entity.Player,
+                type: PlayerStatType,
+            ) = player.persistentDataContainer[type.key, PersistentDataType.INTEGER] ?: 0
+
+            fun inc(
+                player: org.bukkit.entity.Player,
+                type: PlayerStatType,
+            ) {
+                val previous = get(player, type)
+
+                player.persistentDataContainer[type.key, PersistentDataType.INTEGER] = previous + 1
+            }
+
+            fun reset(
+                player: org.bukkit.entity.Player,
+                type: PlayerStatType,
+            ) {
+                player.persistentDataContainer[type.key, PersistentDataType.INTEGER] = 0
             }
         }
     }
