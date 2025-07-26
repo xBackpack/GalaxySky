@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.command.api
+package me.xbackpack.galaxysky.command.common
 
 import me.xbackpack.galaxysky.message.Message
 import me.xbackpack.galaxysky.message.sendMessage
@@ -11,7 +11,8 @@ import kotlin.time.Duration
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 
-data class UserCooldown(
+@CommandDsl
+data class Cooldown(
     val cooldownDuration: Duration,
 ) {
     private val cooldowned = mutableMapOf<UUID, TimeMark>()
