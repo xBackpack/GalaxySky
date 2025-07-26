@@ -3,7 +3,6 @@ package me.xbackpack.galaxysky.item.api
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.datacomponent.item.ItemLore
 import io.papermc.paper.datacomponent.item.TooltipDisplay
-import me.xbackpack.galaxysky.common.Builder
 import me.xbackpack.galaxysky.enum.item.ItemRegion
 import me.xbackpack.galaxysky.enum.item.ItemStatType
 import me.xbackpack.galaxysky.enum.item.ItemType
@@ -22,8 +21,7 @@ class ItemBuilder(
     override var type: ItemType,
     override var region: ItemRegion,
     override var id: String,
-) : BaseItem,
-    Builder<ItemStack> {
+) : BaseItem {
     override var amount = 1
     override var description = listOf<Message>()
     override var unbreakable = false
@@ -31,7 +29,7 @@ class ItemBuilder(
     override var defaultStats = mapOf<ItemStatType, Double>()
     override var statModifiers = setOf<StatModifier>()
 
-    override fun build(): ItemStack {
+    fun build(): ItemStack {
         val item = ItemStack(material, amount)
 
         // Assigning the name

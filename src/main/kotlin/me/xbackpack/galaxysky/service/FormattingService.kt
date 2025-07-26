@@ -40,7 +40,7 @@ object FormattingService {
 
         val suffix = suffixes[exp]
 
-        val finalValue = argument % base.pow(exp)
+        val finalValue = argument / base.pow(exp)
 
         val formattedValue =
             when {
