@@ -3,18 +3,17 @@ package me.xbackpack.galaxysky.command.node
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.builder.ArgumentBuilder
 import io.papermc.paper.command.brigadier.CommandSourceStack
-import me.xbackpack.galaxysky.command.common.Argument
+import me.xbackpack.galaxysky.command.common.ArgumentGetter
 import me.xbackpack.galaxysky.command.common.CommandDsl
 import me.xbackpack.galaxysky.enum.command.SenderRequirement
 import me.xbackpack.galaxysky.service.LuckPermsService
-import org.bukkit.command.CommandSender
+import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 
 @CommandDsl
 class NodeBuilder<T : ArgumentBuilder<CommandSourceStack, T>>(
     root: T,
     node: Node,
-    block: (CommandSender, List<Argument>) -> Unit,
 ) {
     var final = root
 
@@ -24,6 +23,10 @@ class NodeBuilder<T : ArgumentBuilder<CommandSourceStack, T>>(
         }
 
         node.optionals.forEach {
+            final = final.then(it.build())
+        }
+
+        node.arguments.forEach {
             final = final.then(it.build())
         }
 
@@ -45,9 +48,41 @@ class NodeBuilder<T : ArgumentBuilder<CommandSourceStack, T>>(
                         return@executes Command.SINGLE_SUCCESS
                     }
 
-                val finalArgs = node.arguments.map { Argument(it.name) }
+                val getter = ArgumentGetter(ctx)
 
-                block(sender, finalArgs)
+                when (node.requirement) {
+                    SenderRequirement.PLAYER -> {
+                        val player = sender as Player
+                        node.playerFunction(player, getter)?.runAll()
+                    }
+                    SenderRequirement.STAFF -> {
+                        val player = sender as Player
+                        node.staffFunction(player, getter)?.runAll()
+                    }
+                    SenderRequirement.STAFF_OR_CONSOLE -> {
+                        (sender as? Player)?.let { player ->
+                            node.staffFunction(player, getter)?.runAll()
+                        }
+
+                        (sender as? ConsoleCommandSender)?.let { console ->
+                            node.consoleFunction(console, getter)?.runAll()
+                        }
+                    }
+                    SenderRequirement.ANY -> {
+                        (sender as? Player)?.let { player ->
+                            if (LuckPermsService.isStaff(player)) {
+                                node.staffFunction(player, getter)?.runAll()
+                            } else {
+                                node.playerFunction(player, getter)?.runAll()
+                            }
+                        }
+
+                        (sender as? ConsoleCommandSender)?.let { console ->
+                            node.consoleFunction(console, getter)?.runAll()
+                        }
+                    }
+                    else -> null
+                }
 
                 node.cooldown
                     ?.takeIf { sender is Player }

@@ -51,8 +51,8 @@ class GalaxySky : JavaPlugin() {
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
             val registrar = event.registrar()
 
-            SuperCommandRegistry.commands.forEach { (node, description, aliases) ->
-                registrar.register(node.build(), description, aliases)
+            SuperCommandRegistry.commands.forEach { command ->
+                registrar.register(command.build().build(), command.description, command.aliases)
             }
         }
 

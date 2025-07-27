@@ -79,7 +79,7 @@ object PlayerListenerRegistry {
                 player.giveItem(item)
             }
 
-            player.teleport(LocationService.spawnLocation)
+            player.teleport(LocationService.WORLD_SPAWN)
         }
 
         ListenerService.hookEvent<PlayerQuitEvent> { event ->

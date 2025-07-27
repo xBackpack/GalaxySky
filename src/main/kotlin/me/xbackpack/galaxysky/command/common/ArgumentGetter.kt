@@ -5,14 +5,14 @@ import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.argument.resolvers.ArgumentResolver
 
 @CommandDsl
-data class Argument(
-    val name: String,
+data class ArgumentGetter(
+    val context: CommandContext<CommandSourceStack>,
 ) {
-    inline fun <reified T> extract(ctx: CommandContext<CommandSourceStack>): T {
-        val arg = ctx.getArgument(name, Any::class.java)
+    inline fun <reified T> extract(name: String): T {
+        val arg = context.getArgument(name, Any::class.java)
 
         return (arg as? ArgumentResolver<*>)
-            ?.resolve(ctx.source) as T
+            ?.resolve(context.source) as T
             ?: arg as T
     }
 }
