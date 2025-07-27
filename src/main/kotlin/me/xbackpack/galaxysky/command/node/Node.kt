@@ -20,9 +20,8 @@ interface Node {
     var permission: String?
     var cooldown: Cooldown?
 
-    var playerFunction: (Player, ArgumentGetter) -> PlayerCommandFunction?
-    var staffFunction: (Player, ArgumentGetter) -> PlayerCommandFunction?
-    var consoleFunction: (ConsoleCommandSender, ArgumentGetter) -> ConsoleCommandFunction?
+    var playerFunction: ((Player, ArgumentGetter) -> PlayerCommandFunction)?
+    var consoleFunction: ((ConsoleCommandSender, ArgumentGetter) -> ConsoleCommandFunction)?
 
     val subcommands: MutableSet<SubCommand>
     val optionals: MutableSet<OptionalArgument>
@@ -30,12 +29,6 @@ interface Node {
 
     fun doForPlayer(block: PlayerCommandFunction.(Player, ArgumentGetter) -> Unit) {
         playerFunction = { player, getter ->
-            PlayerCommandFunction(player, getter).apply { block(player, getter) }
-        }
-    }
-
-    fun doForStaff(block: PlayerCommandFunction.(Player, ArgumentGetter) -> Unit) {
-        staffFunction = { player, getter ->
             PlayerCommandFunction(player, getter).apply { block(player, getter) }
         }
     }

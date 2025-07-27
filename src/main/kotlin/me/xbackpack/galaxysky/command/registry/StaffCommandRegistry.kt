@@ -13,7 +13,7 @@ object StaffCommandRegistry {
             description = "Gives the player the starter pickaxe"
             permission = "galaxysky.command.adminpickaxe"
 
-            doForStaff { _, _ ->
+            doForPlayer { _, _ ->
                 giveItem(Pickaxes.ADMIN_PICKAXE)
             }
         }
@@ -24,7 +24,7 @@ object StaffCommandRegistry {
             description = "Teleports the player to the specified area"
             requirement = SenderRequirement.STAFF
 
-            doForStaff { _, _ ->
+            doForPlayer { _, _ ->
                 sendMessage {
                     text("Please specify a valid world") {
                         colour(NamedTextColor.RED)
@@ -35,7 +35,7 @@ object StaffCommandRegistry {
             subcommand("staff") {
                 permission = "galaxysky.area.staff"
 
-                doForStaff { _, _ ->
+                doForPlayer { _, _ ->
                     teleport(LocationService.STAFF_AREA)
                 }
             }
@@ -43,7 +43,7 @@ object StaffCommandRegistry {
             subcommand("builder") {
                 permission = "galaxysky.area.builder"
 
-                doForStaff { _, _ ->
+                doForPlayer { _, _ ->
                     teleport(LocationService.BUILDER_AREA)
                 }
             }

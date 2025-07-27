@@ -1,13 +1,20 @@
 package me.xbackpack.galaxysky.command.registry
 
+import me.xbackpack.galaxysky.GalaxySky
 import me.xbackpack.galaxysky.command.common.Cooldown
 import me.xbackpack.galaxysky.command.data.Command
 import me.xbackpack.galaxysky.enum.command.SenderRequirement
+import me.xbackpack.galaxysky.enum.player.PlayerStatType
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook.SHOP_LINK
 import me.xbackpack.galaxysky.item.registry.Pickaxes
+import me.xbackpack.galaxysky.message.Message
+import me.xbackpack.galaxysky.message.sendMessage
+import me.xbackpack.galaxysky.service.FormattingService
 import me.xbackpack.galaxysky.service.LocationService
+import me.xbackpack.galaxysky.service.PDCService
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.event.player.PlayerDropItemEvent
 import kotlin.time.Duration.Companion.seconds
 
 object PlayerCommandRegistry {
@@ -56,7 +63,7 @@ object PlayerCommandRegistry {
             }
 
             subcommand("staff") {
-                permission = "galaxysky.world.staff"
+                requirement = SenderRequirement.STAFF
 
                 doForPlayer { _, _ ->
                     teleport(LocationService.STAFF_WORLD_SPAWN)
@@ -156,6 +163,83 @@ object PlayerCommandRegistry {
             }
         }
 
+    private val PLAYTIME =
+        Command.create {
+            name = "playtime"
+            description = "Sends the player their full playtime"
+            requirement = SenderRequirement.PLAYER
+
+            doForPlayer { player, _ ->
+                val playtime = PDCService.Player.Stats[player, PlayerStatType.PLAYTIME]
+
+                sendMessage {
+                    section {
+                        text("You have")
+
+                        space()
+
+                        text(FormattingService.shortenTimeFull(playtime))
+
+                        space()
+
+                        text("of playtime!")
+
+                        colour(NamedTextColor.GREEN)
+                    }
+                }
+            }
+        }
+
+    private val DROPS =
+        Command.create {
+            val cmdCooldown =
+                Cooldown(10.seconds) { _ ->
+                    Message.create {
+                        text("You can already drop items!") {
+                            colour(NamedTextColor.RED)
+                        }
+                    }
+                }
+
+            name = "drops"
+            description = "Allows the player to drop items for 10 seconds"
+            cooldown = cmdCooldown
+            requirement = SenderRequirement.PLAYER
+
+            doForPlayer { player, _ ->
+                sendMessage {
+                    text("You can now drop items for the next 10 seconds.") {
+                        colour(NamedTextColor.GREEN)
+                    }
+                }
+
+                GalaxySky.runTaskLater(10.seconds) {
+                    player.sendMessage(
+                        Message.create {
+                            text("Use [/drop] to drop items!") {
+                                colour(NamedTextColor.RED)
+                            }
+                        },
+                    )
+                }
+            }
+
+            listener<PlayerDropItemEvent> { event ->
+                val player = event.player
+
+                if (!cmdCooldown.isOnCooldown(player)) {
+                    player.sendMessage(
+                        Message.create {
+                            text("Use [/drop] to drop items!") {
+                                colour(NamedTextColor.RED)
+                            }
+                        },
+                    )
+                    event.isCancelled = true
+                }
+            }
+        }
+
     val commands =
         listOf(
             WORLD,
@@ -164,5 +248,7 @@ object PlayerCommandRegistry {
             IP,
             SHOP,
             START,
+            PLAYTIME,
+            DROPS,
         )
 }

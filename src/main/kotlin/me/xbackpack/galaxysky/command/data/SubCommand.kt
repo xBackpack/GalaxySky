@@ -22,12 +22,8 @@ data class SubCommand(
     override var permission: String? = null
     override var cooldown: Cooldown? = null
 
-    override var playerFunction: (Player, ArgumentGetter) -> PlayerCommandFunction? =
-        { _, _ -> null }
-    override var staffFunction: (Player, ArgumentGetter) -> PlayerCommandFunction? =
-        { _, _ -> null }
-    override var consoleFunction: (ConsoleCommandSender, ArgumentGetter) -> ConsoleCommandFunction? =
-        { _, _ -> null }
+    override var playerFunction: ((Player, ArgumentGetter) -> PlayerCommandFunction)? = null
+    override var consoleFunction: ((ConsoleCommandSender, ArgumentGetter) -> ConsoleCommandFunction)? = null
 
     override val subcommands: MutableSet<SubCommand> = mutableSetOf()
     override val optionals: MutableSet<OptionalArgument> = mutableSetOf()

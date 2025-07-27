@@ -20,19 +20,12 @@ permissions:
         default: false
       galaxysky.world.aether:
         default: false
-      galaxysky.world.staff:
-        default: false
   galaxysky.area:
     default: false
     children:
       galaxysky.area.staff:
         default: false
       galaxysky.area.builder:
-        default: false
-  galaxysky.staff:
-    default: false
-    children:
-      galaxysky.staff.others:
         default: false
   galaxysky.command:
     default: false

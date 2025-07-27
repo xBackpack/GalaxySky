@@ -14,6 +14,7 @@ import kotlin.time.TimeSource
 @CommandDsl
 data class Cooldown(
     val cooldownDuration: Duration,
+    val messageOverride: ((Double) -> Message)? = null,
 ) {
     private val cooldowned = mutableMapOf<UUID, TimeMark>()
 
@@ -48,13 +49,13 @@ data class Cooldown(
 
         val timeRemaining = ceil(timeRemainingDuration.inWholeMilliseconds / 1000.0)
 
-        val msg =
-            Message.Companion.create {
+        val defaultMsg =
+            Message.create {
                 text("You can use this command again in ${timeRemaining.toString().trimEnd('0').trimEnd('.')} seconds.") {
                     colour(NamedTextColor.RED)
                 }
             }
 
-        player.sendMessage(msg)
+        player.sendMessage(messageOverride?.let { it(timeRemaining) } ?: defaultMsg)
     }
 }

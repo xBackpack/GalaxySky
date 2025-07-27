@@ -93,6 +93,17 @@ class GalaxySky : JavaPlugin() {
         lateinit var log: Logger
         var chatMuted = false
 
+        fun runTaskLater(
+            delay: Duration,
+            block: () -> Unit,
+        ) {
+            instance.server.scheduler.runTaskLater(
+                instance,
+                Runnable { block() },
+                delay.inWholeSeconds * 20L,
+            )
+        }
+
         fun createKey(key: String) = NamespacedKey(instance, key)
 
         fun getFile(

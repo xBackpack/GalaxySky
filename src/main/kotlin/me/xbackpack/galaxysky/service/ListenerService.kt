@@ -6,22 +6,18 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 
 object ListenerService {
-    inline fun <reified T : Event> hookEvent(
-        priority: EventPriority = EventPriority.NORMAL,
-        ignoreCancelled: Boolean = false,
-        crossinline handler: (T) -> Unit,
-    ) {
+    inline fun <reified T : Event> hookEvent(crossinline handler: (T) -> Unit) {
         val listener = object : Listener {}
 
         GalaxySky.pluginManager.registerEvent(
             T::class.java,
             listener,
-            priority,
+            EventPriority.NORMAL,
             { _, event ->
                 (event as? T)?.let { handler(it) }
             },
             GalaxySky.instance,
-            ignoreCancelled,
+            false,
         )
     }
 }

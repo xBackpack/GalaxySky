@@ -5,8 +5,10 @@ import com.mojang.brigadier.builder.ArgumentBuilder
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import me.xbackpack.galaxysky.command.common.ArgumentGetter
 import me.xbackpack.galaxysky.command.common.CommandDsl
+import me.xbackpack.galaxysky.command.function.CommandFunction
 import me.xbackpack.galaxysky.enum.command.SenderRequirement
 import me.xbackpack.galaxysky.service.LuckPermsService
+import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 
@@ -51,34 +53,25 @@ class NodeBuilder<T : ArgumentBuilder<CommandSourceStack, T>>(
                 val getter = ArgumentGetter(ctx)
 
                 when (node.requirement) {
-                    SenderRequirement.PLAYER -> {
-                        val player = sender as Player
-                        node.playerFunction(player, getter)?.runAll()
-                    }
-                    SenderRequirement.STAFF -> {
-                        val player = sender as Player
-                        node.staffFunction(player, getter)?.runAll()
+                    SenderRequirement.PLAYER, SenderRequirement.STAFF -> {
+                        node.playerFunction?.runWith(sender as Player, getter)
                     }
                     SenderRequirement.STAFF_OR_CONSOLE -> {
                         (sender as? Player)?.let { player ->
-                            node.staffFunction(player, getter)?.runAll()
+                            node.playerFunction?.runWith(player, getter)
                         }
 
                         (sender as? ConsoleCommandSender)?.let { console ->
-                            node.consoleFunction(console, getter)?.runAll()
+                            node.consoleFunction?.runWith(console, getter)
                         }
                     }
                     SenderRequirement.ANY -> {
                         (sender as? Player)?.let { player ->
-                            if (LuckPermsService.isStaff(player)) {
-                                node.staffFunction(player, getter)?.runAll()
-                            } else {
-                                node.playerFunction(player, getter)?.runAll()
-                            }
+                            node.playerFunction?.runWith(player, getter)
                         }
 
                         (sender as? ConsoleCommandSender)?.let { console ->
-                            node.consoleFunction(console, getter)?.runAll()
+                            node.consoleFunction?.runWith(console, getter)
                         }
                     }
                     else -> null
@@ -120,4 +113,9 @@ class NodeBuilder<T : ArgumentBuilder<CommandSourceStack, T>>(
                 }
         }
     }
+
+    private fun <T : CommandSender, R : CommandFunction> ((T, ArgumentGetter) -> R).runWith(
+        sender: T,
+        getter: ArgumentGetter,
+    ) = invoke(sender, getter).runAll()
 }
