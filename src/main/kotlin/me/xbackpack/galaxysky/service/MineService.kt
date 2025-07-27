@@ -58,7 +58,7 @@ object MineService {
             region
                 .getConfigurationSection(idLower)
                 ?.let { mineConfig ->
-                    val world = LocationService.get(region.name) ?: error("World ${region.name} does not exist")
+                    val world = LocationService[region.name] ?: error("World ${region.name} does not exist")
 
                     val blockTypeString = mineConfig.getString("block_type") ?: error("Mine $idLower has no block type")
                     val rareBlockTypeString = mineConfig.getString("rare_block_type") ?: blockTypeString

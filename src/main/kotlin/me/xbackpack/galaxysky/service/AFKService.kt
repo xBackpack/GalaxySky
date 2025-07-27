@@ -12,7 +12,7 @@ import java.util.UUID
 object AFKService {
     private val times = mutableMapOf<UUID, Int>()
     private val bossbars = mutableMapOf<UUID, BossBar>()
-    private val afkRegion = WorldGuardService.getRegion(LocationService.world, "afk")
+    private val afkRegion = WorldGuardService.getRegion(LocationService.WORLD, "afk")
 
     private fun getTitle(seconds: Int) =
         Message
