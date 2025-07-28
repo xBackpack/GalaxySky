@@ -5,12 +5,16 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import me.xbackpack.galaxysky.command.registry.SuperCommandRegistry
 import me.xbackpack.galaxysky.hook.LuckPermsHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook
-import me.xbackpack.galaxysky.listener.PlayerListenerRegistry
+import me.xbackpack.galaxysky.message.Message
+import me.xbackpack.galaxysky.message.MessageBuilder
 import me.xbackpack.galaxysky.service.AFKService
 import me.xbackpack.galaxysky.service.ChatService
+import me.xbackpack.galaxysky.service.ListenerService
 import me.xbackpack.galaxysky.service.MineService
 import me.xbackpack.galaxysky.service.ScoreboardService
+import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
+import org.bukkit.inventory.InventoryHolder
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -42,7 +46,7 @@ class GalaxySky : JavaPlugin() {
         logger.info("Setup Scoreboard!")
 
         // Listeners
-        PlayerListenerRegistry.init()
+        ListenerService.init()
         ChatService.init()
 
         logger.info("Loaded listeners!")
@@ -103,6 +107,12 @@ class GalaxySky : JavaPlugin() {
                 delay.inWholeSeconds * 20L,
             )
         }
+
+        fun createInventory(
+            holder: InventoryHolder,
+            rows: Int,
+            builder: MessageBuilder.() -> Unit,
+        ) = Bukkit.createInventory(holder, rows * 9, Message.create(builder).root)
 
         fun createKey(key: String) = NamespacedKey(instance, key)
 

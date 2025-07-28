@@ -6,6 +6,7 @@ import me.xbackpack.galaxysky.message.Message
 import me.xbackpack.galaxysky.service.FormattingService.shortenStat
 import me.xbackpack.galaxysky.service.FormattingService.shortenTime
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.scoreboard.Criteria
@@ -20,9 +21,7 @@ object ScoreboardService {
             Criteria.DUMMY,
             Message
                 .create {
-                    textGradient("GalaxySky", "#FF00FF", "#0000FF") {
-                        bold()
-                    }
+                    textGradient("GalaxySky", "#FF00FF", "#0000FF", TextDecoration.BOLD)
                 }.root,
         )
 

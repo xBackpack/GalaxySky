@@ -2,6 +2,8 @@ package me.xbackpack.galaxysky.service
 
 import me.xbackpack.galaxysky.message.Stylable
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextComponent
+import net.kyori.adventure.text.TranslatableComponent
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import kotlin.math.log
@@ -9,10 +11,10 @@ import kotlin.math.min
 import kotlin.math.pow
 
 object FormattingService {
-    const val WEEK_SECONDS = 604800
-    const val DAY_SECONDS = 86400
-    const val HOUR_SECONDS = 3600
-    const val MINUTE_SECONDS = 60
+    private const val WEEK_SECONDS = 604800
+    private const val DAY_SECONDS = 86400
+    private const val HOUR_SECONDS = 3600
+    private const val MINUTE_SECONDS = 60
 
     fun legacyFormat(component: Component) = LegacyComponentSerializer.legacySection().serialize(component)
 
@@ -47,7 +49,12 @@ object FormattingService {
                 finalValue >= 100 -> String.format("%.0f", finalValue)
                 finalValue >= 10 -> String.format("%.1f", finalValue)
                 else -> String.format("%.2f", finalValue)
-            }.trimEnd('0').trimEnd('.')
+            }.apply {
+                if (contains('.')) {
+                    trimEnd('0')
+                    trimEnd('.')
+                }
+            }
 
         return "$formattedValue$suffix"
     }
@@ -105,6 +112,13 @@ object FormattingService {
         val result = parts.toString()
         return if (result.isEmpty()) "0 seconds" else result.replaceLast(", ", " and ")
     }
+
+    fun content(component: Component) =
+        when (component) {
+            is TextComponent -> component.content()
+            is TranslatableComponent -> component.key()
+            else -> ""
+        }
 
     private fun String.replaceLast(
         oldValue: String,
