@@ -19,9 +19,9 @@ interface Customisable {
 
     fun text(
         content: String,
-        block: TextStyleBuilder.() -> Unit = {},
+        builder: TextStyleBuilder.() -> Unit = {},
     ) {
-        val style = TextStyleBuilder().apply(block)
+        val style = TextStyleBuilder().apply(builder)
         val comp = FormattingService.applyStyle(Component.text(content), style)
 
         children += comp
@@ -31,14 +31,13 @@ interface Customisable {
         content: String,
         startHex: String,
         endHex: String,
-        block: TextStyleBuilder.() -> Unit = {},
+        vararg decorations: TextDecoration,
     ) {
         val msg = "<gradient:$startHex:$endHex>$content</gradient>"
-        val style = TextStyleBuilder().apply(block)
 
-        val comp = FormattingService.applyStyle(MiniMessage.miniMessage().deserialize(msg), style)
+        val component = MiniMessage.miniMessage().deserialize(msg).decorations(decorations.toSet(), true)
 
-        children += comp
+        children += component
     }
 
     fun link(content: String) {
