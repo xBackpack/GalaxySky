@@ -43,4 +43,6 @@ object LocationService {
     val BUILDER_AREA = Location(WORLD, -7.5, 101.0, -35.5, 90f, 0f)
 
     val AFK = Location(WORLD, -28.5, 102.0, 10.5, 90f, 0f)
+
+    val LEADERBOARDS = Location(WORLD, 44.5, 102.0, 9.5, -45f, 0f)
 }

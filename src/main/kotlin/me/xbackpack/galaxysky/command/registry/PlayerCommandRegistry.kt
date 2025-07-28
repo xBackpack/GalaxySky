@@ -7,13 +7,18 @@ import me.xbackpack.galaxysky.enum.command.SenderRequirement
 import me.xbackpack.galaxysky.enum.player.PlayerStatType
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook.SHOP_LINK
+import me.xbackpack.galaxysky.inventory.EmptyInventory
 import me.xbackpack.galaxysky.item.registry.Pickaxes
 import me.xbackpack.galaxysky.message.Message
 import me.xbackpack.galaxysky.message.sendMessage
 import me.xbackpack.galaxysky.service.FormattingService
 import me.xbackpack.galaxysky.service.LocationService
 import me.xbackpack.galaxysky.service.PDCService
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.entity.ArmorStand
+import org.bukkit.entity.Player
+import org.bukkit.event.entity.EntityDismountEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import kotlin.time.Duration.Companion.seconds
 
@@ -79,6 +84,17 @@ object PlayerCommandRegistry {
 
             doForPlayer { _, _ ->
                 teleport(LocationService.AFK)
+            }
+        }
+
+    private val LEADERBOARDS =
+        Command.create {
+            name = "leaderboards"
+            description = "Teleports the player to the leaderboards"
+            requirement = SenderRequirement.PLAYER
+
+            doForPlayer { _, _ ->
+                teleport(LocationService.LEADERBOARDS)
             }
         }
 
@@ -193,7 +209,7 @@ object PlayerCommandRegistry {
     private val DROPS =
         Command.create {
             val cmdCooldown =
-                Cooldown(10.seconds) { _ ->
+                Cooldown(10.seconds, true) { _ ->
                     Message.create {
                         text("You can already drop items!") {
                             colour(NamedTextColor.RED)
@@ -203,6 +219,7 @@ object PlayerCommandRegistry {
 
             name = "drops"
             description = "Allows the player to drop items for 10 seconds"
+            aliases = listOf("drop")
             cooldown = cmdCooldown
             requirement = SenderRequirement.PLAYER
 
@@ -216,7 +233,7 @@ object PlayerCommandRegistry {
                 GalaxySky.runTaskLater(10.seconds) {
                     player.sendMessage(
                         Message.create {
-                            text("Use [/drop] to drop items!") {
+                            text("You can no longer drop items!") {
                                 colour(NamedTextColor.RED)
                             }
                         },
@@ -230,7 +247,7 @@ object PlayerCommandRegistry {
                 if (!cmdCooldown.isOnCooldown(player)) {
                     player.sendMessage(
                         Message.create {
-                            text("Use [/drop] to drop items!") {
+                            text("Use [/drops] to drop items!") {
                                 colour(NamedTextColor.RED)
                             }
                         },
@@ -240,15 +257,72 @@ object PlayerCommandRegistry {
             }
         }
 
+    private val SIT =
+        Command.create {
+            name = "sit"
+            description = "Allows the player to sit down"
+            requirement = SenderRequirement.PLAYER
+            val enabledPlayers = mutableSetOf<Player>()
+
+            doForPlayer { player, _ ->
+                if (enabledPlayers.contains(player)) {
+                    sendMessage {
+                        text("You're already sitting!") {
+                            colour(NamedTextColor.RED)
+                        }
+                    }
+                } else {
+                    spawnEntity<ArmorStand> {
+                        isMarker = true
+                        isInvisible = true
+                        customName(Component.text("Sit"))
+
+                        addPassenger(player)
+
+                        enabledPlayers.add(player)
+                    }
+                }
+            }
+
+            listener<EntityDismountEvent> { event ->
+                val player = event.entity as? Player ?: return@listener
+
+                val dismounted = event.dismounted
+
+                val name = dismounted.customName() ?: return@listener
+
+                if (FormattingService.content(name) == "Sit") {
+                    player.teleport(player.location.add(0.0, 1.0, 0.0))
+                    dismounted.remove()
+                    enabledPlayers.remove(player)
+                }
+            }
+        }
+
+    private val TRASH =
+        Command.create {
+            name = "trash"
+            description = "Shows"
+            aliases = listOf("disposal", "bin")
+            requirement = SenderRequirement.PLAYER
+
+            doForPlayer { _, _ ->
+                showInv(EmptyInventory.new())
+            }
+        }
+
     val commands =
         listOf(
             WORLD,
             AFK,
+            LEADERBOARDS,
             APPLY,
             IP,
             SHOP,
             START,
             PLAYTIME,
             DROPS,
+            SIT,
+            TRASH,
         )
 }
