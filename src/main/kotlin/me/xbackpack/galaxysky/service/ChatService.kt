@@ -2,9 +2,9 @@ package me.xbackpack.galaxysky.service
 
 import io.papermc.paper.event.player.AsyncChatEvent
 import me.xbackpack.galaxysky.GalaxySky
+import me.xbackpack.galaxysky.api.message.Message
 import me.xbackpack.galaxysky.hook.PlaceholderHook
-import me.xbackpack.galaxysky.message.Message
-import me.xbackpack.galaxysky.message.sendMessage
+import me.xbackpack.galaxysky.sendMessage
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
@@ -19,7 +19,7 @@ object ChatService {
                     colour(NamedTextColor.LIGHT_PURPLE)
                 }
 
-                snippet(PlaceholderHook.SERVER_IP)
+                note(PlaceholderHook.SERVER_IP)
 
                 newline()
             },

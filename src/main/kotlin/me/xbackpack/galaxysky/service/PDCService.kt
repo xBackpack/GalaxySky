@@ -1,26 +1,25 @@
 package me.xbackpack.galaxysky.service
 
 import me.xbackpack.galaxysky.GalaxySky
+import me.xbackpack.galaxysky.api.item.StatModifier
 import me.xbackpack.galaxysky.enum.item.ItemStatType
 import me.xbackpack.galaxysky.enum.player.PlayerStatType
-import me.xbackpack.galaxysky.item.api.StatModifier
 import org.bukkit.OfflinePlayer
-import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
 object PDCService {
-    object Item {
+    object ItemData {
         object Stats {
             val statsKey = GalaxySky.createKey("stats")
 
-            operator fun get(item: ItemStack): Map<ItemStatType, Double>? {
-                val map = mutableMapOf<ItemStatType, Double>()
+            operator fun get(item: org.bukkit.inventory.ItemStack): Map<ItemStatType, Int>? {
+                val map = mutableMapOf<ItemStatType, Int>()
 
                 item.persistentDataContainer[statsKey, PersistentDataType.TAG_CONTAINER]
                     ?.let { statContainer ->
                         ItemStatType.entries.forEach { type ->
-                            statContainer[type.key, PersistentDataType.DOUBLE]
-                                ?.let { map.put(type, it) }
+                            statContainer[type.key, PersistentDataType.INTEGER]
+                                ?.let { map[type] = it }
                         }
                     }
                     ?: return null
@@ -29,13 +28,13 @@ object PDCService {
             }
 
             operator fun set(
-                item: ItemStack,
-                stats: Map<ItemStatType, Double>,
+                item: org.bukkit.inventory.ItemStack,
+                stats: Map<ItemStatType, Int>,
             ) = item.editPersistentDataContainer { pdc ->
                 val statsContainer = pdc.adapterContext.newPersistentDataContainer()
 
-                stats.forEach { type, value ->
-                    statsContainer[type.key, PersistentDataType.DOUBLE] = value
+                stats.forEach { (type, value) ->
+                    statsContainer[type.key, PersistentDataType.INTEGER] = value
                 }
 
                 pdc[statsKey, PersistentDataType.TAG_CONTAINER] = statsContainer
@@ -45,7 +44,7 @@ object PDCService {
         object Modifiers {
             val modifiersKey = GalaxySky.createKey("modifiers")
 
-            operator fun get(item: ItemStack): Set<StatModifier>? {
+            operator fun get(item: org.bukkit.inventory.ItemStack): Set<StatModifier>? {
                 val modifiers = mutableSetOf<StatModifier>()
 
                 // Get modifiers container
@@ -58,10 +57,10 @@ object PDCService {
                                 modifiersContainer[modifierKey, PersistentDataType.TAG_CONTAINER] ?: error("Cannot happen")
 
                             // Find the stats stored in the modifier container
-                            val modifiedStats = mutableMapOf<ItemStatType, Double>()
+                            val modifiedStats = mutableMapOf<ItemStatType, Int>()
 
                             ItemStatType.entries.forEach { type ->
-                                modifierContainer[type.key, PersistentDataType.DOUBLE]
+                                modifierContainer[type.key, PersistentDataType.INTEGER]
                                     ?.let {
                                         modifiedStats[type] = it
                                     }
@@ -78,7 +77,7 @@ object PDCService {
             }
 
             operator fun set(
-                item: ItemStack,
+                item: org.bukkit.inventory.ItemStack,
                 modifiers: Set<StatModifier>,
             ) = item.editPersistentDataContainer { pdc ->
                 // Create a container for all modifiers
@@ -91,8 +90,8 @@ object PDCService {
                     val modifierContainer = modifiersContainer.adapterContext.newPersistentDataContainer()
 
                     // Setup stats
-                    modifiedStats.forEach { type, value ->
-                        modifierContainer[type.key, PersistentDataType.DOUBLE] = value
+                    modifiedStats.forEach { (type, value) ->
+                        modifierContainer[type.key, PersistentDataType.INTEGER] = value
                     }
 
                     // Add this modifier to the container of modifiers
@@ -107,10 +106,10 @@ object PDCService {
         object Id {
             val key = GalaxySky.createKey("id")
 
-            operator fun get(item: ItemStack) = item.persistentDataContainer[key, PersistentDataType.STRING]
+            operator fun get(item: org.bukkit.inventory.ItemStack) = item.persistentDataContainer[key, PersistentDataType.STRING]
 
             operator fun set(
-                item: ItemStack,
+                item: org.bukkit.inventory.ItemStack,
                 id: String?,
             ) {
                 item.editPersistentDataContainer { pdc ->
@@ -122,7 +121,7 @@ object PDCService {
         }
     }
 
-    object Player {
+    object PlayerData {
         object Stats {
             operator fun get(
                 player: OfflinePlayer?,

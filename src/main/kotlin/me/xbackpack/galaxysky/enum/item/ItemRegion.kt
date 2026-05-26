@@ -9,5 +9,5 @@ enum class ItemRegion(
 ) {
     BAYSIDE_BEACH("Bayside Beach", NamedTextColor.YELLOW),
     CRIMSON_COVE("Crimson Cove", NamedTextColor.RED),
-    VERDANT_VOID("Verdant Void", NamedTextColor.LIGHT_PURPLE),
+    VIBRANT_VOID("Vibrant Void", NamedTextColor.LIGHT_PURPLE),
 }

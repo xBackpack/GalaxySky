@@ -2,22 +2,21 @@ package me.xbackpack.galaxysky
 
 import io.papermc.paper.plugin.configuration.PluginMeta
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
-import me.xbackpack.galaxysky.command.registry.SuperCommandRegistry
+import me.xbackpack.galaxysky.api.message.Message
+import me.xbackpack.galaxysky.api.message.MessageBuilder
 import me.xbackpack.galaxysky.hook.LuckPermsHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook
-import me.xbackpack.galaxysky.message.Message
-import me.xbackpack.galaxysky.message.MessageBuilder
+import me.xbackpack.galaxysky.registry.command.CommandRegistry
 import me.xbackpack.galaxysky.service.AFKService
 import me.xbackpack.galaxysky.service.ChatService
 import me.xbackpack.galaxysky.service.ListenerService
-import me.xbackpack.galaxysky.service.MineService
+import me.xbackpack.galaxysky.service.MiningService
 import me.xbackpack.galaxysky.service.ScoreboardService
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
-import java.io.File
 import java.util.logging.Logger
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
@@ -28,85 +27,90 @@ class GalaxySky : JavaPlugin() {
         instance = this
         meta = pluginMeta
         pluginManager = server.pluginManager
-        log = logger
+        Companion.logger = this@GalaxySky.logger
 
-        // PlaceholderAPI Custom Placeholders
+        // PlaceholderAPI
         PlaceholderHook.register()
 
-        logger.info("Hooked into PlaceholderAPI!")
+        this@GalaxySky.logger.info("Hooked into PlaceholderAPI!")
 
         // LuckPerms
         LuckPermsHook.init()
 
-        logger.info("Hooked into LuckPerms!")
+        this@GalaxySky.logger.info("Hooked into LuckPerms!")
 
         // Scoreboard
         ScoreboardService.setupScoreboard()
 
-        logger.info("Setup Scoreboard!")
+        this@GalaxySky.logger.info("Setup Scoreboard!")
 
         // Listeners
         ListenerService.init()
         ChatService.init()
 
-        logger.info("Loaded listeners!")
+        this@GalaxySky.logger.info("Loaded listeners!")
 
         // Commands
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
             val registrar = event.registrar()
 
-            SuperCommandRegistry.commands.forEach { command ->
+            CommandRegistry.commands.forEach { command ->
                 registrar.register(command.build().build(), command.description, command.aliases)
             }
         }
 
-        logger.info("Loaded commands!")
+        this@GalaxySky.logger.info("Loaded commands!")
 
         // Every second
-        setupTimedTask(1.seconds, AFKService::update, ScoreboardService::update)
+        setupTimedTask(false, 1.seconds, AFKService::update, ScoreboardService::update)
 
         // Every 30 seconds
-        setupTimedTask(30.seconds, MineService::resetMines)
+        setupTimedTask(true, 45.seconds, MiningService::resetMines)
 
         // Every 5 minutes
-        setupTimedTask(5.minutes, ChatService::sendRandomMessage)
+        setupTimedTask(false, 5.minutes, ChatService::sendRandomMessage)
 
-        logger.info("Set up scheduled events!")
+        this@GalaxySky.logger.info("Set up scheduled events!")
 
-        logger.info("Enabled!")
+        this@GalaxySky.logger.info("Enabled!")
     }
 
     private fun setupTimedTask(
+        startInstantly: Boolean,
         delay: Duration,
         vararg blocks: () -> Unit,
     ) {
-        server.scheduler.runTaskTimer(
-            this,
-            Runnable {
-                blocks.forEach { it() }
-            },
-            delay.inWholeSeconds * 20L,
-            delay.inWholeSeconds * 20L,
-        )
+        runTaskTimer(startInstantly, delay) {
+            blocks.forEach { it() }
+        }
     }
 
     companion object {
         lateinit var instance: GalaxySky
         lateinit var meta: PluginMeta
         lateinit var pluginManager: PluginManager
-        lateinit var log: Logger
+        lateinit var logger: Logger
         var chatMuted = false
 
         fun runTaskLater(
             delay: Duration,
             block: () -> Unit,
-        ) {
-            instance.server.scheduler.runTaskLater(
-                instance,
-                Runnable { block() },
-                delay.inWholeSeconds * 20L,
-            )
-        }
+        ) = instance.server.scheduler.runTaskLater(
+            instance,
+            Runnable { block() },
+            delay.inWholeTicks,
+        )
+
+        fun runTaskTimer(
+            startInstantly: Boolean,
+            timer: Duration,
+            block: () -> Unit,
+        ) = instance.server.scheduler.runTaskTimer(
+            instance,
+            Runnable { block() },
+            if (startInstantly) 0 else timer.inWholeTicks,
+            timer.inWholeTicks,
+        )
 
         fun createInventory(
             holder: InventoryHolder,
@@ -116,9 +120,9 @@ class GalaxySky : JavaPlugin() {
 
         fun createKey(key: String) = NamespacedKey(instance, key)
 
-        fun getFile(
-            directory: String,
-            fileName: String,
-        ) = File("${instance.dataFolder}${File.separator}$directory", fileName)
+//        fun getFile(
+//            directory: String,
+//            fileName: String,
+//        ) = File("${instance.dataFolder}${File.separator}$directory", fileName)
     }
 }

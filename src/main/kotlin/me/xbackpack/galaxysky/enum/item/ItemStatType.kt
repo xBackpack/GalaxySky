@@ -1,7 +1,7 @@
 package me.xbackpack.galaxysky.enum.item
 
 import me.xbackpack.galaxysky.GalaxySky
-import me.xbackpack.galaxysky.item.api.ItemDsl
+import me.xbackpack.galaxysky.api.item.ItemDsl
 import org.bukkit.NamespacedKey
 
 @ItemDsl

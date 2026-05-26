@@ -1,6 +1,6 @@
 package me.xbackpack.galaxysky.service
 
-import me.xbackpack.galaxysky.message.Stylable
+import me.xbackpack.galaxysky.api.message.Stylable
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.TranslatableComponent
@@ -46,13 +46,23 @@ object FormattingService {
 
         val formattedValue =
             when {
-                finalValue >= 100 -> String.format("%.0f", finalValue)
-                finalValue >= 10 -> String.format("%.1f", finalValue)
-                else -> String.format("%.2f", finalValue)
-            }.apply {
-                if (contains('.')) {
-                    trimEnd('0')
-                    trimEnd('.')
+                finalValue >= 100 -> {
+                    String
+                        .format("%.0f", finalValue)
+                }
+
+                finalValue >= 10 -> {
+                    String
+                        .format("%.1f", finalValue)
+                        .trimEnd('0')
+                        .trimEnd('.')
+                }
+
+                else -> {
+                    String
+                        .format("%.2f", finalValue)
+                        .trimEnd('0')
+                        .trimEnd('.')
                 }
             }
 

@@ -1,8 +1,8 @@
 package me.xbackpack.galaxysky.service
 
-import me.xbackpack.galaxysky.item.api.giveItem
-import me.xbackpack.galaxysky.item.registry.Materials
-import me.xbackpack.galaxysky.message.Message
+import me.xbackpack.galaxysky.api.message.Message
+import me.xbackpack.galaxysky.giveItem
+import me.xbackpack.galaxysky.registry.item.Items
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
@@ -74,7 +74,7 @@ object AFKService {
             }
 
         if (seconds != 1 && timeUntilNextPayout == 1) {
-            val item = Materials.AFK_TOKEN
+            val item = Items.AFK_TOKEN
 
             player.giveItem(item)
         }

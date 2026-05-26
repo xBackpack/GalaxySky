@@ -1,8 +1,8 @@
 package me.xbackpack.galaxysky.service
 
+import me.xbackpack.galaxysky.api.message.Message
 import me.xbackpack.galaxysky.enum.player.PlayerStatType
 import me.xbackpack.galaxysky.hook.PlaceholderHook
-import me.xbackpack.galaxysky.message.Message
 import me.xbackpack.galaxysky.service.FormattingService.shortenStat
 import me.xbackpack.galaxysky.service.FormattingService.shortenTime
 import net.kyori.adventure.text.format.NamedTextColor
@@ -85,7 +85,7 @@ object ScoreboardService {
 
                 space()
 
-                val stat = PDCService.Player.Stats[player, type]
+                val stat = PDCService.PlayerData.Stats[player, type]
 
                 text(formatter(stat)) {
                     colour(NamedTextColor.AQUA)

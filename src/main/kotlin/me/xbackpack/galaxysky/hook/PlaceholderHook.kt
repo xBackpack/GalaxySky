@@ -30,14 +30,14 @@ object PlaceholderHook : PlaceholderExpansion() {
         "shop_name" -> SHOP_NAME
         "shop_link" -> SHOP_LINK
         "discord" -> DISCORD
-        "playtime" -> PDCService.Player.Stats[player, PlayerStatType.PLAYTIME].toString()
-        "blocks" -> PDCService.Player.Stats[player, PlayerStatType.BLOCKS_MINED].toString()
-        "kills" -> PDCService.Player.Stats[player, PlayerStatType.KILLS].toString()
-        "deaths" -> PDCService.Player.Stats[player, PlayerStatType.DEATHS].toString()
-        "playtime_formatted" -> FormattingService.shortenTime(PDCService.Player.Stats[player, PlayerStatType.PLAYTIME])
-        "blocks_formatted" -> FormattingService.shortenStat(PDCService.Player.Stats[player, PlayerStatType.BLOCKS_MINED])
-        "kills_formatted" -> FormattingService.shortenStat(PDCService.Player.Stats[player, PlayerStatType.KILLS])
-        "deaths_formatted" -> FormattingService.shortenStat(PDCService.Player.Stats[player, PlayerStatType.DEATHS])
+        "playtime" -> PDCService.PlayerData.Stats[player, PlayerStatType.PLAYTIME].toString()
+        "blocks" -> PDCService.PlayerData.Stats[player, PlayerStatType.BLOCKS_MINED].toString()
+        "kills" -> PDCService.PlayerData.Stats[player, PlayerStatType.KILLS].toString()
+        "deaths" -> PDCService.PlayerData.Stats[player, PlayerStatType.DEATHS].toString()
+        "playtime_formatted" -> FormattingService.shortenTime(PDCService.PlayerData.Stats[player, PlayerStatType.PLAYTIME])
+        "blocks_formatted" -> FormattingService.shortenStat(PDCService.PlayerData.Stats[player, PlayerStatType.BLOCKS_MINED])
+        "kills_formatted" -> FormattingService.shortenStat(PDCService.PlayerData.Stats[player, PlayerStatType.KILLS])
+        "deaths_formatted" -> FormattingService.shortenStat(PDCService.PlayerData.Stats[player, PlayerStatType.DEATHS])
         else -> null
     }
 }
