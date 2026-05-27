@@ -56,7 +56,7 @@ object PlayerService {
                     text(player.name) {
                         colour(NamedTextColor.GRAY)
                     }
-                }.root,
+                }.component,
         )
 
         player.setRespawnLocation(LocationService.WORLD_SPAWN, true)
@@ -88,13 +88,15 @@ object PlayerService {
 
                             colour(NamedTextColor.GRAY)
                         }
-                    }.root,
+                    }.component,
             )
 
             val item = Pickaxes.BaysideBeach.STONE_PICKAXE_1
 
             player.giveItem(item)
         }
+
+        ScoreboardService.create(player)
 
         player.teleport(LocationService.WORLD_SPAWN)
     }
@@ -122,8 +124,10 @@ object PlayerService {
                     text(player.name) {
                         colour(NamedTextColor.GRAY)
                     }
-                }.root,
+                }.component,
         )
+
+        ScoreboardService.remove(player)
     }
 
     fun onPlayerWorldChange(event: PlayerChangedWorldEvent) {
@@ -196,7 +200,13 @@ object PlayerService {
 
                         colour(NamedTextColor.DARK_GRAY)
                     }
-                }.root,
+                }.component,
         )
+    }
+
+    fun updatePlaytime() {
+        Bukkit.getOnlinePlayers().forEach { player ->
+            PDCService.PlayerData.Stats.inc(player, PlayerStatType.PLAYTIME)
+        }
     }
 }

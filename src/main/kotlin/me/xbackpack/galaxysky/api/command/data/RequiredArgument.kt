@@ -1,6 +1,8 @@
 package me.xbackpack.galaxysky.api.command.data
 
 import com.mojang.brigadier.arguments.ArgumentType
+import com.mojang.brigadier.builder.RequiredArgumentBuilder
+import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.Commands
 import me.xbackpack.galaxysky.api.command.common.CommandDsl
 
@@ -13,5 +15,5 @@ data class RequiredArgument(
 
     override fun hashCode() = name.hashCode()
 
-    fun build() = Commands.argument(name, type)
+    fun build(): RequiredArgumentBuilder<CommandSourceStack, *> = Commands.argument(name, type)
 }

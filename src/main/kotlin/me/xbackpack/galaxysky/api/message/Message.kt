@@ -5,7 +5,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 
 @MessageDsl
 data class Message(
-    val root: Component,
+    val component: Component,
 ) {
     companion object {
         fun empty() = Message(Component.empty())
@@ -20,6 +20,10 @@ data class Message(
                 if (bold) bold()
             }
         }
+
+        fun space() = Message(Component.space())
+
+        fun newline() = Message(Component.newline())
 
         fun create(builder: MessageBuilder.() -> Unit) = MessageBuilder().apply(builder).build()
     }

@@ -9,16 +9,15 @@ import me.xbackpack.galaxysky.api.command.data.RequiredArgument
 import me.xbackpack.galaxysky.api.command.data.SubCommand
 import me.xbackpack.galaxysky.api.command.function.ConsoleCommandFunction
 import me.xbackpack.galaxysky.api.command.function.PlayerCommandFunction
-import me.xbackpack.galaxysky.enum.command.SenderRequirement
+import me.xbackpack.galaxysky.api.command.function.WrappedSenderRequirement
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 
 @CommandDsl
 interface Node {
     val name: String
-    var requirement: SenderRequirement?
-    var permission: String?
-    var cooldown: Cooldown?
+    val requirement: WrappedSenderRequirement
+    val cooldown: Cooldown?
 
     var playerFunction: ((Player, ArgumentGetter) -> PlayerCommandFunction)?
     var consoleFunction: ((ConsoleCommandSender, ArgumentGetter) -> ConsoleCommandFunction)?
@@ -41,27 +40,25 @@ interface Node {
 
     fun subcommand(
         name: String,
+        requirement: WrappedSenderRequirement = this@Node.requirement,
         factory: SubCommand.() -> Unit,
     ) = subcommands.add(
-        SubCommand(name)
+        SubCommand(name, requirement)
             .apply(factory)
             .apply {
-                requirement = requirement ?: this@Node.requirement
-                permission = permission ?: this@Node.permission
                 cooldown = cooldown ?: this@Node.cooldown
             },
     )
 
     fun optional(
         name: String,
+        requirement: WrappedSenderRequirement = this@Node.requirement,
         type: ArgumentType<*>,
         factory: OptionalArgument.() -> Unit,
     ) = optionals.add(
-        OptionalArgument(name, type)
+        OptionalArgument(name, requirement, type)
             .apply(factory)
             .apply {
-                requirement = requirement ?: this@Node.requirement
-                permission = permission ?: this@Node.permission
                 cooldown = cooldown ?: this@Node.cooldown
             },
     )

@@ -27,7 +27,7 @@ class ItemBuilder(
     override var id: String,
 ) : BaseItem {
     override var amount = 1
-    override var description = mutableListOf<Message>()
+    override var description = listOf<Message>()
     override var unbreakable = false
     override var glowing = false
 
@@ -38,7 +38,7 @@ class ItemBuilder(
         val item = ItemStack(material, amount)
 
         // Assigning the name
-        item.setData(DataComponentTypes.ITEM_NAME, name.root)
+        item.setData(DataComponentTypes.ITEM_NAME, name.component)
 
         // Setting up the lore
         val lore =
@@ -82,17 +82,7 @@ class ItemBuilder(
 
                 if (description.isNotEmpty()) newline()
 
-                section {
-                    text(type.name)
-
-                    space()
-
-                    text("|")
-
-                    space()
-
-                    text(region.displayName.uppercase())
-
+                text(type.name) {
                     colour(region.colour)
                     bold()
                 }
@@ -123,7 +113,8 @@ class ItemBuilder(
 
         // Handling attributes
         if (stats.contains(ItemStatType.MINING_SPEED)) {
-            val value = stats[ItemStatType.MINING_SPEED]!!
+            val (additive, multiplicative) = doAllTheMaths()
+
             val attributes =
                 ItemAttributeModifiers
                     .itemAttributes()
@@ -131,7 +122,15 @@ class ItemBuilder(
                         Attribute.MINING_EFFICIENCY,
                         AttributeModifier(
                             ItemStatType.MINING_SPEED.key,
-                            value.toDouble() - getNaturalStrengthOfTool(material),
+                            additive,
+                            AttributeModifier.Operation.ADD_NUMBER,
+                            EquipmentSlotGroup.MAINHAND,
+                        ),
+                    ).addModifier(
+                        Attribute.BLOCK_BREAK_SPEED,
+                        AttributeModifier(
+                            ItemStatType.MINING_SPEED.key2,
+                            multiplicative.toDouble() - 1,
                             AttributeModifier.Operation.ADD_NUMBER,
                             EquipmentSlotGroup.MAINHAND,
                         ),
@@ -157,11 +156,11 @@ class ItemBuilder(
             space()
 
             section {
-                if (amount > 0) {
+                if (amount > 0 && type != ItemStatType.BREAKING_POWER) {
                     text("+")
                 }
 
-                text(amount.toString().trimEnd('0').trimEnd('.'))
+                text(String.format("%,d", amount))
 
                 colour(type.purpose.colour)
             }
@@ -189,15 +188,38 @@ class ItemBuilder(
                 .map { it.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE) },
         )
 
-    private fun getNaturalStrengthOfTool(tool: Material) =
-        when (tool) {
-            Material.WOODEN_PICKAXE -> 2
-            Material.STONE_PICKAXE -> 4
-            Material.COPPER_PICKAXE -> 5
-            Material.IRON_PICKAXE -> 6
-            Material.DIAMOND_PICKAXE -> 8
-            Material.NETHERITE_PICKAXE -> 9
-            Material.GOLDEN_PICKAXE -> 12
-            else -> 0
+    private fun doAllTheMaths(): Pair<Double, Int> {
+        val miningSpeed = stats[ItemStatType.MINING_SPEED]!!.toDouble() / 100 // n
+        val toolConstant = getNaturalStrengthOfTool(material) // b
+        val max = 1024 // a
+        val additive: Double // x
+        val multiplicative: Int // y
+
+        if (miningSpeed >= max + toolConstant) {
+            additive = (miningSpeed / 2) - toolConstant
+            multiplicative = 2
+        } else if (miningSpeed >= toolConstant) {
+            additive = miningSpeed - toolConstant
+            multiplicative = 1
+        } else {
+            additive = 0.0
+            multiplicative = 0
         }
+
+        return additive to multiplicative
+    }
+
+    companion object {
+        fun getNaturalStrengthOfTool(tool: Material) =
+            when (tool) {
+                Material.WOODEN_PICKAXE -> 2
+                Material.STONE_PICKAXE -> 4
+                Material.COPPER_PICKAXE -> 5
+                Material.IRON_PICKAXE -> 6
+                Material.DIAMOND_PICKAXE -> 8
+                Material.NETHERITE_PICKAXE -> 9
+                Material.GOLDEN_PICKAXE -> 12
+                else -> 0
+            }
+    }
 }

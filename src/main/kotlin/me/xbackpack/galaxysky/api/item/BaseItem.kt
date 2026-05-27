@@ -13,7 +13,7 @@ interface BaseItem {
     var type: ItemType
     var region: ItemRegion
     var amount: Int
-    var description: MutableList<Message>
+    var description: List<Message>
     var id: String
     var unbreakable: Boolean
     var glowing: Boolean

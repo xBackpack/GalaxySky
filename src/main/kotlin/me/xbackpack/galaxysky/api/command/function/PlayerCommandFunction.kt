@@ -20,39 +20,68 @@ class PlayerCommandFunction(
 ) : CommandFunction {
     override val functions = mutableListOf<() -> Unit>()
 
-    fun sendMessage(builder: MessageBuilder.() -> Unit) {
+    fun sendMessage(
+        target: Player = player,
+        builder: MessageBuilder.() -> Unit,
+    ) {
         functions.add {
-            player.sendMessage(Message.create(builder))
+            target.sendMessage(Message.create(builder))
         }
     }
 
-    fun showInv(inventory: InventoryHolder) {
+    fun showInv(
+        inventory: InventoryHolder,
+        target: Player = player,
+    ) {
         functions.add {
-            player.openInventory(inventory.inventory)
+            target.openInventory(inventory.inventory)
         }
     }
 
-    fun teleport(location: Location) {
+    fun teleport(
+        location: Location,
+        target: Player = player,
+    ) {
         functions.add {
-            player.teleport(location)
+            target.teleport(location)
         }
     }
 
-    fun giveItem(item: Item) {
+    fun giveItem(
+        item: Item,
+        target: Player = player,
+    ) {
         functions.add {
-            player.giveItem(item)
+            target.giveItem(item)
         }
     }
 
-    inline fun <reified T : Entity> spawnEntity(settings: T.() -> Unit) {
-        player.world
-            .spawn(player.location, T::class.java)
-            .apply(settings)
+    inline fun <reified T : Entity> spawnEntity(
+        target: Player = player,
+        crossinline settings: T.() -> Unit,
+    ) {
+        functions.add {
+            target.world
+                .spawn(player.location, T::class.java)
+                .apply(settings)
+        }
     }
 
-    fun updateGameMode(gamemode: GameMode) {
+    fun updateGameMode(
+        gamemode: GameMode,
+        target: Player = player,
+    ) {
         functions.add {
-            player.gameMode = gamemode
+            target.gameMode = gamemode
+        }
+    }
+
+    fun updateFlyingSpeed(
+        new: Int,
+        target: Player = player,
+    ) {
+        functions.add {
+            target.flySpeed = (new.toFloat() / 10)
         }
     }
 }

@@ -1,31 +1,35 @@
 package me.xbackpack.galaxysky.registry.command
 
+import com.mojang.brigadier.arguments.IntegerArgumentType
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes
+import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
 import me.xbackpack.galaxysky.api.command.data.Command
 import me.xbackpack.galaxysky.enum.command.SenderRequirement
 import me.xbackpack.galaxysky.registry.item.Pickaxes
 import me.xbackpack.galaxysky.service.LocationService
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.GameMode
+import org.bukkit.entity.Player
 
 object StaffCommandRegistry {
     private val ADMIN_PICKAXE =
-        Command.create {
-            name = "adminpickaxe"
-            description = "Gives the player the starter pickaxe"
-            permission = "galaxysky.command.adminpickaxe"
-
-            doForPlayer { _, (context) ->
+        Command.create(
+            "adminpickaxe",
+            "Gives the player the starter pickaxe",
+            SenderRequirement.STAFF(),
+        ) {
+            doForPlayer { _, _ ->
                 giveItem(Pickaxes.ADMIN_PICKAXE)
             }
         }
 
     private val AREA =
-        Command.create {
-            name = "area"
-            description = "Teleports the player to the specified area"
-            requirement = SenderRequirement.STAFF
-
-            doForPlayer { _, (context) ->
+        Command.create(
+            "area",
+            "Teleports the player to the specified area",
+            SenderRequirement.STAFF(),
+        ) {
+            doForPlayer { _, _ ->
                 sendMessage {
                     text("Please specify a valid world") {
                         colour(NamedTextColor.RED)
@@ -33,31 +37,48 @@ object StaffCommandRegistry {
                 }
             }
 
-            subcommand("staff") {
-                permission = "galaxysky.area.staff"
-
-                doForPlayer { _, (context) ->
+            subcommand("staff", SenderRequirement.STAFF_OR_PERMISSION("galaxysky.area.staff")) {
+                doForPlayer { _, _ ->
                     teleport(LocationService.STAFF_AREA)
                 }
             }
 
-            subcommand("builder") {
-                permission = "galaxysky.area.builder"
-
-                doForPlayer { _, (context) ->
+            subcommand("builder", SenderRequirement.STAFF_OR_PERMISSION("galaxysky.area.builder")) {
+                doForPlayer { _, _ ->
                     teleport(LocationService.BUILDER_AREA)
                 }
             }
         }
 
     private val GMC =
-        Command.create {
-            name = "gmc"
-            description = "Updates the player's game mode to creative"
+        Command.create(
+            "gmc",
+            "Updates the player's game mode to creative",
+            SenderRequirement.STAFF(),
+        ) {
             aliases = listOf("creative")
-            permission = "galaxysky.gamemode.creative"
 
-            doForPlayer { _, (context) ->
+            optional("player", SenderRequirement.STAFF(), ArgumentTypes.player()) {
+                doForPlayer { _, getter ->
+                    val target = getter.extractAndResolveFirst<PlayerSelectorArgumentResolver, Player>("player")
+
+                    sendMessage {
+                        text("You updated ${target.name}'s game to creative!") {
+                            colour(NamedTextColor.GREEN)
+                        }
+                    }
+
+                    sendMessage(target) {
+                        text("Your gamemode has been updated to creative!") {
+                            colour(NamedTextColor.GREEN)
+                        }
+                    }
+
+                    updateGameMode(GameMode.CREATIVE, target)
+                }
+            }
+
+            doForPlayer { _, _ ->
                 sendMessage {
                     text("Your gamemode has been updated to creative!") {
                         colour(NamedTextColor.GREEN)
@@ -69,13 +90,34 @@ object StaffCommandRegistry {
         }
 
     private val GMS =
-        Command.create {
-            name = "gms"
-            description = "Updates the player's game mode to survival"
+        Command.create(
+            "gms",
+            "Updates the players game mode to survival",
+            SenderRequirement.STAFF(),
+        ) {
             aliases = listOf("survival")
-            permission = "galaxysky.gamemode.survival"
 
-            doForPlayer { _, (context) ->
+            optional("player", SenderRequirement.STAFF(), ArgumentTypes.player()) {
+                doForPlayer { _, getter ->
+                    val target = getter.extractAndResolveFirst<PlayerSelectorArgumentResolver, Player>("player")
+
+                    sendMessage {
+                        text("You updated ${target.name}'s game to survival!") {
+                            colour(NamedTextColor.GREEN)
+                        }
+                    }
+
+                    sendMessage(target) {
+                        text("Your gamemode has been updated to survival!") {
+                            colour(NamedTextColor.GREEN)
+                        }
+                    }
+
+                    updateGameMode(GameMode.SURVIVAL, target)
+                }
+            }
+
+            doForPlayer { _, _ ->
                 sendMessage {
                     text("Your gamemode has been updated to survival!") {
                         colour(NamedTextColor.GREEN)
@@ -87,13 +129,34 @@ object StaffCommandRegistry {
         }
 
     private val GMSP =
-        Command.create {
-            name = "gmsp"
-            description = "Updates the player's game mode to spectator"
+        Command.create(
+            "gmsp",
+            "Updates the players game mode to spectator",
+            SenderRequirement.STAFF(),
+        ) {
             aliases = listOf("spectator")
-            permission = "galaxysky.gamemode.spectator"
 
-            doForPlayer { _, (context) ->
+            optional("player", SenderRequirement.STAFF(), ArgumentTypes.player()) {
+                doForPlayer { _, getter ->
+                    val target = getter.extractAndResolveFirst<PlayerSelectorArgumentResolver, Player>("player")
+
+                    sendMessage {
+                        text("You updated ${target.name}'s game to spectator!") {
+                            colour(NamedTextColor.GREEN)
+                        }
+                    }
+
+                    sendMessage(target) {
+                        text("Your gamemode has been updated to spectator!") {
+                            colour(NamedTextColor.GREEN)
+                        }
+                    }
+
+                    updateGameMode(GameMode.SPECTATOR, target)
+                }
+            }
+
+            doForPlayer { _, _ ->
                 sendMessage {
                     text("Your gamemode has been updated to spectator!") {
                         colour(NamedTextColor.GREEN)
@@ -105,13 +168,34 @@ object StaffCommandRegistry {
         }
 
     private val GMA =
-        Command.create {
-            name = "gma"
-            description = "Updates the player's game mode to adventure"
+        Command.create(
+            "gma",
+            "Updates the player's game mode to adventure",
+            SenderRequirement.STAFF(),
+        ) {
             aliases = listOf("adventure")
-            permission = "galaxysky.gamemode.adventure"
 
-            doForPlayer { _, (context) ->
+            optional("player", SenderRequirement.STAFF(), ArgumentTypes.player()) {
+                doForPlayer { _, getter ->
+                    val target = getter.extractAndResolveFirst<PlayerSelectorArgumentResolver, Player>("player")
+
+                    sendMessage {
+                        text("You updated ${target.name}'s game to adventure!") {
+                            colour(NamedTextColor.GREEN)
+                        }
+                    }
+
+                    sendMessage(target) {
+                        text("Your gamemode has been updated to adventure!") {
+                            colour(NamedTextColor.GREEN)
+                        }
+                    }
+
+                    updateGameMode(GameMode.ADVENTURE, target)
+                }
+            }
+
+            doForPlayer { _, _ ->
                 sendMessage {
                     text("Your gamemode has been updated to adventure!") {
                         colour(NamedTextColor.GREEN)
@@ -119,6 +203,21 @@ object StaffCommandRegistry {
                 }
 
                 updateGameMode(GameMode.ADVENTURE)
+            }
+        }
+
+    private val FLYSPEED =
+        Command.create(
+            "flyspeed",
+            "Controls the player's flying speed",
+            SenderRequirement.PERMISSION("galaxysky.command.fly"),
+        ) {
+            argument("speed", IntegerArgumentType.integer(0, 10))
+
+            doForPlayer { _, getter ->
+                val speed = getter.extract<Int>("speed")
+
+                updateFlyingSpeed(speed)
             }
         }
 
@@ -130,5 +229,6 @@ object StaffCommandRegistry {
             GMS,
             GMSP,
             GMA,
+            FLYSPEED,
         )
 }

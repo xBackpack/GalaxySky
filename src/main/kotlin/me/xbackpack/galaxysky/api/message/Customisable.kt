@@ -15,7 +15,7 @@ interface Customisable {
 
     fun section(block: SectionBuilder.() -> Unit) {
         val subGroup = SectionBuilder().apply(block)
-        children += subGroup.build().root
+        children += subGroup.build().component
     }
 
     fun text(
@@ -66,7 +66,7 @@ interface Customisable {
     }
 
     fun component(message: Message) {
-        children += message.root
+        children += message.component
     }
 
     fun component(component: Component) {

@@ -14,13 +14,13 @@ import kotlin.time.TimeSource
 @CommandDsl
 data class Cooldown(
     val cooldownDuration: Duration,
-    val staffCanUse: Boolean = false,
+    val appliesToStaff: Boolean = false,
     val messageOverride: ((Double) -> Message)? = null,
 ) {
     private val cooldowned = mutableMapOf<UUID, TimeMark>()
 
     fun startCooldown(player: Player) {
-        if (!staffCanUse && LuckPermsService.isStaff(player)) return
+        if (!appliesToStaff && LuckPermsService.isStaff(player)) return
 
         if (isOnCooldown(player)) return
 

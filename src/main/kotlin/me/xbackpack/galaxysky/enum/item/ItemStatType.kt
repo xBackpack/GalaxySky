@@ -9,6 +9,7 @@ enum class ItemStatType(
     val statName: String,
     val purpose: ItemStatPurpose,
     val key: NamespacedKey,
+    val key2: NamespacedKey = key,
 ) {
     BREAKING_POWER(
         "Breaking Power",
@@ -18,7 +19,8 @@ enum class ItemStatType(
     MINING_SPEED(
         "Mining Speed",
         ItemStatPurpose.UTILITY,
-        GalaxySky.createKey("mining_speed"),
+        GalaxySky.createKey("mining_speed_add"),
+        GalaxySky.createKey("mining_speed_mult"),
     ),
     ORE_FORTUNE(
         "Ore Fortune",

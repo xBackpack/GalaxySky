@@ -50,7 +50,7 @@ object ChatService {
         )
 
     fun sendRandomMessage() {
-        Bukkit.broadcast(chatMessages.random().root)
+        Bukkit.broadcast(chatMessages.random().component)
     }
 
     fun init() {
@@ -106,7 +106,7 @@ object ChatService {
                                 if (primaryGroupName == "default") NamedTextColor.GRAY else NamedTextColor.WHITE,
                             )
                         }
-                    }.root
+                    }.component
             }
         }
     }

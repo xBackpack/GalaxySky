@@ -37,9 +37,31 @@ class NodeBuilder<T : ArgumentBuilder<CommandSourceStack, T>>(
                 val src = ctx.source
                 val sender = src.sender
 
-                if (node.requirement == SenderRequirement.PLAYER && src.executor !is Player) {
-                    sender.sendMessage("Only players can use this comand")
-                    return@executes Command.SINGLE_SUCCESS
+                // Entity executing command checks
+                when (node.requirement.type) {
+                    SenderRequirement.PLAYER,
+                    SenderRequirement.PERMISSION,
+                    SenderRequirement.STAFF,
+                    SenderRequirement.STAFF_OR_PERMISSION,
+                    -> {
+                        if (src.executor !is Player) {
+                            sender.sendMessage("Only players can use this comand")
+                            return@executes Command.SINGLE_SUCCESS
+                        }
+                    }
+
+                    SenderRequirement.CONSOLE -> {
+                        if (src.executor !is ConsoleCommandSender) {
+                            sender.sendMessage("Only console can use this command")
+                            return@executes Command.SINGLE_SUCCESS
+                        }
+                    }
+
+                    SenderRequirement.STAFF_OR_CONSOLE,
+                    SenderRequirement.STAFF_OR_PERMISSION_OR_CONSOLE,
+                    -> {
+                        // No checks
+                    }
                 }
 
                 node.cooldown
@@ -52,12 +74,19 @@ class NodeBuilder<T : ArgumentBuilder<CommandSourceStack, T>>(
 
                 val getter = ArgumentGetter(ctx)
 
-                when (node.requirement) {
-                    SenderRequirement.PLAYER, SenderRequirement.STAFF -> {
+                // Command functionality checks
+                when (node.requirement.type) {
+                    SenderRequirement.PLAYER,
+                    SenderRequirement.PERMISSION,
+                    SenderRequirement.STAFF,
+                    SenderRequirement.STAFF_OR_PERMISSION,
+                    -> {
                         node.playerFunction?.runWith(sender as Player, getter)
                     }
 
-                    SenderRequirement.STAFF_OR_CONSOLE -> {
+                    SenderRequirement.STAFF_OR_CONSOLE,
+                    SenderRequirement.STAFF_OR_PERMISSION_OR_CONSOLE,
+                    -> {
                         (sender as? Player)?.let { player ->
                             node.playerFunction?.runWith(player, getter)
                         }
@@ -67,17 +96,9 @@ class NodeBuilder<T : ArgumentBuilder<CommandSourceStack, T>>(
                         }
                     }
 
-                    SenderRequirement.ANY -> {
-                        (sender as? Player)?.let { player ->
-                            node.playerFunction?.runWith(player, getter)
-                        }
-
-                        (sender as? ConsoleCommandSender)?.let { console ->
-                            node.consoleFunction?.runWith(console, getter)
-                        }
+                    SenderRequirement.CONSOLE -> {
+                        node.consoleFunction?.runWith(sender as ConsoleCommandSender, getter)
                     }
-
-                    else -> {}
                 }
 
                 node.cooldown
@@ -87,13 +108,55 @@ class NodeBuilder<T : ArgumentBuilder<CommandSourceStack, T>>(
                 Command.SINGLE_SUCCESS
             }
 
-        when (node.requirement) {
+        when (node.requirement.type) {
+            SenderRequirement.PLAYER, SenderRequirement.CONSOLE -> {
+                // Already done in final.executes {}
+            }
+
+            SenderRequirement.PERMISSION -> {
+                final =
+                    final.requires { src ->
+                        val sender = src.sender
+
+                        sender is Player && (sender.isOp || LuckPermsService.hasPermission(sender, node.requirement.permission!!))
+                    }
+            }
+
             SenderRequirement.STAFF -> {
                 final =
                     final.requires { src ->
                         val sender = src.sender
 
                         sender is Player && (sender.isOp || LuckPermsService.isStaff(sender))
+                    }
+            }
+
+            SenderRequirement.STAFF_OR_PERMISSION -> {
+                final =
+                    final.requires { src ->
+                        val sender = src.sender
+
+                        sender is Player &&
+                            (
+                                sender.isOp ||
+                                    LuckPermsService.isStaff(sender) ||
+                                    LuckPermsService.hasPermission(sender, node.requirement.permission!!)
+                            )
+                    }
+            }
+
+            SenderRequirement.STAFF_OR_PERMISSION_OR_CONSOLE -> {
+                final =
+                    final.requires { src ->
+                        val sender = src.sender
+
+                        sender.isOp ||
+                            (
+                                sender is Player && (
+                                    LuckPermsService.isStaff(sender) ||
+                                        LuckPermsService.hasPermission(sender, node.requirement.permission!!)
+                                )
+                            )
                     }
             }
 
@@ -105,17 +168,6 @@ class NodeBuilder<T : ArgumentBuilder<CommandSourceStack, T>>(
                         sender.isOp || (sender is Player && LuckPermsService.isStaff(sender))
                     }
             }
-
-            else -> {}
-        }
-
-        node.permission?.let {
-            final =
-                final.requires { src ->
-                    val sender = src.sender
-
-                    sender.isOp || sender.hasPermission(it)
-                }
         }
     }
 

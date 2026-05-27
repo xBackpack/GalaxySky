@@ -31,8 +31,8 @@ object Pickaxes {
                 unbreakable = true
 
                 stats[ItemStatType.BREAKING_POWER] = 1
-                stats[ItemStatType.MINING_SPEED] = 5
-                stats[ItemStatType.ORE_FORTUNE] = 5
+                stats[ItemStatType.MINING_SPEED] = 400
+                stats[ItemStatType.ORE_FORTUNE] = 0
             }
     }
 
@@ -50,22 +50,24 @@ object Pickaxes {
                         colour(NamedTextColor.RED)
                         underlined()
                     }
-
-                    section {
-                        text("Failure to return this to a member of")
-
-                        newline()
-
-                        text("staff will result in a permanent ban.")
-
+                }
+            description +=
+                Message.create {
+                    text("Failure to return this to a member of") {
+                        colour(NamedTextColor.DARK_RED)
+                    }
+                }
+            description +=
+                Message.create {
+                    text("staff will result in a permanent ban.") {
                         colour(NamedTextColor.DARK_RED)
                     }
                 }
 
             unbreakable = true
 
-            stats[ItemStatType.BREAKING_POWER] = 1000
-            stats[ItemStatType.MINING_SPEED] = 100000
-            stats[ItemStatType.ORE_FORTUNE] = 50000
+            stats[ItemStatType.BREAKING_POWER] = 100
+            stats[ItemStatType.MINING_SPEED] = 250000
+            stats[ItemStatType.ORE_FORTUNE] = 900
         }
 }

@@ -8,18 +8,17 @@ import me.xbackpack.galaxysky.api.command.common.CommandDsl
 import me.xbackpack.galaxysky.api.command.common.Cooldown
 import me.xbackpack.galaxysky.api.command.function.ConsoleCommandFunction
 import me.xbackpack.galaxysky.api.command.function.PlayerCommandFunction
+import me.xbackpack.galaxysky.api.command.function.WrappedSenderRequirement
 import me.xbackpack.galaxysky.api.command.node.Node
 import me.xbackpack.galaxysky.api.command.node.NodeBuilder
-import me.xbackpack.galaxysky.enum.command.SenderRequirement
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 
 @CommandDsl
 data class SubCommand(
     override val name: String,
+    override val requirement: WrappedSenderRequirement,
 ) : Node {
-    override var requirement: SenderRequirement? = null
-    override var permission: String? = null
     override var cooldown: Cooldown? = null
 
     override var playerFunction: ((Player, ArgumentGetter) -> PlayerCommandFunction)? = null

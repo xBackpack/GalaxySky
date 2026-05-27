@@ -15,7 +15,6 @@
         <java.version>25</java.version>
         <kotlin.version>2.3.21</kotlin.version>
         <paper.version>26.1.2</paper.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>

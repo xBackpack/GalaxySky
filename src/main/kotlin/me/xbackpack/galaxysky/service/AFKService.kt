@@ -30,7 +30,7 @@ object AFKService {
 
                     colour(NamedTextColor.LIGHT_PURPLE)
                 }
-            }.root
+            }.component
 
     fun update() {
         Bukkit.getOnlinePlayers().forEach { player ->

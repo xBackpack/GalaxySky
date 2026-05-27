@@ -4,6 +4,7 @@ import me.clip.placeholderapi.PlaceholderAPI
 import me.xbackpack.galaxysky.api.item.Item
 import me.xbackpack.galaxysky.api.message.Message
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -32,13 +33,14 @@ fun Player.giveItem(itemStack: ItemStack) {
                         text("Inventory Full!") {
                             colour(NamedTextColor.RED)
                         }
-                    }.root,
+                    }.component,
             )
+            playSound(this, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 0.5f)
         }
 }
 
 fun CommandSender.sendMessage(message: Message) {
-    sendMessage(message.root)
+    sendMessage(message.component)
 }
 
 inline val Duration.inWholeTicks: Long

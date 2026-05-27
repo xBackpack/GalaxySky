@@ -8,16 +8,14 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
 object LuckPermsService {
-    private val luckPerms = LuckPermsProvider.get()
-
     private fun getUser(player: OfflinePlayer) =
-        luckPerms.userManager.getUser(player.uniqueId) ?: error("Could not find player: ${player.name}")
+        LuckPermsProvider.get().userManager.getUser(player.uniqueId) ?: error("Could not find player: ${player.name}")
 
-    private fun getGroup(name: String) = luckPerms.groupManager.getGroup(name) ?: error("Could not find group: $name}")
+    private fun getGroup(name: String) = LuckPermsProvider.get().groupManager.getGroup(name) ?: error("Could not find group: $name}")
 
-    private fun getTrack(name: String) = luckPerms.trackManager.getTrack(name) ?: error("Could not find track: $name")
+    private fun getTrack(name: String) = LuckPermsProvider.get().trackManager.getTrack(name) ?: error("Could not find track: $name")
 
-    private fun saveUser(user: User) = luckPerms.userManager.saveUser(user)
+    private fun saveUser(user: User) = LuckPermsProvider.get().userManager.saveUser(user)
 
     fun hasPermission(
         player: OfflinePlayer,

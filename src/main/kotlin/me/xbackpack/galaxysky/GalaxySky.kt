@@ -11,6 +11,7 @@ import me.xbackpack.galaxysky.service.AFKService
 import me.xbackpack.galaxysky.service.ChatService
 import me.xbackpack.galaxysky.service.ListenerService
 import me.xbackpack.galaxysky.service.MiningService
+import me.xbackpack.galaxysky.service.PlayerService
 import me.xbackpack.galaxysky.service.ScoreboardService
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
@@ -27,28 +28,23 @@ class GalaxySky : JavaPlugin() {
         instance = this
         meta = pluginMeta
         pluginManager = server.pluginManager
-        Companion.logger = this@GalaxySky.logger
+        Companion.logger = logger
 
         // PlaceholderAPI
         PlaceholderHook.register()
 
-        this@GalaxySky.logger.info("Hooked into PlaceholderAPI!")
+        logger.info("Hooked into PlaceholderAPI!")
 
         // LuckPerms
         LuckPermsHook.init()
 
-        this@GalaxySky.logger.info("Hooked into LuckPerms!")
-
-        // Scoreboard
-        ScoreboardService.setupScoreboard()
-
-        this@GalaxySky.logger.info("Setup Scoreboard!")
+        logger.info("Hooked into LuckPerms!")
 
         // Listeners
         ListenerService.init()
         ChatService.init()
 
-        this@GalaxySky.logger.info("Loaded listeners!")
+        logger.info("Loaded listeners!")
 
         // Commands
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
@@ -59,20 +55,23 @@ class GalaxySky : JavaPlugin() {
             }
         }
 
-        this@GalaxySky.logger.info("Loaded commands!")
+        logger.info("Loaded commands!")
 
         // Every second
-        setupTimedTask(false, 1.seconds, AFKService::update, ScoreboardService::update)
+        setupTimedTask(false, 1.seconds, AFKService::update, PlayerService::updatePlaytime)
+
+        // Every 5 seconds
+        setupTimedTask(false, 5.seconds, ScoreboardService::updateAll)
 
         // Every 30 seconds
-        setupTimedTask(true, 45.seconds, MiningService::resetMines)
+        setupTimedTask(true, 30.seconds, MiningService::resetMines)
 
         // Every 5 minutes
         setupTimedTask(false, 5.minutes, ChatService::sendRandomMessage)
 
-        this@GalaxySky.logger.info("Set up scheduled events!")
+        logger.info("Set up scheduled events!")
 
-        this@GalaxySky.logger.info("Enabled!")
+        logger.info("Enabled!")
     }
 
     private fun setupTimedTask(
@@ -116,7 +115,7 @@ class GalaxySky : JavaPlugin() {
             holder: InventoryHolder,
             rows: Int,
             builder: MessageBuilder.() -> Unit,
-        ) = Bukkit.createInventory(holder, rows * 9, Message.create(builder).root)
+        ) = Bukkit.createInventory(holder, rows * 9, Message.create(builder).component)
 
         fun createKey(key: String) = NamespacedKey(instance, key)
 

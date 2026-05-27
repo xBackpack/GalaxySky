@@ -55,7 +55,7 @@ object VoidService {
 
                             colour(NamedTextColor.DARK_GRAY)
                         }
-                    }.root,
+                    }.component,
             )
         }
 

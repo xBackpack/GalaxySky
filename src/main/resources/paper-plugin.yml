@@ -30,7 +30,7 @@ permissions:
   galaxysky.command:
     default: false
     children:
-      galaxysky.command.adminpickaxe:
+      galaxysky.command.fly:
         default: false
   galaxysky.chat:
     default: false
