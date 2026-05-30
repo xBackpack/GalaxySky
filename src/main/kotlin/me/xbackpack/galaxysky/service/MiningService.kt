@@ -12,8 +12,10 @@ import me.xbackpack.galaxysky.registry.item.Materials.BaysideBeach
 import me.xbackpack.galaxysky.registry.item.Materials.CrimsonCove
 import me.xbackpack.galaxysky.registry.item.Materials.VibrantVoid
 import me.xbackpack.galaxysky.sendMessage
+import me.xbackpack.galaxysky.service.LuckPermsService.givePermission
 import me.xbackpack.galaxysky.service.PDCService.ItemData
 import me.xbackpack.galaxysky.service.PDCService.PlayerData
+import me.xbackpack.galaxysky.service.WorldGuardService.getFlag
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.GameMode
 import org.bukkit.Material
@@ -32,7 +34,7 @@ object MiningService {
 
         if (player.gameMode != GameMode.SURVIVAL) return
 
-        if (!WorldGuardService.getFlag(player, block.location, Flags.BLOCK_BREAK)) return
+        if (!block.location.getFlag(player, Flags.BLOCK_BREAK)) return
 
         val tool = player.inventory.itemInMainHand
 
@@ -68,7 +70,7 @@ object MiningService {
 
         when (PlayerData.Stats[player, PlayerStatType.BLOCKS_MINED]) {
             10000 -> {
-                LuckPermsService.givePermission(player, "galaxysky.world.nether")
+                player.givePermission("galaxysky.world.nether")
                 player.sendMessage(
                     Message.create {
                         section {
@@ -86,7 +88,7 @@ object MiningService {
             }
 
             25000 -> {
-                LuckPermsService.givePermission(player, "galaxysky.world.end")
+                player.givePermission("galaxysky.world.end")
                 player.sendMessage(
                     Message.create {
                         section {

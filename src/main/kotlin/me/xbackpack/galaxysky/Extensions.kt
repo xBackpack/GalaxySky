@@ -1,6 +1,7 @@
 package me.xbackpack.galaxysky
 
 import me.clip.placeholderapi.PlaceholderAPI
+import me.xbackpack.galaxysky.api.command.Argument
 import me.xbackpack.galaxysky.api.item.Item
 import me.xbackpack.galaxysky.api.message.Message
 import net.kyori.adventure.text.format.NamedTextColor
@@ -45,3 +46,5 @@ fun CommandSender.sendMessage(message: Message) {
 
 inline val Duration.inWholeTicks: Long
     get() = inWholeSeconds * 20
+
+operator fun List<Argument>.get(name: String) = first { it.name == name }

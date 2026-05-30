@@ -1,16 +1,16 @@
-package me.xbackpack.galaxysky.api.command.data
+package me.xbackpack.galaxysky.api.old.data
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.Commands
-import me.xbackpack.galaxysky.api.command.common.ArgumentGetter
-import me.xbackpack.galaxysky.api.command.common.CommandDsl
-import me.xbackpack.galaxysky.api.command.common.Cooldown
-import me.xbackpack.galaxysky.api.command.function.ConsoleCommandFunction
-import me.xbackpack.galaxysky.api.command.function.PlayerCommandFunction
-import me.xbackpack.galaxysky.api.command.function.WrappedSenderRequirement
-import me.xbackpack.galaxysky.api.command.node.Node
-import me.xbackpack.galaxysky.api.command.node.NodeBuilder
+import me.xbackpack.galaxysky.api.old.common.ArgumentGetter
+import me.xbackpack.galaxysky.api.old.common.CommandDsl
+import me.xbackpack.galaxysky.api.old.common.Cooldown
+import me.xbackpack.galaxysky.api.old.function.ConsoleCommandFunction
+import me.xbackpack.galaxysky.api.old.function.PlayerCommandFunction
+import me.xbackpack.galaxysky.api.old.function.WrappedSenderRequirement
+import me.xbackpack.galaxysky.api.old.node.Node
+import me.xbackpack.galaxysky.api.old.node.NodeBuilder
 import me.xbackpack.galaxysky.service.ListenerService
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player

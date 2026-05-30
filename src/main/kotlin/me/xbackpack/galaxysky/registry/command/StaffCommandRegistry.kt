@@ -3,7 +3,7 @@ package me.xbackpack.galaxysky.registry.command
 import com.mojang.brigadier.arguments.IntegerArgumentType
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
-import me.xbackpack.galaxysky.api.command.data.Command
+import me.xbackpack.galaxysky.api.old.data.Command
 import me.xbackpack.galaxysky.enum.command.SenderRequirement
 import me.xbackpack.galaxysky.registry.item.Pickaxes
 import me.xbackpack.galaxysky.service.LocationService
@@ -212,10 +212,16 @@ object StaffCommandRegistry {
             "Controls the player's flying speed",
             SenderRequirement.PERMISSION("galaxysky.command.fly"),
         ) {
-            argument("speed", IntegerArgumentType.integer(0, 10))
+            argument("speed", IntegerArgumentType.integer(-10, 10))
 
             doForPlayer { _, getter ->
                 val speed = getter.extract<Int>("speed")
+
+                sendMessage {
+                    text("You are now flying at ${speed}x speed!") {
+                        colour(NamedTextColor.GREEN)
+                    }
+                }
 
                 updateFlyingSpeed(speed)
             }

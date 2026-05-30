@@ -5,6 +5,11 @@ import me.xbackpack.galaxysky.GalaxySky
 import me.xbackpack.galaxysky.api.message.Message
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.sendMessage
+import me.xbackpack.galaxysky.service.FormattingService.legacyFormat
+import me.xbackpack.galaxysky.service.LuckPermsService.getPrefix
+import me.xbackpack.galaxysky.service.LuckPermsService.getPrimaryGroupName
+import me.xbackpack.galaxysky.service.LuckPermsService.getSuffix
+import me.xbackpack.galaxysky.service.LuckPermsService.isStaff
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
@@ -57,7 +62,7 @@ object ChatService {
         ListenerService.hookEvent<AsyncChatEvent> { event ->
             val player = event.player
 
-            if (GalaxySky.chatMuted && !LuckPermsService.hasPermission(player, "galaxysky.chat.exempt")) {
+            if (GalaxySky.chatMuted && !player.hasPermission("galaxysky.chat.exempt")) {
                 player.sendMessage(
                     Message.create {
                         text("You do not have permission to chat at this time") {
@@ -72,15 +77,15 @@ object ChatService {
             }
 
             event.renderer { _, displayName, message, _ ->
-                val primaryGroupName = LuckPermsService.getPrimaryGroupName(player)
+                val primaryGroupName = player.getPrimaryGroupName()
 
-                val prefix = LuckPermsService.getPrefix(player)
-                val suffix = LuckPermsService.getSuffix(player)
+                val prefix = player.getPrefix()
+                val suffix = player.getSuffix()
 
                 var finalMessage = message
 
-                if (LuckPermsService.isStaff(player)) {
-                    finalMessage = MiniMessage.miniMessage().deserialize(FormattingService.legacyFormat(message))
+                if (player.isStaff()) {
+                    finalMessage = MiniMessage.miniMessage().deserialize(message.legacyFormat())
                 }
 
                 Message

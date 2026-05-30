@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.api.command.common
+package me.xbackpack.galaxysky.api.old.common
 
 import com.mojang.brigadier.context.CommandContext
 import io.papermc.paper.command.brigadier.CommandSourceStack

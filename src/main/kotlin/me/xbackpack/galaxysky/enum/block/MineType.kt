@@ -2,8 +2,8 @@ package me.xbackpack.galaxysky.enum.block
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion
 import me.xbackpack.galaxysky.service.LocationService
-import me.xbackpack.galaxysky.service.WorldGuardService
 import me.xbackpack.galaxysky.service.WorldGuardService.fill
+import me.xbackpack.galaxysky.service.WorldGuardService.getRegion
 import me.xbackpack.galaxysky.service.WorldGuardService.isInsideRegion
 import org.bukkit.Bukkit
 import org.bukkit.World
@@ -39,9 +39,9 @@ enum class MineType(
         double
             .takeIf { it }
             ?.let {
-                regions.add(WorldGuardService.getRegion(world, "${id}1") ?: error("No region called ${id}1"))
-                regions.add(WorldGuardService.getRegion(world, "${id}2") ?: error("No region called ${id}2"))
-            } ?: regions.add(WorldGuardService.getRegion(world, id) ?: error("No region called $id"))
+                regions.add(world.getRegion("${id}1") ?: error("No region called ${id}1"))
+                regions.add(world.getRegion("${id}2") ?: error("No region called ${id}2"))
+            } ?: regions.add(world.getRegion(id) ?: error("No region called $id"))
 
         regions.forEach { region ->
             region.fill(world, blockType)

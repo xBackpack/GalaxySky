@@ -1,9 +1,9 @@
-package me.xbackpack.galaxysky.api.command.function
+package me.xbackpack.galaxysky.api.old.function
 
-import me.xbackpack.galaxysky.api.command.common.ArgumentGetter
-import me.xbackpack.galaxysky.api.command.common.CommandDsl
 import me.xbackpack.galaxysky.api.message.Message
 import me.xbackpack.galaxysky.api.message.MessageBuilder
+import me.xbackpack.galaxysky.api.old.common.ArgumentGetter
+import me.xbackpack.galaxysky.api.old.common.CommandDsl
 import me.xbackpack.galaxysky.sendMessage
 import org.bukkit.command.ConsoleCommandSender
 

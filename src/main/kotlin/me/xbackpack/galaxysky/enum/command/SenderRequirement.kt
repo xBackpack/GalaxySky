@@ -1,6 +1,6 @@
 package me.xbackpack.galaxysky.enum.command
 
-import me.xbackpack.galaxysky.api.command.function.WrappedSenderRequirement
+import me.xbackpack.galaxysky.api.old.function.WrappedSenderRequirement
 
 enum class SenderRequirement {
     PLAYER,

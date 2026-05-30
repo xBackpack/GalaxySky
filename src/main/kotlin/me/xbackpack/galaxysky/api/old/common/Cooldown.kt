@@ -1,8 +1,8 @@
-package me.xbackpack.galaxysky.api.command.common
+package me.xbackpack.galaxysky.api.old.common
 
 import me.xbackpack.galaxysky.api.message.Message
 import me.xbackpack.galaxysky.sendMessage
-import me.xbackpack.galaxysky.service.LuckPermsService
+import me.xbackpack.galaxysky.service.LuckPermsService.isStaff
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.Player
 import java.util.UUID
@@ -20,7 +20,7 @@ data class Cooldown(
     private val cooldowned = mutableMapOf<UUID, TimeMark>()
 
     fun startCooldown(player: Player) {
-        if (!appliesToStaff && LuckPermsService.isStaff(player)) return
+        if (!appliesToStaff && player.isStaff()) return
 
         if (isOnCooldown(player)) return
 

@@ -1,6 +1,6 @@
 package me.xbackpack.galaxysky.api.message
 
-import me.xbackpack.galaxysky.service.FormattingService
+import me.xbackpack.galaxysky.service.FormattingService.applyStyle
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
@@ -23,7 +23,7 @@ interface Customisable {
         builder: TextStyleBuilder.() -> Unit = {},
     ) {
         val style = TextStyleBuilder().apply(builder)
-        val comp = FormattingService.applyStyle(Component.text(content), style)
+        val comp = Component.text(content).applyStyle(style)
 
         children += comp
     }

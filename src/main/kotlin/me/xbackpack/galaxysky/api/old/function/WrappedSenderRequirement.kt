@@ -1,6 +1,6 @@
-package me.xbackpack.galaxysky.api.command.function
+package me.xbackpack.galaxysky.api.old.function
 
-import me.xbackpack.galaxysky.api.command.common.CommandDsl
+import me.xbackpack.galaxysky.api.old.common.CommandDsl
 import me.xbackpack.galaxysky.enum.command.SenderRequirement
 
 @CommandDsl

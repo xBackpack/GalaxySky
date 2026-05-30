@@ -1,9 +1,9 @@
 package me.xbackpack.galaxysky.registry.command
 
 import me.xbackpack.galaxysky.GalaxySky
-import me.xbackpack.galaxysky.api.command.common.Cooldown
-import me.xbackpack.galaxysky.api.command.data.Command
 import me.xbackpack.galaxysky.api.message.Message
+import me.xbackpack.galaxysky.api.old.common.Cooldown
+import me.xbackpack.galaxysky.api.old.data.Command
 import me.xbackpack.galaxysky.enum.command.SenderRequirement
 import me.xbackpack.galaxysky.enum.player.PlayerStatType
 import me.xbackpack.galaxysky.hook.PlaceholderHook
@@ -12,6 +12,7 @@ import me.xbackpack.galaxysky.registry.inventory.Inventory
 import me.xbackpack.galaxysky.registry.item.Pickaxes
 import me.xbackpack.galaxysky.sendMessage
 import me.xbackpack.galaxysky.service.FormattingService
+import me.xbackpack.galaxysky.service.FormattingService.content
 import me.xbackpack.galaxysky.service.LocationService
 import me.xbackpack.galaxysky.service.PDCService
 import net.kyori.adventure.text.Component
@@ -309,7 +310,7 @@ object PlayerCommandRegistry {
 
                 val name = dismounted.customName() ?: return@listener
 
-                if (FormattingService.content(name) == "Sit") {
+                if (name.content() == "Sit") {
                     player.teleport(player.location.add(0.0, 1.0, 0.0))
                     dismounted.remove()
                     enabledPlayers.remove(player)

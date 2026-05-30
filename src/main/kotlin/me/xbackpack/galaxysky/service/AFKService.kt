@@ -3,6 +3,8 @@ package me.xbackpack.galaxysky.service
 import me.xbackpack.galaxysky.api.message.Message
 import me.xbackpack.galaxysky.giveItem
 import me.xbackpack.galaxysky.registry.item.Items
+import me.xbackpack.galaxysky.service.WorldGuardService.getOccupiedRegions
+import me.xbackpack.galaxysky.service.WorldGuardService.getRegion
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
@@ -12,7 +14,7 @@ import java.util.UUID
 object AFKService {
     private val times = mutableMapOf<UUID, Int>()
     private val bossbars = mutableMapOf<UUID, BossBar>()
-    private val afkRegion = WorldGuardService.getRegion(LocationService.WORLD, "afk")
+    private val afkRegion = LocationService.WORLD.getRegion("afk")
 
     private fun getTitle(seconds: Int) =
         Message
@@ -36,7 +38,7 @@ object AFKService {
         Bukkit.getOnlinePlayers().forEach { player ->
             val uuid = player.uniqueId
 
-            val occupiedRegions = WorldGuardService.getOccupiedRegions(player.location)
+            val occupiedRegions = player.location.getOccupiedRegions()
 
             if (occupiedRegions.contains(afkRegion)) {
                 updatePlayer(player)

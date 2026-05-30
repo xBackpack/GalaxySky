@@ -16,19 +16,31 @@ object FormattingService {
     private const val HOUR_SECONDS = 3600
     private const val MINUTE_SECONDS = 60
 
-    fun legacyFormat(component: Component) = LegacyComponentSerializer.legacySection().serialize(component)
+    fun Component.legacyFormat() = LegacyComponentSerializer.legacySection().serialize(this)
 
-    fun applyStyle(
-        component: Component,
-        style: Stylable,
-    ): Component {
-        var result = component.color(style.internalColours)
+    fun Component.applyStyle(style: Stylable): Component {
+        var result = color(style.internalColours)
 
         style.internalDecorations.forEach { decoration ->
             result = result.decoration(decoration, TextDecoration.State.TRUE)
         }
 
         return result
+    }
+
+    fun Component.content() =
+        when (this) {
+            is TextComponent -> content()
+            is TranslatableComponent -> key()
+            else -> ""
+        }
+
+    private fun String.replaceLast(
+        oldValue: String,
+        newValue: String,
+    ): String {
+        val lastIndex = lastIndexOf(oldValue)
+        return if (lastIndex != -1) substring(0, lastIndex) + newValue + substring(lastIndex + oldValue.length) else this
     }
 
     fun shortenStat(int: Int): String {
@@ -121,20 +133,5 @@ object FormattingService {
 
         val result = parts.toString()
         return if (result.isEmpty()) "0 seconds" else result.replaceLast(", ", " and ")
-    }
-
-    fun content(component: Component) =
-        when (component) {
-            is TextComponent -> component.content()
-            is TranslatableComponent -> component.key()
-            else -> ""
-        }
-
-    private fun String.replaceLast(
-        oldValue: String,
-        newValue: String,
-    ): String {
-        val lastIndex = this.lastIndexOf(oldValue)
-        return if (lastIndex != -1) this.substring(0, lastIndex) + newValue + this.substring(lastIndex + oldValue.length) else this
     }
 }

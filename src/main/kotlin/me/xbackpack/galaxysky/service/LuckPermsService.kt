@@ -8,52 +8,46 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
 object LuckPermsService {
-    private fun getUser(player: OfflinePlayer) =
-        LuckPermsProvider.get().userManager.getUser(player.uniqueId) ?: error("Could not find player: ${player.name}")
+    private fun OfflinePlayer.getUser() = LuckPermsProvider.get().userManager.getUser(uniqueId) ?: error("Could not find player: $name")
 
-    private fun getGroup(name: String) = LuckPermsProvider.get().groupManager.getGroup(name) ?: error("Could not find group: $name}")
+    private fun User.saveUser() = LuckPermsProvider.get().userManager.saveUser(this)
 
-    private fun getTrack(name: String) = LuckPermsProvider.get().trackManager.getTrack(name) ?: error("Could not find track: $name")
+    fun OfflinePlayer.hasPermission(permission: String) =
+        getUser()
+            .cachedData.permissionData
+            .checkPermission(permission)
+            .asBoolean()
 
-    private fun saveUser(user: User) = LuckPermsProvider.get().userManager.saveUser(user)
-
-    fun hasPermission(
-        player: OfflinePlayer,
-        permission: String,
-    ) = getUser(player)
-        .cachedData.permissionData
-        .checkPermission(permission)
-        .asBoolean()
-
-    fun givePermission(
-        player: OfflinePlayer,
-        permission: String,
-    ) {
-        val user = getUser(player)
+    fun OfflinePlayer.givePermission(permission: String) {
+        val user = getUser()
         val data = user.data()
 
         data.add(PermissionNode.builder(permission).build())
 
-        player
-            .takeIf { it.isOnline }
-            ?.let { (player as Player).updateCommands() }
+        if (isOnline) {
+            (this as Player).updateCommands()
+        }
 
-        saveUser(user)
+        user.saveUser()
     }
 
-    fun getPrimaryGroupName(player: OfflinePlayer) = getUser(player).primaryGroup
+    fun OfflinePlayer.getPrimaryGroupName() = getUser().primaryGroup
 
-    fun getPrefix(player: OfflinePlayer) =
-        getUser(player).cachedData.metaData.prefix
-            ?: getGroup(getPrimaryGroupName(player)).cachedData.metaData.prefix
+    fun OfflinePlayer.getPrefix() =
+        getUser().cachedData.metaData.prefix
+            ?: getGroup(getPrimaryGroupName()).cachedData.metaData.prefix
             ?: ""
 
-    fun getSuffix(player: OfflinePlayer) =
-        getUser(player).cachedData.metaData.suffix
-            ?: getGroup(getPrimaryGroupName(player)).cachedData.metaData.suffix
+    fun OfflinePlayer.getSuffix() =
+        getUser().cachedData.metaData.suffix
+            ?: getGroup(getPrimaryGroupName()).cachedData.metaData.suffix
             ?: ""
 
-    fun isStaff(player: OfflinePlayer) = getTrack("staff").containsGroup(getPrimaryGroupName(player))
+    fun OfflinePlayer.isStaff() = getTrack("staff").containsGroup(getPrimaryGroupName())
+
+    private fun getGroup(name: String) = LuckPermsProvider.get().groupManager.getGroup(name) ?: error("Could not find group: $name}")
+
+    private fun getTrack(name: String) = LuckPermsProvider.get().trackManager.getTrack(name) ?: error("Could not find track: $name")
 
     fun getNameColour(groupName: String): NamedTextColor =
         when (groupName) {

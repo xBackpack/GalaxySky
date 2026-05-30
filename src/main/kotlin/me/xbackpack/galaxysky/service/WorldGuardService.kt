@@ -21,23 +21,19 @@ import kotlin.random.Random
 object WorldGuardService {
     private val container = WorldGuard.getInstance().platform.regionContainer
 
-    fun getFlag(
+    fun Location.getFlag(
         bukkitPlayer: Player,
-        bukkitLocation: Location,
         flag: StateFlag,
     ): Boolean {
         val player = WorldGuardPlugin.inst().wrapPlayer(bukkitPlayer)
-        val location = BukkitAdapter.adapt(bukkitLocation)
+        val location = BukkitAdapter.adapt(this)
         val query = container.createQuery()
 
         return query.testState(location, player, flag)
     }
 
-    fun getRegion(
-        bukkitWorld: World,
-        id: String,
-    ): ProtectedRegion? {
-        val world = BukkitAdapter.adapt(bukkitWorld)
+    fun World.getRegion(id: String): ProtectedRegion? {
+        val world = BukkitAdapter.adapt(this)
 
         val regionContainer = container[world] ?: error("Couldn't find world named ${world.name}")
 
@@ -62,8 +58,8 @@ object WorldGuardService {
         }
     }
 
-    fun getOccupiedRegions(bukkitLocation: Location): ApplicableRegionSet {
-        val location = BukkitAdapter.adapt(bukkitLocation)
+    fun Location.getOccupiedRegions(): ApplicableRegionSet {
+        val location = BukkitAdapter.adapt(this)
 
         return container.createQuery().getApplicableRegions(location)
     }
@@ -77,7 +73,7 @@ object WorldGuardService {
 
         val player = event.entity as? Player ?: return
 
-        val pvpEnabled = getFlag(player, player.location, Flags.PVP)
+        val pvpEnabled = player.location.getFlag(player, Flags.PVP)
 
         if (pvpEnabled) return
 

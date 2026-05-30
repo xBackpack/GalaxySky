@@ -1,6 +1,6 @@
 package me.xbackpack.galaxysky.registry.command
 
-import me.xbackpack.galaxysky.api.command.data.Command
+import me.xbackpack.galaxysky.api.old.data.Command
 import me.xbackpack.galaxysky.enum.command.SenderRequirement
 
 object TestCommandRegistry {

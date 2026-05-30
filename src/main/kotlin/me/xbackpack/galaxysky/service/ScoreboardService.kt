@@ -5,6 +5,7 @@ import me.xbackpack.galaxysky.enum.player.PlayerStatType
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.service.FormattingService.shortenStat
 import me.xbackpack.galaxysky.service.FormattingService.shortenTime
+import me.xbackpack.galaxysky.service.LuckPermsService.getPrefix
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
@@ -125,7 +126,7 @@ object ScoreboardService {
                     bold()
                 }
                 text(": ")
-                componentFromLegacyString(LuckPermsService.getPrefix(player))
+                componentFromLegacyString(player.getPrefix())
             },
         )
 
