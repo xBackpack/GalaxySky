@@ -2,50 +2,49 @@ package me.xbackpack.galaxysky.service
 
 import io.papermc.paper.event.player.AsyncChatEvent
 import me.xbackpack.galaxysky.GalaxySky
-import me.xbackpack.galaxysky.api.message.Message
+import me.xbackpack.galaxysky.api.util.message
+import me.xbackpack.galaxysky.api.util.msg
+import me.xbackpack.galaxysky.enum.Colour
 import me.xbackpack.galaxysky.hook.PlaceholderHook
-import me.xbackpack.galaxysky.sendMessage
 import me.xbackpack.galaxysky.service.FormattingService.legacyFormat
 import me.xbackpack.galaxysky.service.LuckPermsService.getPrefix
 import me.xbackpack.galaxysky.service.LuckPermsService.getPrimaryGroupName
 import me.xbackpack.galaxysky.service.LuckPermsService.getSuffix
 import me.xbackpack.galaxysky.service.LuckPermsService.isStaff
-import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 
 object ChatService {
     private val chatMessages =
         setOf(
-            Message.create {
+            message {
                 newline()
 
                 text("You are currently playing on ") {
-                    colour(NamedTextColor.LIGHT_PURPLE)
+                    colour(Colour.LIGHT_PURPLE)
                 }
 
                 note(PlaceholderHook.SERVER_IP)
 
                 newline()
             },
-            Message.create {
-
+            message {
                 newline()
 
                 text("Make sure to visit our webstore at ") {
-                    colour(NamedTextColor.LIGHT_PURPLE)
+                    colour(Colour.LIGHT_PURPLE)
                 }
 
                 link(PlaceholderHook.SHOP_LINK)
 
                 newline()
             },
-            Message.create {
+            message {
 
                 newline()
 
                 text("Make sure to join our discord at ") {
-                    colour(NamedTextColor.LIGHT_PURPLE)
+                    colour(Colour.LIGHT_PURPLE)
                 }
 
                 link(PlaceholderHook.DISCORD)
@@ -55,7 +54,7 @@ object ChatService {
         )
 
     fun sendRandomMessage() {
-        Bukkit.broadcast(chatMessages.random().component)
+        Bukkit.broadcast(chatMessages.random().build())
     }
 
     fun init() {
@@ -63,13 +62,11 @@ object ChatService {
             val player = event.player
 
             if (GalaxySky.chatMuted && !player.hasPermission("galaxysky.chat.exempt")) {
-                player.sendMessage(
-                    Message.create {
-                        text("You do not have permission to chat at this time") {
-                            colour(NamedTextColor.RED)
-                        }
-                    },
-                )
+                player.msg {
+                    text("You do not have permission to chat at this time") {
+                        colour(Colour.RED)
+                    }
+                }
 
                 event.isCancelled = true
 
@@ -88,30 +85,29 @@ object ChatService {
                     finalMessage = MiniMessage.miniMessage().deserialize(message.legacyFormat())
                 }
 
-                Message
-                    .create {
-                        componentFromLegacyString(prefix)
+                message {
+                    componentFromLegacyString(prefix)
 
-                        component(displayName.colorIfAbsent(LuckPermsService.getNameColour(primaryGroupName)))
+                    component(displayName.colorIfAbsent(LuckPermsService.getNameColour(primaryGroupName)))
 
-                        componentFromLegacyString(suffix)
+                    componentFromLegacyString(suffix)
 
-                        space()
+                    space()
 
-                        text("»") {
-                            colour(NamedTextColor.DARK_GRAY)
-                        }
+                    text("»") {
+                        colour(Colour.DARK_GREY)
+                    }
 
-                        space()
+                    space()
 
-                        section {
-                            component(finalMessage)
+                    section {
+                        component(finalMessage)
 
-                            colour(
-                                if (primaryGroupName == "default") NamedTextColor.GRAY else NamedTextColor.WHITE,
-                            )
-                        }
-                    }.component
+                        colour(
+                            if (primaryGroupName == "default") Colour.GREY else Colour.WHITE,
+                        )
+                    }
+                }.build()
             }
         }
     }

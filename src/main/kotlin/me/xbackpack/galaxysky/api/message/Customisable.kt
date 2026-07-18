@@ -9,20 +9,19 @@ import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 
-@MessageDsl
 interface Customisable {
     val children: MutableList<Component>
 
-    fun section(block: SectionBuilder.() -> Unit) {
-        val subGroup = SectionBuilder().apply(block)
-        children += subGroup.build().component
+    fun section(block: Section.() -> Unit) {
+        val subGroup = Section().apply(block)
+        children += subGroup.build()
     }
 
     fun text(
         content: String,
-        builder: TextStyleBuilder.() -> Unit = {},
+        builder: TextStyle.() -> Unit = {},
     ) {
-        val style = TextStyleBuilder().apply(builder)
+        val style = TextStyle().apply(builder)
         val comp = Component.text(content).applyStyle(style)
 
         children += comp
@@ -66,7 +65,7 @@ interface Customisable {
     }
 
     fun component(message: Message) {
-        children += message.component
+        children += message.build()
     }
 
     fun component(component: Component) {

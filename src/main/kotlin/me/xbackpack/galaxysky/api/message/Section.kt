@@ -6,7 +6,7 @@ import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 
 @MessageDsl
-class SectionBuilder :
+class Section :
     Customisable,
     Stylable {
     override val children = mutableListOf<Component>()
@@ -14,9 +14,5 @@ class SectionBuilder :
     override var internalColours: TextColor? = null
     override val internalDecorations = mutableSetOf<TextDecoration>()
 
-    fun build(): Message {
-        val result = Component.empty().append(children).applyStyle(this)
-
-        return Message(result)
-    }
+    fun build() = Component.empty().append(children).applyStyle(this)
 }

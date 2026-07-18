@@ -1,12 +1,12 @@
 package me.xbackpack.galaxysky.service
 
-import me.xbackpack.galaxysky.api.message.Message
-import me.xbackpack.galaxysky.giveItem
+import me.xbackpack.galaxysky.api.util.giveItem
+import me.xbackpack.galaxysky.api.util.message
+import me.xbackpack.galaxysky.enum.Colour
 import me.xbackpack.galaxysky.registry.item.Items
 import me.xbackpack.galaxysky.service.WorldGuardService.getOccupiedRegions
 import me.xbackpack.galaxysky.service.WorldGuardService.getRegion
 import net.kyori.adventure.bossbar.BossBar
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.UUID
@@ -17,22 +17,21 @@ object AFKService {
     private val afkRegion = LocationService.WORLD.getRegion("afk")
 
     private fun getTitle(seconds: Int) =
-        Message
-            .create {
-                section {
-                    text("AFK Time:")
+        message {
+            section {
+                text("AFK Time:")
 
-                    space()
+                space()
 
-                    text(seconds.toString()) {
-                        colour(NamedTextColor.GREEN)
-                    }
-
-                    text("s")
-
-                    colour(NamedTextColor.LIGHT_PURPLE)
+                text(seconds.toString()) {
+                    colour(Colour.GREEN)
                 }
-            }.component
+
+                text("s")
+
+                colour(Colour.LIGHT_PURPLE)
+            }
+        }.build()
 
     fun update() {
         Bukkit.getOnlinePlayers().forEach { player ->
@@ -53,7 +52,7 @@ object AFKService {
         }
     }
 
-    fun updatePlayer(player: Player) {
+    private fun updatePlayer(player: Player) {
         val uuid = player.uniqueId
 
         val seconds = times.compute(uuid) { _, seconds -> (seconds ?: 0) + 1 } ?: 0

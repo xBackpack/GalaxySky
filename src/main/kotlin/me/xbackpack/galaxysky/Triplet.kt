@@ -1,4 +1,4 @@
-package me.xbackpack.galaxysky.api
+package me.xbackpack.galaxysky
 
 data class Triplet<F, S, T>(
     val first: F,

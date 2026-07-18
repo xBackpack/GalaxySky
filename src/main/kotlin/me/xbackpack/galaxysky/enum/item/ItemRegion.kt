@@ -1,12 +1,11 @@
 package me.xbackpack.galaxysky.enum.item
 
-import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.format.TextColor
+import me.xbackpack.galaxysky.enum.Colour
 
 enum class ItemRegion(
-    val colour: TextColor,
+    val colour: Colour,
 ) {
-    BAYSIDE_BEACH(NamedTextColor.YELLOW),
-    CRIMSON_COVE(NamedTextColor.RED),
-    VIBRANT_VOID(NamedTextColor.LIGHT_PURPLE),
+    BAYSIDE_BEACH(Colour.YELLOW),
+    CRIMSON_COVE(Colour.RED),
+    VIBRANT_VOID(Colour.LIGHT_PURPLE),
 }

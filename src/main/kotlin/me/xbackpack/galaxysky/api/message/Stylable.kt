@@ -1,15 +1,15 @@
 package me.xbackpack.galaxysky.api.message
 
+import me.xbackpack.galaxysky.enum.Colour
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 
-@MessageDsl
 interface Stylable {
     var internalColours: TextColor?
     val internalDecorations: MutableSet<TextDecoration>
 
-    fun colour(newColour: TextColor) {
-        internalColours = newColour
+    fun colour(newColour: Colour) {
+        internalColours = newColour.colour
     }
 
     fun hex(hexString: String) {

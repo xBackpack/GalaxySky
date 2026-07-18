@@ -12,7 +12,7 @@ object LuckPermsService {
 
     private fun User.saveUser() = LuckPermsProvider.get().userManager.saveUser(this)
 
-    fun OfflinePlayer.hasPermission(permission: String) =
+    fun OfflinePlayer.checkPermission(permission: String) =
         getUser()
             .cachedData.permissionData
             .checkPermission(permission)

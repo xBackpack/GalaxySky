@@ -1,12 +1,13 @@
 package me.xbackpack.galaxysky.service
 
-import me.xbackpack.galaxysky.api.message.Message
+import me.xbackpack.galaxysky.api.util.giveItem
+import me.xbackpack.galaxysky.api.util.incStat
+import me.xbackpack.galaxysky.api.util.isVanished
+import me.xbackpack.galaxysky.api.util.message
+import me.xbackpack.galaxysky.enum.Colour
 import me.xbackpack.galaxysky.enum.player.PlayerStatType
-import me.xbackpack.galaxysky.giveItem
-import me.xbackpack.galaxysky.isVanished
 import me.xbackpack.galaxysky.registry.item.Pickaxes
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.damage.DamageType
 import org.bukkit.event.entity.PlayerDeathEvent
@@ -37,61 +38,59 @@ object PlayerService {
         val player = event.player
 
         event.joinMessage(
-            Message
-                .create {
-                    section {
-                        text("[")
+            message {
+                section {
+                    text("[")
 
-                        text("+") {
-                            colour(NamedTextColor.GREEN)
-                        }
-
-                        text("]")
-
-                        colour(NamedTextColor.DARK_GRAY)
+                    text("+") {
+                        colour(Colour.GREEN)
                     }
 
-                    space()
+                    text("]")
 
-                    text(player.name) {
-                        colour(NamedTextColor.GRAY)
-                    }
-                }.component,
+                    colour(Colour.DARK_GREY)
+                }
+
+                space()
+
+                text(player.name) {
+                    colour(Colour.GREY)
+                }
+            }.build(),
         )
 
         player.setRespawnLocation(LocationService.WORLD_SPAWN, true)
 
         if (!player.hasPlayedBefore()) {
             event.joinMessage(
-                Message
-                    .create {
-                        section {
-                            text("Welcome,")
+                message {
+                    section {
+                        text("Welcome,")
 
-                            space()
+                        space()
 
-                            text(player.name) {
-                                colour(NamedTextColor.LIGHT_PURPLE)
-                            }
-
-                            text(", to GalaxySky!")
-
-                            space()
-
-                            text("(")
-
-                            text("#${Bukkit.getOfflinePlayers().size}") {
-                                colour(NamedTextColor.YELLOW)
-                            }
-
-                            text(")")
-
-                            colour(NamedTextColor.GRAY)
+                        text(player.name) {
+                            colour(Colour.LIGHT_PURPLE)
                         }
-                    }.component,
+
+                        text(", to GalaxySky!")
+
+                        space()
+
+                        text("(")
+
+                        text("#${Bukkit.getOfflinePlayers().size}") {
+                            colour(Colour.YELLOW)
+                        }
+
+                        text(")")
+
+                        colour(Colour.GREY)
+                    }
+                }.build(),
             )
 
-            val item = Pickaxes.BaysideBeach.STONE_PICKAXE_1
+            val item = Pickaxes.WOODEN_PICKAXE_1
 
             player.giveItem(item)
         }
@@ -105,26 +104,25 @@ object PlayerService {
         val player = event.player
 
         event.quitMessage(
-            Message
-                .create {
-                    section {
-                        text("[")
+            message {
+                section {
+                    text("[")
 
-                        text("-") {
-                            colour(NamedTextColor.RED)
-                        }
-
-                        text("]")
-
-                        colour(NamedTextColor.DARK_GRAY)
+                    text("-") {
+                        colour(Colour.RED)
                     }
 
-                    space()
+                    text("]")
 
-                    text(player.name) {
-                        colour(NamedTextColor.GRAY)
-                    }
-                }.component,
+                    colour(Colour.DARK_GREY)
+                }
+
+                space()
+
+                text(player.name) {
+                    colour(Colour.GREY)
+                }
+            }.build(),
         )
 
         ScoreboardService.remove(player)
@@ -148,13 +146,11 @@ object PlayerService {
     fun onPlayerDeath(event: PlayerDeathEvent) {
         val player = event.player
 
-        val stats = PDCService.PlayerData.Stats
-
-        stats.inc(player, PlayerStatType.DEATHS)
+        player.incStat(PlayerStatType.DEATHS)
 
         val killer =
             player.killer
-                ?.also { stats.inc(it, PlayerStatType.KILLS) }
+                ?.also { it.incStat(PlayerStatType.KILLS) }
                 ?: player
 
         if (player.isVanished()) {
@@ -163,50 +159,49 @@ object PlayerService {
         }
 
         event.deathMessage(
-            Message
-                .create {
-                    section {
-                        text(player.name) {
-                            colour(NamedTextColor.DARK_RED)
-                        }
-
-                        space()
-
-                        when (event.damageSource.damageType) {
-                            DamageType.PLAYER_ATTACK -> {
-                                text(meleeDeathMessages.random())
-
-                                space()
-
-                                text(killer.name) {
-                                    colour(NamedTextColor.DARK_RED)
-                                }
-                            }
-
-                            DamageType.ARROW -> {
-                                text(rangedDeathMessages.random())
-
-                                space()
-
-                                text(killer.name) {
-                                    colour(NamedTextColor.DARK_RED)
-                                }
-                            }
-
-                            else -> {
-                                text("died a stupid death")
-                            }
-                        }
-
-                        colour(NamedTextColor.DARK_GRAY)
+            message {
+                section {
+                    text(player.name) {
+                        colour(Colour.DARK_RED)
                     }
-                }.component,
+
+                    space()
+
+                    when (event.damageSource.damageType) {
+                        DamageType.PLAYER_ATTACK -> {
+                            text(meleeDeathMessages.random())
+
+                            space()
+
+                            text(killer.name) {
+                                colour(Colour.DARK_RED)
+                            }
+                        }
+
+                        DamageType.ARROW -> {
+                            text(rangedDeathMessages.random())
+
+                            space()
+
+                            text(killer.name) {
+                                colour(Colour.DARK_RED)
+                            }
+                        }
+
+                        else -> {
+                            text("died a stupid death")
+                        }
+                    }
+
+                    colour(Colour.DARK_GREY)
+                }
+            }.build(),
         )
     }
 
     fun updatePlaytime() {
         Bukkit.getOnlinePlayers().forEach { player ->
-            PDCService.PlayerData.Stats.inc(player, PlayerStatType.PLAYTIME)
+            player.incStat(PlayerStatType.PLAYTIME)
         }
     }
 }

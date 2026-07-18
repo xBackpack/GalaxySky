@@ -9,8 +9,8 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet
 import com.sk89q.worldguard.protection.flags.Flags
 import com.sk89q.worldguard.protection.flags.StateFlag
 import com.sk89q.worldguard.protection.regions.ProtectedRegion
+import me.xbackpack.galaxysky.api.util.giveItem
 import me.xbackpack.galaxysky.enum.block.BlockType
-import me.xbackpack.galaxysky.giveItem
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.entity.EntityType

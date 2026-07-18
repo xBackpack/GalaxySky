@@ -3,7 +3,7 @@ package me.xbackpack.galaxysky
 import io.papermc.paper.plugin.configuration.PluginMeta
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import me.xbackpack.galaxysky.api.message.Message
-import me.xbackpack.galaxysky.api.message.MessageBuilder
+import me.xbackpack.galaxysky.api.util.inWholeTicks
 import me.xbackpack.galaxysky.hook.LuckPermsHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.registry.command.CommandRegistry
@@ -51,7 +51,7 @@ class GalaxySky : JavaPlugin() {
             val registrar = event.registrar()
 
             CommandRegistry.commands.forEach { command ->
-                registrar.register(command.build().build(), command.description, command.aliases)
+                registrar.register(command.build(), command.description, command.aliases)
             }
         }
 
@@ -114,8 +114,8 @@ class GalaxySky : JavaPlugin() {
         fun createInventory(
             holder: InventoryHolder,
             rows: Int,
-            builder: MessageBuilder.() -> Unit,
-        ) = Bukkit.createInventory(holder, rows * 9, Message.create(builder).component)
+            title: Message,
+        ) = Bukkit.createInventory(holder, rows * 9, title.build())
 
         fun createKey(key: String) = NamespacedKey(instance, key)
 

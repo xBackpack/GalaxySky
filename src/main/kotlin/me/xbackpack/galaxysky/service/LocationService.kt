@@ -11,7 +11,7 @@ object LocationService {
     val NETHER: World = Bukkit.getWorld("world_nether") ?: error("Cannot find world_nether")
     val END: World = Bukkit.getWorld("world_the_end") ?: error("Cannot find world_the_end")
     val AETHER: World = Bukkit.createWorld(WorldCreator("world_aether")) ?: error("Cannot find world_aether")
-    val STAFF_WORLD: World =
+    private val STAFF_WORLD: World =
         Bukkit.createWorld(
             WorldCreator("world_staff")
                 .type(WorldType.FLAT)
@@ -45,4 +45,6 @@ object LocationService {
     val AFK = Location(WORLD, -28.5, 102.0, 10.5, 90f, 0f)
 
     val LEADERBOARDS = Location(WORLD, 44.5, 102.0, 9.5, -45f, 0f)
+
+    val FORGE = Location(NETHER, 15.0, 12.0, 1.0)
 }

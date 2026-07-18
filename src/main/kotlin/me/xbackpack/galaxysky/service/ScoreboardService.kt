@@ -1,12 +1,14 @@
 package me.xbackpack.galaxysky.service
 
 import me.xbackpack.galaxysky.api.message.Message
+import me.xbackpack.galaxysky.api.util.getStat
+import me.xbackpack.galaxysky.api.util.message
+import me.xbackpack.galaxysky.enum.Colour
 import me.xbackpack.galaxysky.enum.player.PlayerStatType
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.service.FormattingService.shortenStat
 import me.xbackpack.galaxysky.service.FormattingService.shortenTime
 import me.xbackpack.galaxysky.service.LuckPermsService.getPrefix
-import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -53,15 +55,14 @@ object ScoreboardService {
             scoreboard.registerNewObjective(
                 OBJECTIVE_NAME,
                 Criteria.DUMMY,
-                Message
-                    .create {
-                        textGradient(
-                            "GalaxySky",
-                            "#FF00FF",
-                            "#0000FF",
-                            TextDecoration.BOLD,
-                        )
-                    }.component,
+                message {
+                    textGradient(
+                        "GalaxySky",
+                        "#FF00FF",
+                        "#0000FF",
+                        TextDecoration.BOLD,
+                    )
+                }.build(),
             )
 
         objective.displaySlot = DisplaySlot.SIDEBAR
@@ -120,9 +121,9 @@ object ScoreboardService {
         setLine(
             board,
             8,
-            Message.create {
+            message {
                 text("Rank") {
-                    colour(NamedTextColor.WHITE)
+                    colour(Colour.WHITE)
                     bold()
                 }
                 text(": ")
@@ -141,9 +142,9 @@ object ScoreboardService {
         setLine(
             board,
             1,
-            Message.create {
+            message {
                 text(PlaceholderHook.SERVER_IP) {
-                    colour(NamedTextColor.YELLOW)
+                    colour(Colour.YELLOW)
                 }
             },
         )
@@ -157,20 +158,19 @@ object ScoreboardService {
         type: PlayerStatType,
         formatter: (Int) -> String,
     ) {
-        val stat = PDCService.PlayerData.Stats[player, type]
+        val stat = player.getStat(type)
 
         setLine(
             board,
             idx,
-            Message
-                .create {
-                    text(name) {
-                        colour(NamedTextColor.WHITE)
-                        bold()
-                    }
-                    text(": ")
-                    text(formatter(stat)) { colour(NamedTextColor.AQUA) }
-                },
+            message {
+                text(name) {
+                    colour(Colour.WHITE)
+                    bold()
+                }
+                text(": ")
+                text(formatter(stat)) { colour(Colour.AQUA) }
+            },
         )
     }
 
@@ -187,6 +187,6 @@ object ScoreboardService {
 
         board.cache[idx] = message
 
-        board.teams[idx]?.prefix(message.component)
+        board.teams[idx]?.prefix(message.build())
     }
 }

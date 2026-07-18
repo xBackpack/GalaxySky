@@ -1,17 +1,20 @@
 package me.xbackpack.galaxysky.api.item
 
 import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.CustomModelData
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers
 import io.papermc.paper.datacomponent.item.ItemLore
 import io.papermc.paper.datacomponent.item.TooltipDisplay
 import me.xbackpack.galaxysky.api.message.Message
-import me.xbackpack.galaxysky.api.message.MessageBuilder
+import me.xbackpack.galaxysky.api.util.addMessage
+import me.xbackpack.galaxysky.api.util.pow
+import me.xbackpack.galaxysky.api.util.setId
+import me.xbackpack.galaxysky.api.util.setModifiers
+import me.xbackpack.galaxysky.api.util.setStats
+import me.xbackpack.galaxysky.enum.Colour
 import me.xbackpack.galaxysky.enum.item.ItemRegion
 import me.xbackpack.galaxysky.enum.item.ItemStatType
 import me.xbackpack.galaxysky.enum.item.ItemType
-import me.xbackpack.galaxysky.service.PDCService
-import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -19,33 +22,36 @@ import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
 @ItemDsl
-class ItemBuilder(
-    override var name: Message,
-    override var material: Material,
-    override var type: ItemType,
-    override var region: ItemRegion,
-    override var id: String,
-) : BaseItem {
+class CustomItem(
+    override val name: Message,
+    override val material: Material,
+    private val type: ItemType,
+    private val region: ItemRegion,
+    override val id: String,
+    override val modelData: String?,
+) : Item {
     override var amount = 1
     override var description = listOf<Message>()
     override var unbreakable = false
     override var glowing = false
 
-    override var stats = mutableMapOf<ItemStatType, Int>()
-    override var statModifiers = mutableSetOf<StatModifier>()
+    var stats = mutableMapOf<ItemStatType, Int>()
+    private var statModifiers = mutableSetOf<StatModifier>()
 
-    fun build(): ItemStack {
-        val item = ItemStack(material, amount)
+    override fun build(): ItemStack {
+        if (material.isAir) return ItemStack.empty()
+
+        val item = ItemStack.of(material, amount)
 
         // Assigning the name
-        item.setData(DataComponentTypes.ITEM_NAME, name.component)
+        item.setData(DataComponentTypes.ITEM_NAME, name.build())
 
         // Setting up the lore
         val lore =
             ItemLore.lore().addMessage {
                 if (stats.isNotEmpty()) {
                     text("Stats:") {
-                        colour(NamedTextColor.GREEN)
+                        colour(Colour.GREEN)
                     }
 
                     newline()
@@ -61,7 +67,7 @@ class ItemBuilder(
 
                 if (statModifiers.isNotEmpty()) {
                     text("Modifiers:") {
-                        colour(NamedTextColor.GREEN)
+                        colour(Colour.GREEN)
                     }
 
                     newline()
@@ -107,9 +113,9 @@ class ItemBuilder(
         item.setData(DataComponentTypes.TOOLTIP_DISPLAY, tooltipDisplay)
 
         // Managing persistent data of item
-        PDCService.ItemData.Stats[item] = stats
-        PDCService.ItemData.Modifiers[item] = statModifiers
-        PDCService.ItemData.Id[item] = id
+        item.setStats(stats)
+        item.setModifiers(statModifiers)
+        item.setId(id)
 
         // Handling attributes
         if (stats.contains(ItemStatType.MINING_SPEED)) {
@@ -139,18 +145,23 @@ class ItemBuilder(
             item.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, attributes)
         }
 
+        // Handling item model
+        modelData?.let { name ->
+            item.setData(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelData.customModelData().addString(name).build())
+        }
+
         return item
     }
 
     private fun getMessageFromStat(
         type: ItemStatType,
         amount: Int,
-    ): MessageBuilder.() -> Unit =
+    ): Message.() -> Unit =
         {
             space()
 
             text("${type.statName}:") {
-                colour(NamedTextColor.DARK_GRAY)
+                colour(Colour.DARK_GREY)
             }
 
             space()
@@ -166,7 +177,7 @@ class ItemBuilder(
             }
         }
 
-    private fun getStatMessageFromModifiers(type: ItemStatType): (MessageBuilder.() -> Unit)? {
+    private fun getStatMessageFromModifiers(type: ItemStatType): (Message.() -> Unit)? {
         var finalAmount = 0
 
         statModifiers.forEach { (_, stats: Map<ItemStatType, Int>) ->
@@ -180,31 +191,16 @@ class ItemBuilder(
         return getMessageFromStat(type, finalAmount)
     }
 
-    private fun ItemLore.Builder.addMessage(builder: MessageBuilder.() -> Unit) =
-        addLines(
-            MessageBuilder()
-                .apply(builder)
-                .toLore()
-                .map { it.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE) },
-        )
-
     private fun doAllTheMaths(): Pair<Double, Int> {
         val miningSpeed = stats[ItemStatType.MINING_SPEED]!!.toDouble() / 100 // n
         val toolConstant = getNaturalStrengthOfTool(material) // b
         val max = 1024 // a
-        val additive: Double // x
-        val multiplicative: Int // y
 
-        if (miningSpeed >= max + toolConstant) {
-            additive = (miningSpeed / 2) - toolConstant
-            multiplicative = 2
-        } else if (miningSpeed >= toolConstant) {
-            additive = miningSpeed - toolConstant
-            multiplicative = 1
-        } else {
-            additive = 0.0
-            multiplicative = 0
-        }
+        val k = miningSpeed / max
+
+        val multiplicative = 2.pow(k.toInt()) // y
+
+        val additive = (miningSpeed / multiplicative) - toolConstant // x
 
         return additive to multiplicative
     }

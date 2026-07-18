@@ -1,66 +1,66 @@
 package me.xbackpack.galaxysky.registry.item
 
-import me.xbackpack.galaxysky.api.item.Item
 import me.xbackpack.galaxysky.api.message.Message
+import me.xbackpack.galaxysky.api.util.item
+import me.xbackpack.galaxysky.api.util.message
+import me.xbackpack.galaxysky.enum.Colour
 import me.xbackpack.galaxysky.enum.item.ItemRegion
 import me.xbackpack.galaxysky.enum.item.ItemStatType
 import me.xbackpack.galaxysky.enum.item.ItemType
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
 
 object Pickaxes {
-    object BaysideBeach {
-        val STONE_PICKAXE_1 =
-            Item.create(
-                Message.create {
+    val WOODEN_PICKAXE_1 =
+        item(
+            name =
+                message {
                     text("Stone Pickaxe") {
-                        colour(NamedTextColor.GRAY)
+                        colour(Colour.GREY)
                     }
 
                     space()
 
                     text("1") {
-                        colour(NamedTextColor.AQUA)
+                        colour(Colour.AQUA)
                     }
                 },
-                Material.STONE_PICKAXE,
-                ItemType.PICKAXE,
-                ItemRegion.BAYSIDE_BEACH,
-                "stone_pickaxe_1",
-            ) {
-                unbreakable = true
+            material = Material.WOODEN_PICKAXE,
+            type = ItemType.PICKAXE,
+            region = ItemRegion.BAYSIDE_BEACH,
+            id = "stone_pickaxe_1",
+        ) {
+            unbreakable = true
 
-                stats[ItemStatType.BREAKING_POWER] = 1
-                stats[ItemStatType.MINING_SPEED] = 400
-                stats[ItemStatType.ORE_FORTUNE] = 0
-            }
-    }
+            stats[ItemStatType.BREAKING_POWER] = 1
+            stats[ItemStatType.MINING_SPEED] = 200
+            stats[ItemStatType.ORE_FORTUNE] = 0
+        }
 
     val ADMIN_PICKAXE =
-        Item.create(
-            Message.name("Admin Pickaxe", NamedTextColor.RED, true),
-            Material.NETHERITE_PICKAXE,
-            ItemType.PICKAXE,
-            ItemRegion.CRIMSON_COVE,
-            "admin_pickaxe",
+        item(
+            name = Message.name("Admin Pickaxe", Colour.RED, true),
+            material = Material.NETHERITE_PICKAXE,
+            type = ItemType.PICKAXE,
+            region = ItemRegion.CRIMSON_COVE,
+            id = "admin_pickaxe",
         ) {
             description +=
-                Message.create {
+                message {
                     text("Admin Only Item!") {
-                        colour(NamedTextColor.RED)
+                        colour(Colour.RED)
                         underlined()
                     }
                 }
             description +=
-                Message.create {
+                message {
                     text("Failure to return this to a member of") {
-                        colour(NamedTextColor.DARK_RED)
+                        colour(Colour.DARK_RED)
                     }
                 }
             description +=
-                Message.create {
+                message {
                     text("staff will result in a permanent ban.") {
-                        colour(NamedTextColor.DARK_RED)
+                        colour(Colour.DARK_RED)
                     }
                 }
 

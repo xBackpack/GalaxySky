@@ -2,9 +2,9 @@ package me.xbackpack.galaxysky.hook
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
 import me.xbackpack.galaxysky.GalaxySky
+import me.xbackpack.galaxysky.api.util.getStat
 import me.xbackpack.galaxysky.enum.player.PlayerStatType
 import me.xbackpack.galaxysky.service.FormattingService
-import me.xbackpack.galaxysky.service.PDCService
 import org.bukkit.OfflinePlayer
 
 object PlaceholderHook : PlaceholderExpansion() {
@@ -30,14 +30,14 @@ object PlaceholderHook : PlaceholderExpansion() {
         "shop_name" -> SHOP_NAME
         "shop_link" -> SHOP_LINK
         "discord" -> DISCORD
-        "playtime" -> PDCService.PlayerData.Stats[player, PlayerStatType.PLAYTIME].toString()
-        "blocks" -> PDCService.PlayerData.Stats[player, PlayerStatType.BLOCKS_MINED].toString()
-        "kills" -> PDCService.PlayerData.Stats[player, PlayerStatType.KILLS].toString()
-        "deaths" -> PDCService.PlayerData.Stats[player, PlayerStatType.DEATHS].toString()
-        "playtime_formatted" -> FormattingService.shortenTime(PDCService.PlayerData.Stats[player, PlayerStatType.PLAYTIME])
-        "blocks_formatted" -> FormattingService.shortenStat(PDCService.PlayerData.Stats[player, PlayerStatType.BLOCKS_MINED])
-        "kills_formatted" -> FormattingService.shortenStat(PDCService.PlayerData.Stats[player, PlayerStatType.KILLS])
-        "deaths_formatted" -> FormattingService.shortenStat(PDCService.PlayerData.Stats[player, PlayerStatType.DEATHS])
+        "playtime" -> player.getStat(PlayerStatType.PLAYTIME).toString()
+        "blocks" -> player.getStat(PlayerStatType.BLOCKS_MINED).toString()
+        "kills" -> player.getStat(PlayerStatType.KILLS).toString()
+        "deaths" -> player.getStat(PlayerStatType.DEATHS).toString()
+        "playtime_formatted" -> FormattingService.shortenTime(player.getStat(PlayerStatType.PLAYTIME))
+        "blocks_formatted" -> FormattingService.shortenStat(player.getStat(PlayerStatType.BLOCKS_MINED))
+        "kills_formatted" -> FormattingService.shortenStat(player.getStat(PlayerStatType.KILLS))
+        "deaths_formatted" -> FormattingService.shortenStat(player.getStat(PlayerStatType.DEATHS))
         else -> null
     }
 }

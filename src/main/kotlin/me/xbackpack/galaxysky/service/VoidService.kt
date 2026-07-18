@@ -1,10 +1,11 @@
 package me.xbackpack.galaxysky.service
 
-import me.xbackpack.galaxysky.api.message.Message
+import me.xbackpack.galaxysky.api.util.fullHeal
+import me.xbackpack.galaxysky.api.util.incStat
+import me.xbackpack.galaxysky.api.util.isVanished
+import me.xbackpack.galaxysky.api.util.message
+import me.xbackpack.galaxysky.enum.Colour
 import me.xbackpack.galaxysky.enum.player.PlayerStatType
-import me.xbackpack.galaxysky.fullHeal
-import me.xbackpack.galaxysky.isVanished
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.event.player.PlayerMoveEvent
@@ -32,35 +33,34 @@ object VoidService {
 
         if (!player.isVanished()) {
             Bukkit.broadcast(
-                Message
-                    .create {
-                        section {
-                            text(player.name) {
-                                colour(NamedTextColor.DARK_RED)
-                            }
-
-                            space()
-
-                            killer
-                                ?.takeIf { killer != player }
-                                ?.let {
-                                    text("was thrown into the void by")
-
-                                    space()
-
-                                    text(killer.name) {
-                                        colour(NamedTextColor.DARK_RED)
-                                    }
-                                } ?: text("fell into the void")
-
-                            colour(NamedTextColor.DARK_GRAY)
+                message {
+                    section {
+                        text(player.name) {
+                            colour(Colour.DARK_RED)
                         }
-                    }.component,
+
+                        space()
+
+                        killer
+                            ?.takeIf { killer != player }
+                            ?.let {
+                                text("was thrown into the void by")
+
+                                space()
+
+                                text(killer.name) {
+                                    colour(Colour.DARK_RED)
+                                }
+                            } ?: text("fell into the void")
+
+                        colour(Colour.DARK_GREY)
+                    }
+                }.build(),
             )
         }
 
         player.fullHeal()
-        PDCService.PlayerData.Stats.inc(player, PlayerStatType.DEATHS)
+        player.incStat(PlayerStatType.DEATHS)
         player.teleport(player.respawnLocation ?: LocationService.WORLD_SPAWN)
     }
 }

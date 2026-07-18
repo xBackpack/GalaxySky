@@ -9,10 +9,10 @@ import org.bukkit.Bukkit
 import org.bukkit.World
 
 enum class MineType(
-    val world: World,
-    val blockType: BlockType,
-    val id: String,
-    val double: Boolean,
+    private val world: World,
+    private val blockType: BlockType,
+    private val id: String,
+    private val double: Boolean,
 ) {
     STARTER(LocationService.WORLD, BlockType.STONE, "starter", false),
     STONE(LocationService.WORLD, BlockType.STONE, "stone", false),

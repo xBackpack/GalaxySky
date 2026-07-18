@@ -1,30 +1,31 @@
 package me.xbackpack.galaxysky.api.message
 
+import me.xbackpack.galaxysky.api.util.message
+import me.xbackpack.galaxysky.enum.Colour
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 
 @MessageDsl
-data class Message(
-    val component: Component,
-) {
-    companion object {
-        fun empty() = Message(Component.empty())
+class Message : Customisable {
+    override val children = mutableListOf<Component>()
 
+    fun build() = Component.empty().append(children)
+
+    companion object {
         fun name(
             text: String,
-            colour: NamedTextColor = NamedTextColor.WHITE,
+            colour: Colour = Colour.WHITE,
             bold: Boolean = false,
-        ) = create {
+        ) = message {
             text(text) {
                 colour(colour)
                 if (bold) bold()
             }
         }
 
-        fun space() = Message(Component.space())
+        fun empty() = message {}
 
-        fun newline() = Message(Component.newline())
+        fun space() = message { children += Component.space() }
 
-        fun create(builder: MessageBuilder.() -> Unit) = MessageBuilder().apply(builder).build()
+        fun newline() = message { children += Component.newline() }
     }
 }

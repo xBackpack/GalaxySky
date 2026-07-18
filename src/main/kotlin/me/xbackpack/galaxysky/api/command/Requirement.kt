@@ -6,7 +6,7 @@ import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 
 enum class Requirement(
-    predicate: (CommandSender) -> Boolean,
+    val predicate: (CommandSender) -> Boolean,
 ) {
     PLAYER({ it is Player }),
     STAFF({ it is Player && (it.isOp || it.isStaff()) }),

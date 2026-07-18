@@ -1,487 +1,509 @@
 package me.xbackpack.galaxysky.registry.item
 
-import me.xbackpack.galaxysky.api.item.Item
 import me.xbackpack.galaxysky.api.message.Message
+import me.xbackpack.galaxysky.api.util.item
+import me.xbackpack.galaxysky.enum.Colour
 import me.xbackpack.galaxysky.enum.item.ItemRegion
 import me.xbackpack.galaxysky.enum.item.ItemType
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
 
 object Materials {
-    object BaysideBeach {
-        val COBBLESTONE =
-            Item.create(
-                Message.name("Cobblestone", NamedTextColor.GRAY),
-                Material.COBBLESTONE,
-                ItemType.MATERIAL,
-                ItemRegion.BAYSIDE_BEACH,
-                "cobblestone",
-            )
+    val COBBLESTONE =
+        item(
+            Message.name("Cobblestone", Colour.GREY),
+            Material.COBBLESTONE,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "cobblestone",
+        )
 
-        val COAL =
-            Item.create(
-                Message.name("Coal", NamedTextColor.DARK_GRAY),
-                Material.COAL,
-                ItemType.MATERIAL,
-                ItemRegion.BAYSIDE_BEACH,
-                "coal",
-            )
+    val COAL =
+        item(
+            Message.name("Coal", Colour.DARK_GREY),
+            Material.COAL,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "coal",
+        )
 
-        val COPPER =
-            Item.create(
-                Message.name("Copper", NamedTextColor.GOLD),
-                Material.COPPER_INGOT,
-                ItemType.MATERIAL,
-                ItemRegion.BAYSIDE_BEACH,
-                "copper",
-            )
+    val COPPER =
+        item(
+            Message.name("Copper", Colour.GOLD),
+            Material.COPPER_INGOT,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "copper",
+        )
 
-        val IRON =
-            Item.create(
-                Message.name("Iron"),
-                Material.IRON_INGOT,
-                ItemType.MATERIAL,
-                ItemRegion.BAYSIDE_BEACH,
-                "iron",
-            )
+    val IRON =
+        item(
+            Message.name("Iron"),
+            Material.IRON_INGOT,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "iron",
+        )
 
-        val GOLD =
-            Item.create(
-                Message.name("Gold", NamedTextColor.YELLOW),
-                Material.GOLD_INGOT,
-                ItemType.MATERIAL,
-                ItemRegion.BAYSIDE_BEACH,
-                "gold",
-            )
+    val GOLD =
+        item(
+            Message.name("Gold", Colour.YELLOW),
+            Material.GOLD_INGOT,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "gold",
+        )
 
-        val DIAMOND =
-            Item.create(
-                Message.name("Diamond", NamedTextColor.AQUA),
-                Material.DIAMOND,
-                ItemType.MATERIAL,
-                ItemRegion.BAYSIDE_BEACH,
-                "diamond",
-            )
+    val DIAMOND =
+        item(
+            Message.name("Diamond", Colour.AQUA),
+            Material.DIAMOND,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "diamond",
+        )
 
-        object Strengthened {
-            val STRENGTHENED_COBBLESTONE =
-                Item.create(
-                    Message.name("Strengthened Cobblestone", NamedTextColor.GRAY),
-                    Material.COBBLESTONE,
-                    ItemType.MATERIAL,
-                    ItemRegion.BAYSIDE_BEACH,
-                    "strengthened_cobblestone",
-                ) { glowing = true }
+    val QUARTZ =
+        item(
+            Message.name("Quartz"),
+            Material.QUARTZ,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "quartz",
+        )
 
-            val STRENGTHENED_COAL =
-                Item.create(
-                    Message.name("Strengthened Coal", NamedTextColor.DARK_GRAY),
-                    Material.COAL,
-                    ItemType.MATERIAL,
-                    ItemRegion.BAYSIDE_BEACH,
-                    "strengthened_coal",
-                ) { glowing = true }
+    val OBSIDIAN =
+        item(
+            Message.name("Obsidian", Colour.DARK_GREY),
+            Material.OBSIDIAN,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "obsidian",
+        )
 
-            val STRENGTHENED_COPPER =
-                Item.create(
-                    Message.name("Strengthened Copper", NamedTextColor.GOLD),
-                    Material.COPPER_INGOT,
-                    ItemType.MATERIAL,
-                    ItemRegion.BAYSIDE_BEACH,
-                    "strengthened_copper",
-                ) { glowing = true }
+    val NETHERITE_SCRAP =
+        item(
+            Message.name("Netherite Scrap", Colour.GREY),
+            Material.NETHERITE_SCRAP,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "netherite_scrap",
+        )
 
-            val STRENGTHENED_IRON =
-                Item.create(
-                    Message.name("Strengthened Iron"),
-                    Material.IRON_INGOT,
-                    ItemType.MATERIAL,
-                    ItemRegion.BAYSIDE_BEACH,
-                    "strengthened_iron",
-                ) { glowing = true }
+    val REDSTONE =
+        item(
+            Message.name("Redstone", Colour.DARK_RED),
+            Material.REDSTONE,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "redstone",
+        )
 
-            val STRENGTHENED_GOLD =
-                Item.create(
-                    Message.name("Strengthened Gold", NamedTextColor.YELLOW),
-                    Material.GOLD_INGOT,
-                    ItemType.MATERIAL,
-                    ItemRegion.BAYSIDE_BEACH,
-                    "strengthened_gold",
-                ) { glowing = true }
+    val MAGMA =
+        item(
+            Message.name("Magma", Colour.GOLD),
+            Material.MAGMA_CREAM,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "magma",
+        )
 
-            val STRENGTHENED_DIAMOND =
-                Item.create(
-                    Message.name("Strengthened Diamond", NamedTextColor.AQUA),
-                    Material.DIAMOND,
-                    ItemType.MATERIAL,
-                    ItemRegion.BAYSIDE_BEACH,
-                    "strengthened_diamond",
-                ) { glowing = true }
-        }
+    val NETHERITE =
+        item(
+            Message.name("Netherite", Colour.GREY),
+            Material.NETHERITE_INGOT,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "netherite",
+        )
 
-        object Compact {
-            val COMPACT_COBBLESTONE =
-                Item.create(
-                    Message.name("Compact Cobblestone", NamedTextColor.GRAY),
-                    Material.STONE,
-                    ItemType.MATERIAL,
-                    ItemRegion.BAYSIDE_BEACH,
-                    "compact_cobblestone",
-                ) { glowing = true }
+    val RUBY =
+        item(
+            Message.name("Ruby", Colour.RED),
+            Material.EMERALD,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "ruby",
+            "ruby",
+        )
 
-            val COMPACT_COAL =
-                Item.create(
-                    Message.name("Compact Coal", NamedTextColor.DARK_GRAY),
-                    Material.COAL_BLOCK,
-                    ItemType.MATERIAL,
-                    ItemRegion.BAYSIDE_BEACH,
-                    "compact_coal",
-                ) { glowing = true }
+    val SAPPHIRE =
+        item(
+            Message.name("Sapphire", Colour.BLUE),
+            Material.EMERALD,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "sapphire",
+            "sapphire",
+        )
 
-            val COMPACT_COPPER =
-                Item.create(
-                    Message.name("Compact Copper", NamedTextColor.GOLD),
-                    Material.COPPER_BLOCK,
-                    ItemType.MATERIAL,
-                    ItemRegion.BAYSIDE_BEACH,
-                    "compact_copper",
-                ) { glowing = true }
+    val PURPUR =
+        item(
+            name = Message.name("Purpur", Colour.LIGHT_PURPLE),
+            material = Material.POPPED_CHORUS_FRUIT,
+            type = ItemType.MATERIAL,
+            region = ItemRegion.VIBRANT_VOID,
+            id = "purpur",
+        )
 
-            val COMPACT_IRON =
-                Item.create(
-                    Message.name("Compact Iron"),
-                    Material.IRON_BLOCK,
-                    ItemType.MATERIAL,
-                    ItemRegion.BAYSIDE_BEACH,
-                    "compact_iron",
-                ) { glowing = true }
+    val LAPIS =
+        item(
+            name = Message.name("Lapis", Colour.BLUE),
+            material = Material.LAPIS_LAZULI,
+            type = ItemType.MATERIAL,
+            region = ItemRegion.VIBRANT_VOID,
+            id = "lapis",
+        )
 
-            val COMPACT_GOLD =
-                Item.create(
-                    Message.name("Compact Gold", NamedTextColor.YELLOW),
-                    Material.GOLD_BLOCK,
-                    ItemType.MATERIAL,
-                    ItemRegion.BAYSIDE_BEACH,
-                    "compact_gold",
-                ) { glowing = true }
+    val CHARGED_STONE =
+        item(
+            name = Message.name("Charged Stone", Colour.GREY),
+            material = Material.AMETHYST_SHARD,
+            type = ItemType.MATERIAL,
+            region = ItemRegion.VIBRANT_VOID,
+            id = "charged_stone",
+        )
 
-            val COMPACT_DIAMOND =
-                Item.create(
-                    Message.name("Compact Diamond", NamedTextColor.AQUA),
-                    Material.DIAMOND_BLOCK,
-                    ItemType.MATERIAL,
-                    ItemRegion.BAYSIDE_BEACH,
-                    "compact_diamond",
-                ) { glowing = true }
-        }
-    }
+    val PRISMARINE =
+        item(
+            name = Message.name("Prismarine", Colour.DARK_AQUA),
+            material = Material.PRISMARINE_SHARD,
+            type = ItemType.MATERIAL,
+            region = ItemRegion.VIBRANT_VOID,
+            id = "prismarine",
+        )
 
-    object CrimsonCove {
-        val QUARTZ =
-            Item.create(
-                Message.name("Quartz"),
-                Material.QUARTZ,
-                ItemType.MATERIAL,
-                ItemRegion.CRIMSON_COVE,
-                "quartz",
-            )
+    val OPAL =
+        item(
+            name = Message.name("Opal"),
+            material = Material.BONE_MEAL,
+            type = ItemType.MATERIAL,
+            region = ItemRegion.VIBRANT_VOID,
+            id = "opal",
+        )
 
-        val OBSIDIAN =
-            Item.create(
-                Message.name("Obsidian", NamedTextColor.DARK_GRAY),
-                Material.OBSIDIAN,
-                ItemType.MATERIAL,
-                ItemRegion.CRIMSON_COVE,
-                "obsidian",
-            )
+    val STRENGTHENED_COBBLESTONE =
+        item(
+            Message.name("Strengthened Cobblestone", Colour.GREY),
+            Material.COBBLESTONE,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "strengthened_cobblestone",
+        ) { glowing = true }
 
-        val NETHERITE_SCRAP =
-            Item.create(
-                Message.name("Netherite Scrap", NamedTextColor.GRAY),
-                Material.NETHERITE_SCRAP,
-                ItemType.MATERIAL,
-                ItemRegion.CRIMSON_COVE,
-                "netherite_scrap",
-            )
+    val STRENGTHENED_COAL =
+        item(
+            Message.name("Strengthened Coal", Colour.DARK_GREY),
+            Material.COAL,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "strengthened_coal",
+        ) { glowing = true }
 
-        val REDSTONE =
-            Item.create(
-                Message.name("Redstone", NamedTextColor.DARK_RED),
-                Material.REDSTONE,
-                ItemType.MATERIAL,
-                ItemRegion.CRIMSON_COVE,
-                "redstone",
-            )
+    val STRENGTHENED_COPPER =
+        item(
+            Message.name("Strengthened Copper", Colour.GOLD),
+            Material.COPPER_INGOT,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "strengthened_copper",
+        ) { glowing = true }
 
-        val MAGMA =
-            Item.create(
-                Message.name("Magma", NamedTextColor.GOLD),
-                Material.MAGMA_CREAM,
-                ItemType.MATERIAL,
-                ItemRegion.CRIMSON_COVE,
-                "magma",
-            )
+    val STRENGTHENED_IRON =
+        item(
+            Message.name("Strengthened Iron"),
+            Material.IRON_INGOT,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "strengthened_iron",
+        ) { glowing = true }
 
-        val NETHERITE =
-            Item.create(
-                Message.name("Netherite", NamedTextColor.GRAY),
-                Material.NETHERITE_INGOT,
-                ItemType.MATERIAL,
-                ItemRegion.CRIMSON_COVE,
-                "netherite",
-            )
+    val STRENGTHENED_GOLD =
+        item(
+            Message.name("Strengthened Gold", Colour.YELLOW),
+            Material.GOLD_INGOT,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "strengthened_gold",
+        ) { glowing = true }
 
-        object Strengthened {
-            val STRENGTHENED_QUARTZ =
-                Item.create(
-                    Message.name("Strengthened Quartz"),
-                    Material.QUARTZ,
-                    ItemType.MATERIAL,
-                    ItemRegion.CRIMSON_COVE,
-                    "strengthened_quartz",
-                ) { glowing = true }
+    val STRENGTHENED_DIAMOND =
+        item(
+            Message.name("Strengthened Diamond", Colour.AQUA),
+            Material.DIAMOND,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "strengthened_diamond",
+        ) { glowing = true }
 
-            val STRENGTHENED_OBSIDIAN =
-                Item.create(
-                    Message.name("Strengthened Obsidian", NamedTextColor.DARK_GRAY),
-                    Material.OBSIDIAN,
-                    ItemType.MATERIAL,
-                    ItemRegion.CRIMSON_COVE,
-                    "strengthened_obsidian",
-                ) { glowing = true }
+    val STRENGTHENED_QUARTZ =
+        item(
+            Message.name("Strengthened Quartz"),
+            Material.QUARTZ,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "strengthened_quartz",
+        ) { glowing = true }
 
-            val STRENGTHENED_NETHERITE_SCRAP =
-                Item.create(
-                    Message.name("Strengthened Netherite Scrap", NamedTextColor.GRAY),
-                    Material.NETHERITE_SCRAP,
-                    ItemType.MATERIAL,
-                    ItemRegion.CRIMSON_COVE,
-                    "strengthened_netherite_scrap",
-                ) { glowing = true }
+    val STRENGTHENED_OBSIDIAN =
+        item(
+            Message.name("Strengthened Obsidian", Colour.DARK_GREY),
+            Material.OBSIDIAN,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "strengthened_obsidian",
+        ) { glowing = true }
 
-            val STRENGTHENED_REDSTONE =
-                Item.create(
-                    Message.name("Strengthened Redstone", NamedTextColor.DARK_RED),
-                    Material.REDSTONE,
-                    ItemType.MATERIAL,
-                    ItemRegion.CRIMSON_COVE,
-                    "strengthened_redstone",
-                ) { glowing = true }
+    val STRENGTHENED_NETHERITE_SCRAP =
+        item(
+            Message.name("Strengthened Netherite Scrap", Colour.GREY),
+            Material.NETHERITE_SCRAP,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "strengthened_netherite_scrap",
+        ) { glowing = true }
 
-            val STRENGTHENED_MAGMA =
-                Item.create(
-                    Message.name("Strengthened Magma", NamedTextColor.GOLD),
-                    Material.MAGMA_CREAM,
-                    ItemType.MATERIAL,
-                    ItemRegion.CRIMSON_COVE,
-                    "strengthened_magma",
-                ) { glowing = true }
+    val STRENGTHENED_REDSTONE =
+        item(
+            Message.name("Strengthened Redstone", Colour.DARK_RED),
+            Material.REDSTONE,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "strengthened_redstone",
+        ) { glowing = true }
 
-            val STRENGTHENED_NETHERITE =
-                Item.create(
-                    Message.name("Strengthened Netherite", NamedTextColor.GRAY),
-                    Material.NETHERITE_INGOT,
-                    ItemType.MATERIAL,
-                    ItemRegion.CRIMSON_COVE,
-                    "strengthened_netherite",
-                ) { glowing = true }
-        }
+    val STRENGTHENED_MAGMA =
+        item(
+            Message.name("Strengthened Magma", Colour.GOLD),
+            Material.MAGMA_CREAM,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "strengthened_magma",
+        ) { glowing = true }
 
-        object Compact {
-            val COMPACT_QUARTZ =
-                Item.create(
-                    Message.name("Compact Quartz"),
-                    Material.QUARTZ_BLOCK,
-                    ItemType.MATERIAL,
-                    ItemRegion.CRIMSON_COVE,
-                    "compact_quartz",
-                ) { glowing = true }
+    val STRENGTHENED_NETHERITE =
+        item(
+            Message.name("Strengthened Netherite", Colour.GREY),
+            Material.NETHERITE_INGOT,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "strengthened_netherite",
+        ) { glowing = true }
 
-            val COMPACT_OBSIDIAN =
-                Item.create(
-                    Message.name("Compact Obsidian", NamedTextColor.DARK_GRAY),
-                    Material.CRYING_OBSIDIAN,
-                    ItemType.MATERIAL,
-                    ItemRegion.CRIMSON_COVE,
-                    "compact_obsidian",
-                ) { glowing = true }
+    val STRENGTHENED_RUBY =
+        item(
+            Message.name("Strengthened Ruby", Colour.RED),
+            Material.EMERALD,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "strengthened_ruby",
+            "ruby",
+        ) { glowing = true }
 
-            val COMPACT_NETHERITE_SCRAP =
-                Item.create(
-                    Message.name("Compact Netherite Scrap", NamedTextColor.GRAY),
-                    Material.ANCIENT_DEBRIS,
-                    ItemType.MATERIAL,
-                    ItemRegion.CRIMSON_COVE,
-                    "compact_netherite_scrap",
-                ) { glowing = true }
+    val STRENGTHENED_SAPPHIRE =
+        item(
+            Message.name("Strengthened Sapphire", Colour.BLUE),
+            Material.EMERALD,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "strengthened_sapphire",
+            "sapphire",
+        ) { glowing = true }
 
-            val COMPACT_REDSTONE =
-                Item.create(
-                    Message.name("Compact Redstone", NamedTextColor.DARK_RED),
-                    Material.REDSTONE_BLOCK,
-                    ItemType.MATERIAL,
-                    ItemRegion.CRIMSON_COVE,
-                    "compact_redstone",
-                ) { glowing = true }
+    val STRENGTHENED_PURPUR =
+        item(
+            name = Message.name("Strengthened Purpur", Colour.LIGHT_PURPLE),
+            material = Material.POPPED_CHORUS_FRUIT,
+            type = ItemType.MATERIAL,
+            region = ItemRegion.VIBRANT_VOID,
+            id = "strengthened_purpur",
+        ) { glowing = true }
 
-            val COMPACT_MAGMA =
-                Item.create(
-                    Message.name("Compact Magma", NamedTextColor.GOLD),
-                    Material.MAGMA_BLOCK,
-                    ItemType.MATERIAL,
-                    ItemRegion.CRIMSON_COVE,
-                    "compact_magma",
-                ) { glowing = true }
+    val STRENGTHENED_LAPIS =
+        item(
+            name = Message.name("Strengthened Lapis", Colour.BLUE),
+            material = Material.LAPIS_LAZULI,
+            type = ItemType.MATERIAL,
+            region = ItemRegion.VIBRANT_VOID,
+            id = "strengthened_lapis",
+        ) { glowing = true }
 
-            val COMPACT_NETHERITE =
-                Item.create(
-                    Message.name("Compact Netherite", NamedTextColor.GRAY),
-                    Material.NETHERITE_BLOCK,
-                    ItemType.MATERIAL,
-                    ItemRegion.CRIMSON_COVE,
-                    "compact_netherite",
-                ) { glowing = true }
-        }
-    }
+    val STRENGTHENED_CHARGED_STONE =
+        item(
+            name = Message.name("Strengthened Charged Stone", Colour.GREY),
+            material = Material.AMETHYST_SHARD,
+            type = ItemType.MATERIAL,
+            region = ItemRegion.VIBRANT_VOID,
+            id = "strengthened_charged_stone",
+        ) { glowing = true }
 
-    object VibrantVoid {
-        val PURPUR =
-            Item.create(
-                Message.name("Purpur", NamedTextColor.LIGHT_PURPLE),
-                Material.POPPED_CHORUS_FRUIT,
-                ItemType.MATERIAL,
-                ItemRegion.VIBRANT_VOID,
-                "purpur",
-            )
+    val STRENGTHENED_PRISMARINE =
+        item(
+            name = Message.name("Strengthened Prismarine", Colour.DARK_AQUA),
+            material = Material.PRISMARINE_SHARD,
+            type = ItemType.MATERIAL,
+            region = ItemRegion.VIBRANT_VOID,
+            id = "strengthened_prismarine",
+        ) { glowing = true }
 
-        val LAPIS =
-            Item.create(
-                Message.name("Lapis", NamedTextColor.BLUE),
-                Material.LAPIS_LAZULI,
-                ItemType.MATERIAL,
-                ItemRegion.VIBRANT_VOID,
-                "lapis",
-            )
+    val STRENGTHENED_OPAL =
+        item(
+            name = Message.name("Strengthened Opal"),
+            material = Material.BONE_MEAL,
+            type = ItemType.MATERIAL,
+            region = ItemRegion.VIBRANT_VOID,
+            id = "strengthened_opal",
+        ) { glowing = true }
 
-        val CHARGED_STONE =
-            Item.create(
-                Message.name("Charged Stone", NamedTextColor.GRAY),
-                Material.AMETHYST_SHARD,
-                ItemType.MATERIAL,
-                ItemRegion.VIBRANT_VOID,
-                "charged_stone",
-            )
+    val COMPACT_COBBLESTONE =
+        item(
+            Message.name("Compact Cobblestone", Colour.GREY),
+            Material.STONE,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "compact_cobblestone",
+        ) { glowing = true }
 
-        val PRISMARINE =
-            Item.create(
-                Message.name("Prismarine", NamedTextColor.DARK_AQUA),
-                Material.PRISMARINE_SHARD,
-                ItemType.MATERIAL,
-                ItemRegion.VIBRANT_VOID,
-                "prismarine",
-            )
+    val COMPACT_COAL =
+        item(
+            Message.name("Compact Coal", Colour.DARK_GREY),
+            Material.COAL_BLOCK,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "compact_coal",
+        ) { glowing = true }
 
-        val OPAL =
-            Item.create(
-                Message.name("Opal"),
-                Material.BONE_MEAL,
-                ItemType.MATERIAL,
-                ItemRegion.VIBRANT_VOID,
-                "opal",
-            )
+    val COMPACT_COPPER =
+        item(
+            Message.name("Compact Copper", Colour.GOLD),
+            Material.COPPER_BLOCK,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "compact_copper",
+        ) { glowing = true }
 
-        object Strengthened {
-            val STRENGTHENED_PURPUR =
-                Item.create(
-                    Message.name("Strengthened Purpur", NamedTextColor.LIGHT_PURPLE),
-                    Material.POPPED_CHORUS_FRUIT,
-                    ItemType.MATERIAL,
-                    ItemRegion.VIBRANT_VOID,
-                    "strengthened_purpur",
-                ) { glowing = true }
+    val COMPACT_IRON =
+        item(
+            Message.name("Compact Iron"),
+            Material.IRON_BLOCK,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "compact_iron",
+        ) { glowing = true }
 
-            val STRENGTHENED_LAPIS =
-                Item.create(
-                    Message.name("Strengthened Lapis", NamedTextColor.BLUE),
-                    Material.LAPIS_LAZULI,
-                    ItemType.MATERIAL,
-                    ItemRegion.VIBRANT_VOID,
-                    "strengthened_lapis",
-                ) { glowing = true }
+    val COMPACT_GOLD =
+        item(
+            Message.name("Compact Gold", Colour.YELLOW),
+            Material.GOLD_BLOCK,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "compact_gold",
+        ) { glowing = true }
 
-            val STRENGTHENED_CHARGED_STONE =
-                Item.create(
-                    Message.name("Strengthened Charged Stone", NamedTextColor.GRAY),
-                    Material.AMETHYST_SHARD,
-                    ItemType.MATERIAL,
-                    ItemRegion.VIBRANT_VOID,
-                    "strengthened_charged_stone",
-                ) { glowing = true }
+    val COMPACT_DIAMOND =
+        item(
+            Message.name("Compact Diamond", Colour.AQUA),
+            Material.DIAMOND_BLOCK,
+            ItemType.MATERIAL,
+            ItemRegion.BAYSIDE_BEACH,
+            "compact_diamond",
+        ) { glowing = true }
 
-            val STRENGTHENED_PRISMARINE =
-                Item.create(
-                    Message.name("Strengthened Prismarine", NamedTextColor.DARK_AQUA),
-                    Material.PRISMARINE_SHARD,
-                    ItemType.MATERIAL,
-                    ItemRegion.VIBRANT_VOID,
-                    "strengthened_prismarine",
-                ) { glowing = true }
+    val COMPACT_QUARTZ =
+        item(
+            Message.name("Compact Quartz"),
+            Material.QUARTZ_BLOCK,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "compact_quartz",
+        ) { glowing = true }
 
-            val STRENGTHENED_OPAL =
-                Item.create(
-                    Message.name("Strengthened Opal"),
-                    Material.BONE_MEAL,
-                    ItemType.MATERIAL,
-                    ItemRegion.VIBRANT_VOID,
-                    "strengthened_opal",
-                ) { glowing = true }
-        }
+    val COMPACT_OBSIDIAN =
+        item(
+            Message.name("Compact Obsidian", Colour.DARK_GREY),
+            Material.CRYING_OBSIDIAN,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "compact_obsidian",
+        ) { glowing = true }
 
-        object Compact {
-            val COMPACT_PURPUR =
-                Item.create(
-                    Message.name("Compact Purpur", NamedTextColor.LIGHT_PURPLE),
-                    Material.POPPED_CHORUS_FRUIT,
-                    ItemType.MATERIAL,
-                    ItemRegion.VIBRANT_VOID,
-                    "compact_purpur",
-                ) { glowing = true }
+    val COMPACT_NETHERITE_SCRAP =
+        item(
+            Message.name("Compact Netherite Scrap", Colour.GREY),
+            Material.ANCIENT_DEBRIS,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "compact_netherite_scrap",
+        ) { glowing = true }
 
-            val COMPACT_LAPIS =
-                Item.create(
-                    Message.name("Compact Lapis", NamedTextColor.BLUE),
-                    Material.LAPIS_LAZULI,
-                    ItemType.MATERIAL,
-                    ItemRegion.VIBRANT_VOID,
-                    "compact_lapis",
-                ) { glowing = true }
+    val COMPACT_REDSTONE =
+        item(
+            Message.name("Compact Redstone", Colour.DARK_RED),
+            Material.REDSTONE_BLOCK,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "compact_redstone",
+        ) { glowing = true }
 
-            val COMPACT_CHARGED_STONE =
-                Item.create(
-                    Message.name("Compact Charged Stone", NamedTextColor.GRAY),
-                    Material.AMETHYST_SHARD,
-                    ItemType.MATERIAL,
-                    ItemRegion.VIBRANT_VOID,
-                    "compact_charged_stone",
-                ) { glowing = true }
+    val COMPACT_MAGMA =
+        item(
+            Message.name("Compact Magma", Colour.GOLD),
+            Material.MAGMA_BLOCK,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "compact_magma",
+        ) { glowing = true }
 
-            val COMPACT_PRISMARINE =
-                Item.create(
-                    Message.name("Compact Prismarine", NamedTextColor.DARK_AQUA),
-                    Material.PRISMARINE_SHARD,
-                    ItemType.MATERIAL,
-                    ItemRegion.VIBRANT_VOID,
-                    "compact_prismarine",
-                ) { glowing = true }
+    val COMPACT_NETHERITE =
+        item(
+            Message.name("Compact Netherite", Colour.GREY),
+            Material.NETHERITE_BLOCK,
+            ItemType.MATERIAL,
+            ItemRegion.CRIMSON_COVE,
+            "compact_netherite",
+        ) { glowing = true }
 
-            val COMPACT_OPAL =
-                Item.create(
-                    Message.name("Compact Opal"),
-                    Material.BONE_MEAL,
-                    ItemType.MATERIAL,
-                    ItemRegion.VIBRANT_VOID,
-                    "compact_opal",
-                ) { glowing = true }
-        }
-    }
+    val COMPACT_PURPUR =
+        item(
+            name = Message.name("Compact Purpur", Colour.LIGHT_PURPLE),
+            material = Material.POPPED_CHORUS_FRUIT,
+            type = ItemType.MATERIAL,
+            region = ItemRegion.VIBRANT_VOID,
+            id = "compact_purpur",
+        ) { glowing = true }
+
+    val COMPACT_LAPIS =
+        item(
+            name = Message.name("Compact Lapis", Colour.BLUE),
+            material = Material.LAPIS_LAZULI,
+            type = ItemType.MATERIAL,
+            region = ItemRegion.VIBRANT_VOID,
+            id = "compact_lapis",
+        ) { glowing = true }
+
+    val COMPACT_CHARGED_STONE =
+        item(
+            Message.name("Compact Charged Stone", Colour.GREY),
+            Material.AMETHYST_SHARD,
+            ItemType.MATERIAL,
+            ItemRegion.VIBRANT_VOID,
+            "compact_charged_stone",
+        ) { glowing = true }
+
+    val COMPACT_PRISMARINE =
+        item(
+            Message.name("Compact Prismarine", Colour.DARK_AQUA),
+            Material.PRISMARINE_SHARD,
+            ItemType.MATERIAL,
+            ItemRegion.VIBRANT_VOID,
+            "compact_prismarine",
+        ) { glowing = true }
+
+    val COMPACT_OPAL =
+        item(
+            Message.name("Compact Opal"),
+            Material.BONE_MEAL,
+            ItemType.MATERIAL,
+            ItemRegion.VIBRANT_VOID,
+            "compact_opal",
+        ) { glowing = true }
 }

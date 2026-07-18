@@ -1,22 +1,26 @@
 package me.xbackpack.galaxysky.registry.command
 
 import me.xbackpack.galaxysky.GalaxySky
-import me.xbackpack.galaxysky.api.message.Message
-import me.xbackpack.galaxysky.api.old.common.Cooldown
-import me.xbackpack.galaxysky.api.old.data.Command
-import me.xbackpack.galaxysky.enum.command.SenderRequirement
+import me.xbackpack.galaxysky.api.command.Cooldown
+import me.xbackpack.galaxysky.api.command.Permission
+import me.xbackpack.galaxysky.api.command.Requirement
+import me.xbackpack.galaxysky.api.util.command
+import me.xbackpack.galaxysky.api.util.getStat
+import me.xbackpack.galaxysky.api.util.giveItem
+import me.xbackpack.galaxysky.api.util.message
+import me.xbackpack.galaxysky.api.util.msg
+import me.xbackpack.galaxysky.api.util.showInventory
+import me.xbackpack.galaxysky.api.util.spawnEntity
+import me.xbackpack.galaxysky.enum.Colour
 import me.xbackpack.galaxysky.enum.player.PlayerStatType
 import me.xbackpack.galaxysky.hook.PlaceholderHook
 import me.xbackpack.galaxysky.hook.PlaceholderHook.SHOP_LINK
-import me.xbackpack.galaxysky.registry.inventory.Inventory
+import me.xbackpack.galaxysky.registry.inventory.Inventories
 import me.xbackpack.galaxysky.registry.item.Pickaxes
-import me.xbackpack.galaxysky.sendMessage
 import me.xbackpack.galaxysky.service.FormattingService
 import me.xbackpack.galaxysky.service.FormattingService.content
 import me.xbackpack.galaxysky.service.LocationService
-import me.xbackpack.galaxysky.service.PDCService
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDismountEvent
@@ -25,105 +29,106 @@ import kotlin.time.Duration.Companion.seconds
 
 object PlayerCommandRegistry {
     private val SPAWN =
-        Command.create(
-            "spawn",
-            "Teleports you to the server spawn",
-            SenderRequirement.PLAYER(),
+        command(
+            name = "spawn",
+            description = "Teleports you to the server spawn",
+            requirement = Requirement.PLAYER,
+            aliases = listOf("stuck"),
         ) {
-            aliases = listOf("stuck")
-
-            doForPlayer { _, _ ->
-                teleport(LocationService.WORLD_SPAWN)
+            doForPlayer { player, _ ->
+                player.teleport(LocationService.WORLD_SPAWN)
             }
         }
 
     private val WORLD =
-        Command.create(
-            "world",
-            "Teleports the player to the specified world",
-            SenderRequirement.PLAYER(),
+        command(
+            name = "world",
+            description = "Teleports the player to the specified world",
+            requirement = Requirement.PLAYER,
         ) {
-            doForPlayer { _, _ ->
-                sendMessage {
+            doForPlayer { player, _ ->
+                player.msg {
                     text("Please specify a valid world") {
-                        colour(NamedTextColor.RED)
+                        colour(Colour.RED)
                     }
                 }
             }
 
-            subcommand("spawn") {
-                doForPlayer { _, _ ->
-                    teleport(LocationService.WORLD_SPAWN)
+            subcommand(
+                name = "spawn",
+            ) {
+                doForPlayer { player, _ ->
+                    player.teleport(LocationService.WORLD_SPAWN)
                 }
             }
 
             subcommand(
-                "nether",
-                SenderRequirement.PERMISSION("galaxysky.world.nether"),
+                name = "nether",
+                permission = Permission("galaxysky.world.nether"),
             ) {
-                doForPlayer { _, _ ->
-                    teleport(LocationService.NETHER_SPAWN)
+                doForPlayer { player, _ ->
+                    player.teleport(LocationService.NETHER_SPAWN)
                 }
             }
 
             subcommand(
-                "end",
-                SenderRequirement.PERMISSION("galaxysky.world.end"),
+                name = "end",
+                permission = Permission("galaxysky.world.end"),
             ) {
-                doForPlayer { _, _ ->
-                    teleport(LocationService.END_SPAWN)
+                doForPlayer { player, _ ->
+                    player.teleport(LocationService.END_SPAWN)
                 }
             }
 
             subcommand(
-                "aether",
-                SenderRequirement.PERMISSION("galaxysky.world.aether"),
+                name = "aether",
+                permission = Permission("galaxysky.world.aether"),
             ) {
-                doForPlayer { _, _ ->
-                    teleport(LocationService.AETHER_SPAWN)
+                doForPlayer { player, _ ->
+                    player.teleport(LocationService.AETHER_SPAWN)
                 }
             }
 
             subcommand(
-                "staff",
-                SenderRequirement.STAFF(),
+                name = "staff",
+                requirement = Requirement.STAFF,
             ) {
-                doForPlayer { _, _ ->
-                    teleport(LocationService.STAFF_WORLD_SPAWN)
+                doForPlayer { player, _ ->
+                    player.teleport(LocationService.STAFF_WORLD_SPAWN)
                 }
             }
         }
 
     private val AFK =
-        Command.create(
-            "afk",
-            "Teleports the player to the AFK area",
-            SenderRequirement.PLAYER(),
+        command(
+            name = "afk",
+            description = "Teleports the player to the AFK area",
+            requirement = Requirement.PLAYER,
         ) {
-            doForPlayer { _, _ ->
-                teleport(LocationService.AFK)
+            doForPlayer { player, _ ->
+                player.teleport(LocationService.AFK)
             }
         }
 
     private val LEADERBOARDS =
-        Command.create(
-            "leaderboards",
-            "Teleports the player to the leaderboards",
-            SenderRequirement.PLAYER(),
+        command(
+            name = "leaderboards",
+            description = "Teleports the player to the leaderboards",
+            requirement = Requirement.PLAYER,
         ) {
-            doForPlayer { _, _ ->
-                teleport(LocationService.LEADERBOARDS)
+            doForPlayer { player, _ ->
+                player.teleport(LocationService.LEADERBOARDS)
             }
         }
 
     private val APPLY =
-        Command.create(
-            "apply",
-            "Provides a link to the staff application",
-            SenderRequirement.PLAYER(),
+        command(
+            name = "apply",
+            description = "Provides a link to the staff application",
+            requirement = Requirement.PLAYER,
         ) {
-            doForPlayer { _, _ ->
-                sendMessage {
+            doForPlayer { player, _ ->
+                player.msg {
                     section {
                         text("Apply on our discord!")
 
@@ -135,22 +140,21 @@ object PlayerCommandRegistry {
 
                         link(PlaceholderHook.DISCORD)
 
-                        colour(NamedTextColor.LIGHT_PURPLE)
+                        colour(Colour.LIGHT_PURPLE)
                     }
                 }
             }
         }
 
     private val IP =
-        Command.create(
-            "ip",
-            "Provides the IP of the server",
-            SenderRequirement.PLAYER(),
+        command(
+            name = "ip",
+            description = "Provides the IP of the server",
+            requirement = Requirement.PLAYER,
+            aliases = listOf("serverip"),
         ) {
-            aliases = listOf("serverip")
-
-            doForPlayer { _, _ ->
-                sendMessage {
+            doForPlayer { player, _ ->
+                player.msg {
                     section {
                         text("The GalaxySky IP is:")
 
@@ -158,146 +162,134 @@ object PlayerCommandRegistry {
 
                         note(PlaceholderHook.SERVER_IP)
 
-                        colour(NamedTextColor.LIGHT_PURPLE)
+                        colour(Colour.LIGHT_PURPLE)
                     }
                 }
             }
         }
 
     private val SHOP =
-        Command.create(
-            "shop",
-            "Provides a link to the GalaxySky webstore",
-            SenderRequirement.PLAYER(),
+        command(
+            name = "shop",
+            description = "Provides a link to the GalaxySky webstore",
+            requirement = Requirement.PLAYER,
+            aliases = listOf("store", "webstore"),
         ) {
-            aliases = listOf("store", "webstore")
-
-            doForPlayer { _, _ ->
-                sendMessage {
+            doForPlayer { player, _ ->
+                player.msg {
                     section {
                         text("The GalaxySky shop link is:")
                         space()
 
                         link(SHOP_LINK)
 
-                        colour(NamedTextColor.LIGHT_PURPLE)
+                        colour(Colour.LIGHT_PURPLE)
                     }
                 }
             }
         }
 
     private val START =
-        Command.create(
-            "start",
-            "Gives the player the starter pickaxe",
-            SenderRequirement.PLAYER(),
+        command(
+            name = "start",
+            description = "Gives the player the starter pickaxe",
+            requirement = Requirement.PLAYER,
+            aliases = listOf("begin"),
+            cooldown = Cooldown(60.seconds),
         ) {
-            aliases = listOf("begin")
-            cooldown = Cooldown(60.seconds)
-
-            doForPlayer { _, _ ->
-                giveItem(Pickaxes.BaysideBeach.STONE_PICKAXE_1)
+            doForPlayer { player, _ ->
+                player.giveItem(Pickaxes.WOODEN_PICKAXE_1)
             }
         }
 
     private val PLAYTIME =
-        Command.create(
-            "playtime",
-            "Sends the player their full playtime",
-            SenderRequirement.PLAYER(),
+        command(
+            name = "playtime",
+            description = "Sends the player their full playtime",
+            requirement = Requirement.PLAYER,
         ) {
             doForPlayer { player, _ ->
-                val playtime = PDCService.PlayerData.Stats[player, PlayerStatType.PLAYTIME]
+                val playtime = player.getStat(PlayerStatType.PLAYTIME)
 
-                sendMessage {
+                player.msg {
                     section {
-                        text("You have")
-
-                        space()
+                        text("You have ")
 
                         text(FormattingService.shortenTimeFull(playtime))
 
-                        space()
+                        text(" of playtime!")
 
-                        text("of playtime!")
-
-                        colour(NamedTextColor.GREEN)
+                        colour(Colour.GREEN)
                     }
                 }
             }
         }
 
     private val DROPS =
-        Command.create(
-            "drops",
-            "Allows the player to drop items for 10 seconds",
-            SenderRequirement.PLAYER(),
-        ) {
-            val cooldownObject =
+        command(
+            name = "drops",
+            description = "Allows the player to drop items for 10 seconds",
+            requirement = Requirement.PLAYER,
+            aliases = listOf("drop"),
+            cooldown =
                 Cooldown(10.seconds, true) { _ ->
-                    Message.create {
-                        text("You can already drop items!") { colour(NamedTextColor.RED) }
+                    message {
+                        text("You can already drop items!") { colour(Colour.RED) }
                     }
-                }
-
-            aliases = listOf("drop")
-            cooldown = cooldownObject
-
+                },
+        ) {
             doForPlayer { player, _ ->
-                sendMessage {
-                    text("You can now drop items for the next 10 seconds.") { colour(NamedTextColor.GREEN) }
+                player.msg {
+                    text("You can now drop items for the next 10 seconds.") { colour(Colour.GREEN) }
                 }
 
                 GalaxySky.runTaskLater(10.seconds) {
-                    player.sendMessage(
-                        Message.create {
-                            text("You can no longer drop items!") { colour(NamedTextColor.RED) }
-                        },
-                    )
+                    player.msg {
+                        text("You can no longer drop items!") { colour(Colour.RED) }
+                    }
                 }
             }
 
             listener<PlayerDropItemEvent> { event ->
                 val player = event.player
 
-                if (!cooldownObject.isOnCooldown(player)) {
-                    player.sendMessage(
-                        Message.create {
-                            text("Use [/drops] to drop items!") {
-                                colour(NamedTextColor.RED)
-                            }
-                        },
-                    )
+                if (!(cooldown ?: return@listener).isOnCooldown(player)) {
+                    player.msg {
+                        text("Use [/drops] to drop items!") {
+                            colour(Colour.RED)
+                        }
+                    }
+
                     event.isCancelled = true
                 }
             }
         }
 
     private val SIT =
-        Command.create(
-            "sit",
-            "Allows the player to sit down",
-            SenderRequirement.PLAYER(),
+        command(
+            name = "sit",
+            description = "Allows the player to sit down",
+            requirement = Requirement.PLAYER,
         ) {
             val enabledPlayers = mutableSetOf<Player>()
 
             doForPlayer { player, _ ->
                 if (enabledPlayers.contains(player)) {
-                    sendMessage {
+                    player.msg {
                         text("You're already sitting!") {
-                            colour(NamedTextColor.RED)
+                            colour(Colour.RED)
                         }
                     }
                 } else {
-                    spawnEntity<ArmorStand> {
+                    player.location.spawnEntity<ArmorStand> {
                         isMarker = true
                         isInvisible = true
                         customName(Component.text("Sit"))
 
                         addPassenger(player)
-
-                        enabledPlayers.add(player)
                     }
+
+                    enabledPlayers.add(player)
                 }
             }
 
@@ -319,15 +311,14 @@ object PlayerCommandRegistry {
         }
 
     private val TRASH =
-        Command.create(
-            "trash",
-            "Opens the bin",
-            SenderRequirement.PLAYER(),
+        command(
+            name = "trash",
+            description = "Opens the bin",
+            requirement = Requirement.PLAYER,
+            aliases = listOf("disposal", "bin"),
         ) {
-            aliases = listOf("disposal", "bin")
-
-            doForPlayer { _, _ ->
-                showInv(Inventory.new { text("Trash") })
+            doForPlayer { player, _ ->
+                player.showInventory(Inventories.BIN)
             }
         }
 

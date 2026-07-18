@@ -1,11 +1,11 @@
 package me.xbackpack.galaxysky.enum.item
 
-import net.kyori.adventure.text.format.NamedTextColor
+import me.xbackpack.galaxysky.enum.Colour
 
 enum class ItemStatPurpose(
-    val colour: NamedTextColor,
+    val colour: Colour,
 ) {
-    OFFENSE(NamedTextColor.RED),
-    DEFENSE(NamedTextColor.GREEN),
-    UTILITY(NamedTextColor.AQUA),
+    OFFENSE(Colour.RED),
+    DEFENSE(Colour.GREEN),
+    UTILITY(Colour.AQUA),
 }
